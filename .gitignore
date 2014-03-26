@@ -1,0 +1,10 @@
+
+*.iml
+
+*.class
+
+.idea/
+
+target/
+
+ml-toolbox/core/ml-core-impl/trunk/src/main/resources/monalisa3.jpg
