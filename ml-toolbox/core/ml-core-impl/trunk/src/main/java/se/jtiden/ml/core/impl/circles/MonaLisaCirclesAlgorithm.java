@@ -12,7 +12,6 @@ import se.jtiden.ml.core.impl.MonaLisa;
 
 public class MonaLisaCirclesAlgorithm implements IterativeAlgorithm<MonaLisaCirclesHypothesis> {
 
-    //private final SortedSet<MonaLisaNearestNeighborHypothesis> hypotheses;
     private final double mutationPointSpaceVariance;
     private final static Random random = new Random();
     private final double chanceToMutatePoint;
@@ -22,24 +21,18 @@ public class MonaLisaCirclesAlgorithm implements IterativeAlgorithm<MonaLisaCirc
 
     public MonaLisaCirclesAlgorithm(
             MonaLisa monaLisa,
-            int numHypotheses,
             int numPoints,
             double mutationPointVariance,
             double chanceToMutatePoint, int mutationPointColorVariance, final double radiusVariance) {
         this.mutationPointColorVariance = mutationPointColorVariance;
-        //this.hypotheses = new TreeSet<MonaLisaNearestNeighborHypothesis>();
         this.mutationPointSpaceVariance = mutationPointVariance;
         this.chanceToMutatePoint = chanceToMutatePoint;
         this.radiusVariance = radiusVariance;
-        createRandomInitialHypotheses(monaLisa, numHypotheses, numPoints);
+        createRandomInitialHypotheses(monaLisa, numPoints);
     }
 
-    private void createRandomInitialHypotheses(MonaLisa monaLisa, int numHypotheses, int numPoints) {
+    private void createRandomInitialHypotheses(MonaLisa monaLisa, int numPoints) {
          bestHypothesis = randomHypothesis(monaLisa, numPoints);
-            //for (int i = 0; i < numHypotheses; ++i) {
-            //    hypotheses.add(randomHypothesis(monaLisa, numPoints));
-            //}
-
     }
 
     private MonaLisaCirclesHypothesis randomHypothesis(MonaLisa monaLisa, int numPoints) {

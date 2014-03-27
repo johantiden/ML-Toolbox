@@ -11,9 +11,7 @@ public class MonaLisaCirclesContextFactory {
 
     public static final int MUTATION_POINT_VARIANCE = 80;
     public static final int NUM_POINTS = 200;
-    public static final int NUM_HYPOTHESES = 1;
     public static final int ALPHA = 100;
-    public static final int DOT_RADIUS = 1;
     public static final double CHANCE_TO_MUTATE_POINT = .80;
     public static final int FAKE_PIXEL_SIZE = 3;
     public static final int MUTATION_POINT_COLOR_VARIANCE = 80;
@@ -23,7 +21,6 @@ public class MonaLisaCirclesContextFactory {
         MonaLisa monaLisa = new MonaLisa();
         IterativeAlgorithm algorithm = new MonaLisaCirclesAlgorithm(
                 monaLisa,
-                NUM_HYPOTHESES,
                 NUM_POINTS,
                 MUTATION_POINT_VARIANCE,
                 CHANCE_TO_MUTATE_POINT,

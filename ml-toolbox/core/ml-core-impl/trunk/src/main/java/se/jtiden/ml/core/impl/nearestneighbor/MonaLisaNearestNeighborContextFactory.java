@@ -12,9 +12,7 @@ public class MonaLisaNearestNeighborContextFactory {
     public static final int MUTATION_POINT_VARIANCE = 80;
     public static final int NUM_NEIGHBORS_FOR_CLASSIFICATION = 2;
     public static final int NUM_POINTS = 70;
-    public static final int NUM_HYPOTHESES = 1;
     public static final int ALPHA = 100;
-    public static final int DOT_RADIUS = 1;
     public static final double CHANCE_TO_MUTATE_POINT = .80;
     public static final int FAKE_PIXEL_SIZE = 4;
     public static final int MUTATION_POINT_COLOR_VARIANCE = 80;
@@ -23,7 +21,6 @@ public class MonaLisaNearestNeighborContextFactory {
         MonaLisa monaLisa = new MonaLisa();
         IterativeAlgorithm algorithm = new MonaLisaNearestNeighborAlgorithm(
                 monaLisa,
-                NUM_HYPOTHESES,
                 NUM_POINTS,
                 MUTATION_POINT_VARIANCE,
                 NUM_NEIGHBORS_FOR_CLASSIFICATION,
