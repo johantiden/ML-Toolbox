@@ -12,7 +12,7 @@ import se.jtiden.ml.core.impl.MonaLisa;
 
 public class MonaLisaCirclesHypothesis implements Hypothesis {
 
-    private final List<CircleWithColor> points;
+    private final List<CircleWithColor> circles;
     private final MonaLisa monaLisa;
     private BigInteger lossCached;
 
@@ -20,7 +20,7 @@ public class MonaLisaCirclesHypothesis implements Hypothesis {
             MonaLisa monaLisa,
             List<CircleWithColor> points) {
         this.monaLisa = monaLisa;
-        this.points = points;
+        this.circles = points;
     }
 
     @Override
@@ -53,8 +53,8 @@ public class MonaLisaCirclesHypothesis implements Hypothesis {
 //                int x = random.nextInt(monaLisa.getWidth());
 //                int y = random.nextInt(monaLisa.getHeight());
                 Color estimate = painter.colorAt(x, y);
-                if (isBlack(estimate)) {
-                    loss = loss.subtract(BigInteger.valueOf(589824*2));
+                if (false /*isBlack(estimate)*/) {
+                    loss = loss.subtract(BigInteger.valueOf(589824*3));
                 } else {
                     loss = loss.subtract(colorDifferenceSquare(
                             getMonaLisa().getColorAt(x, y),
@@ -87,7 +87,7 @@ public class MonaLisaCirclesHypothesis implements Hypothesis {
 
 
     public List<CircleWithColor> getCircles() {
-        return new ArrayList<CircleWithColor>(points);
+        return new ArrayList<CircleWithColor>(circles);
     }
 
     @Override
@@ -101,5 +101,9 @@ public class MonaLisaCirclesHypothesis implements Hypothesis {
 
     public MonaLisa getMonaLisa() {
         return monaLisa;
+    }
+
+    public int countCircles() {
+        return circles.size();
     }
 }

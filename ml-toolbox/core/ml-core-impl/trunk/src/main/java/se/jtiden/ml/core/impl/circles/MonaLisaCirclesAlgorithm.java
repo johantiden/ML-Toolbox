@@ -15,20 +15,28 @@ public class MonaLisaCirclesAlgorithm implements IterativeAlgorithm<MonaLisaCirc
     private final double mutationPointSpaceVariance;
     private final static Random random = new Random();
     private final double chanceToMutatePoint;
+    private final int maxNumPoints;
+    private final double chanceToCreatePoint;
     private final int mutationPointColorVariance;
     private MonaLisaCirclesHypothesis bestHypothesis;
     private final double radiusVariance;
 
     public MonaLisaCirclesAlgorithm(
             MonaLisa monaLisa,
-            int numPoints,
+            int minNumPoints,
+            int maxNumPoints,
             double mutationPointVariance,
-            double chanceToMutatePoint, int mutationPointColorVariance, final double radiusVariance) {
+            double chanceToMutatePoint,
+            double chanceToCreatePoint,
+            int mutationPointColorVariance,
+            final double radiusVariance) {
+        this.maxNumPoints = maxNumPoints;
+        this.chanceToCreatePoint = chanceToCreatePoint;
         this.mutationPointColorVariance = mutationPointColorVariance;
         this.mutationPointSpaceVariance = mutationPointVariance;
         this.chanceToMutatePoint = chanceToMutatePoint;
         this.radiusVariance = radiusVariance;
-        createRandomInitialHypotheses(monaLisa, numPoints);
+        createRandomInitialHypotheses(monaLisa, minNumPoints);
     }
 
     private void createRandomInitialHypotheses(MonaLisa monaLisa, int numPoints) {
@@ -47,7 +55,7 @@ public class MonaLisaCirclesAlgorithm implements IterativeAlgorithm<MonaLisaCirc
         for (int i = 0; i < numPoints; ++i) {
             CircleWithColor newCircle = randomizeCircle(middleOfImage, monaLisa.getHeight(), 8);
             while (isOutsideOfBounds(newCircle, monaLisa)) {
-                newCircle = randomizeCircle(middleOfImage, monaLisa.getHeight(), 8);
+                newCircle = randomizeCircle(middleOfImage, monaLisa.getHeight(), 40);
             }
 
             circles.add(newCircle);
@@ -68,7 +76,9 @@ public class MonaLisaCirclesAlgorithm implements IterativeAlgorithm<MonaLisaCirc
         MonaLisaCirclesHypothesis newHypothesis = selfBreed(bestHypothesis);
 
             if (newHypothesis.valueFunction().longValue() > bestHypothesis.valueFunction().longValue()) {
-                System.out.println("New best! " + newHypothesis.valueFunction().longValue() + " old:" + bestHypothesis.valueFunction().longValue());
+                System.out.println("New best! " + newHypothesis.valueFunction().longValue() +
+                        " old:" + bestHypothesis.valueFunction().longValue() +
+                        " points: " + bestHypothesis.countCircles());
                 bestHypothesis = newHypothesis;
                 //hypotheses.add(newHypothesis);
                 //hypotheses.remove(hypotheses.last());
@@ -86,12 +96,22 @@ public class MonaLisaCirclesAlgorithm implements IterativeAlgorithm<MonaLisaCirc
     }
 
     private MonaLisaCirclesHypothesis selfBreed(MonaLisaCirclesHypothesis hypothesis) {
-        List<CircleWithColor> points = new ArrayList<CircleWithColor>();
+        List<CircleWithColor> points = hypothesis.getCircles();
+        CircleWithColor pointToMutate = points.get(random.nextInt(points.size()));
 
-        CircleWithColor pointToMutate = hypothesis.getCircles().get(random.nextInt(hypothesis.getCircles().size()));
-        points = hypothesis.getCircles();
-        points.remove(pointToMutate);
-        points.add(randomizeCircle(pointToMutate, mutationPointSpaceVariance, mutationPointColorVariance));
+
+        if (points.size() < maxNumPoints &&
+                random.nextDouble() < chanceToCreatePoint) {
+            int index2 = random.nextInt(points.size());
+            points.add(index2, randomizeCircle(pointToMutate, mutationPointSpaceVariance * 4, mutationPointColorVariance * 4));
+        } else {
+
+            points.remove(pointToMutate);
+
+            int index = random.nextInt(points.size());
+            points.add(index, randomizeCircle(pointToMutate, mutationPointSpaceVariance, mutationPointColorVariance));
+
+        }
 
         MonaLisaCirclesHypothesis child = new MonaLisaCirclesHypothesis(
                 hypothesis.getMonaLisa(),
@@ -123,17 +143,25 @@ public class MonaLisaCirclesAlgorithm implements IterativeAlgorithm<MonaLisaCirc
 
         radius = randomizeRadius(p.radius, radiusVariance);
 
-        //if (random.nextDouble() < chanceToMutatePoint) {
+
+
+        if (random.nextDouble() < chanceToMutatePoint) {
             c = randomizeColor(p.color, colorVariance);
-        //} else {
-        //    c = p.color;
-        //}
+        } else {
+            c = p.color;
+        }
 
         return new CircleWithColor(x, y, c, radius);
     }
 
     private double randomizeRadius(final double radius, final double radiusVariance) {
-        return radius + (random.nextDouble() - 0.5) * radiusVariance;
+        if (random.nextDouble() < chanceToMutatePoint) {
+            return Math.min(Math.max(radius + (random.nextDouble() - 0.5) * radiusVariance,
+                    2),
+                    300);
+        } else {
+            return radius;
+        }
     }
 
     private static Color randomizeColor(Color color, int colorVariance) {
@@ -142,7 +170,7 @@ public class MonaLisaCirclesAlgorithm implements IterativeAlgorithm<MonaLisaCirc
                     color.getRed() + random.nextInt(colorVariance) - colorVariance / 2,
                     color.getGreen() + random.nextInt(colorVariance) - colorVariance / 2,
                     color.getBlue() + random.nextInt(colorVariance) - colorVariance / 2,
-                    color.getAlpha() + random.nextInt(colorVariance) - colorVariance / 2);
+                    Math.max(color.getAlpha() + random.nextInt(colorVariance) - colorVariance / 2, 200));
 
         } catch (Exception e) {
             return randomizeColor(color, colorVariance);

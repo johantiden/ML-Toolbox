@@ -13,7 +13,7 @@ public class MonaLisa {
     private BufferedImage monaLisa;
 
     public MonaLisa() {
-        monaLisa = getImage("landscape.jpg");
+        monaLisa = getImage("monalisa3.jpg");
     }
 
     public static BufferedImage getImage(final String pathAndFileName) {
