@@ -1,37 +1,36 @@
-package se.jtiden.ml.core.impl;
-
-import se.jtiden.ml.core.api.IterativeAlgorithm;
-import se.jtiden.ml.core.api.Point;
-import se.jtiden.ml.core.api.PointWithColor;
+package se.jtiden.ml.core.impl.circles;
 
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import se.jtiden.ml.core.api.CircleWithColor;
+import se.jtiden.ml.core.api.IterativeAlgorithm;
+import se.jtiden.ml.core.api.Point;
+import se.jtiden.ml.core.impl.MonaLisa;
 
-public class MonaLisaNearestNeighborAlgorithm implements IterativeAlgorithm<MonaLisaNearestNeighborHypothesis> {
+public class MonaLisaCirclesAlgorithm implements IterativeAlgorithm<MonaLisaCirclesHypothesis> {
 
     //private final SortedSet<MonaLisaNearestNeighborHypothesis> hypotheses;
     private final double mutationPointSpaceVariance;
-    private final int numNeighborsForClassification;
     private final static Random random = new Random();
     private final double chanceToMutatePoint;
     private final int mutationPointColorVariance;
-    private MonaLisaNearestNeighborHypothesis bestHypothesis;
+    private MonaLisaCirclesHypothesis bestHypothesis;
+    private final double radiusVariance;
 
-    public MonaLisaNearestNeighborAlgorithm(
+    public MonaLisaCirclesAlgorithm(
             MonaLisa monaLisa,
             int numHypotheses,
             int numPoints,
             double mutationPointVariance,
-            int numNeighborsForClassification,
-            double chanceToMutatePoint, int mutationPointColorVariance) {
+            double chanceToMutatePoint, int mutationPointColorVariance, final double radiusVariance) {
         this.mutationPointColorVariance = mutationPointColorVariance;
         //this.hypotheses = new TreeSet<MonaLisaNearestNeighborHypothesis>();
         this.mutationPointSpaceVariance = mutationPointVariance;
-        this.numNeighborsForClassification = numNeighborsForClassification;
         this.chanceToMutatePoint = chanceToMutatePoint;
+        this.radiusVariance = radiusVariance;
         createRandomInitialHypotheses(monaLisa, numHypotheses, numPoints);
     }
 
@@ -43,29 +42,27 @@ public class MonaLisaNearestNeighborAlgorithm implements IterativeAlgorithm<Mona
 
     }
 
-    private MonaLisaNearestNeighborHypothesis randomHypothesis(MonaLisa monaLisa, int numPoints) {
+    private MonaLisaCirclesHypothesis randomHypothesis(MonaLisa monaLisa, int numPoints) {
 
-
-
-        PointWithColor middleOfImage = new PointWithColor(
+        CircleWithColor middleOfImage = new CircleWithColor(
                 monaLisa.getWidth() / 2d,
                 monaLisa.getHeight() / 2d,
-                new Color(128, 128, 128));
+                new Color(128, 128, 128, 128),
+                monaLisa.getWidth() / 10d);
 
-        List<PointWithColor> points = new ArrayList<PointWithColor>();
+        List<CircleWithColor> circles = new ArrayList<CircleWithColor>();
         for (int i = 0; i < numPoints; ++i) {
-            PointWithColor newPoint = randomizePoint(middleOfImage, monaLisa.getHeight(), 8);
-            while (isOutsideOfBounds(newPoint, monaLisa)) {
-                newPoint = randomizePoint(middleOfImage, monaLisa.getHeight(), 8);
+            CircleWithColor newCircle = randomizeCircle(middleOfImage, monaLisa.getHeight(), 8);
+            while (isOutsideOfBounds(newCircle, monaLisa)) {
+                newCircle = randomizeCircle(middleOfImage, monaLisa.getHeight(), 8);
             }
 
-            points.add(newPoint);
+            circles.add(newCircle);
         }
 
-        MonaLisaNearestNeighborHypothesis hypothesis = new MonaLisaNearestNeighborHypothesis(
+        MonaLisaCirclesHypothesis hypothesis = new MonaLisaCirclesHypothesis(
                 monaLisa,
-                points,
-                numNeighborsForClassification);
+                circles);
 
         return hypothesis;
     }
@@ -75,7 +72,7 @@ public class MonaLisaNearestNeighborAlgorithm implements IterativeAlgorithm<Mona
         //synchronized (hypotheses) {
             //MonaLisaNearestNeighborHypothesis first = hypotheses.first();
 
-            MonaLisaNearestNeighborHypothesis newHypothesis = selfBreed(bestHypothesis);
+        MonaLisaCirclesHypothesis newHypothesis = selfBreed(bestHypothesis);
 
             if (newHypothesis.valueFunction().longValue() > bestHypothesis.valueFunction().longValue()) {
                 System.out.println("New best! " + newHypothesis.valueFunction().longValue() + " old:" + bestHypothesis.valueFunction().longValue());
@@ -90,45 +87,22 @@ public class MonaLisaNearestNeighborAlgorithm implements IterativeAlgorithm<Mona
         //}
     }
 
-    private MonaLisaNearestNeighborHypothesis selfBreed(MonaLisaNearestNeighborHypothesis hypothesis) {
-        List<PointWithColor> points = new ArrayList<PointWithColor>();
-
-        PointWithColor pointToMutate = hypothesis.getPoints().get(random.nextInt(hypothesis.getPoints().size()));
-        points = hypothesis.getPoints();
-        points.remove(pointToMutate);
-        points.add(randomizePoint(pointToMutate, mutationPointSpaceVariance, mutationPointColorVariance));
-
-        MonaLisaNearestNeighborHypothesis child = new MonaLisaNearestNeighborHypothesis(
-                hypothesis.getMonaLisa(),
-                points,
-                numNeighborsForClassification);
-
-        return child;
+    @Override
+    public MonaLisaCirclesHypothesis getBestHypothesis() {
+        return bestHypothesis;
     }
 
-    private MonaLisaNearestNeighborHypothesis oldSelfBreed(MonaLisaNearestNeighborHypothesis hypothesis) {
-        List<PointWithColor> points = new ArrayList<PointWithColor>();
-        for (PointWithColor p : hypothesis.getPoints()) {
+    private MonaLisaCirclesHypothesis selfBreed(MonaLisaCirclesHypothesis hypothesis) {
+        List<CircleWithColor> points = new ArrayList<CircleWithColor>();
 
-            PointWithColor newPoint;
-            if (random.nextDouble() > chanceToMutatePoint) {
+        CircleWithColor pointToMutate = hypothesis.getCircles().get(random.nextInt(hypothesis.getCircles().size()));
+        points = hypothesis.getCircles();
+        points.remove(pointToMutate);
+        points.add(randomizeCircle(pointToMutate, mutationPointSpaceVariance, mutationPointColorVariance));
 
-                newPoint = randomizePoint(p, mutationPointSpaceVariance, mutationPointColorVariance);
-                while (isOutsideOfBounds(newPoint, hypothesis.getMonaLisa())) {
-                    newPoint = randomizePoint(p, mutationPointSpaceVariance, mutationPointColorVariance);
-                }
-            } else {
-               newPoint = p;
-            }
-
-            points.add(newPoint);
-        }
-
-        MonaLisaNearestNeighborHypothesis child = new MonaLisaNearestNeighborHypothesis(
+        MonaLisaCirclesHypothesis child = new MonaLisaCirclesHypothesis(
                 hypothesis.getMonaLisa(),
-                points,
-                numNeighborsForClassification);
-
+                points);
 
         return child;
     }
@@ -140,9 +114,10 @@ public class MonaLisaNearestNeighborAlgorithm implements IterativeAlgorithm<Mona
                 newPoint.yInt() >= monaLisa.getHeight();
     }
 
-    private PointWithColor randomizePoint(PointWithColor p, double spaceVariance, int colorVariance) {
+    private CircleWithColor randomizeCircle(CircleWithColor p, double spaceVariance, int colorVariance) {
         double x;
         double y;
+        double radius;
         Color c;
 
         if (random.nextDouble() < chanceToMutatePoint) {
@@ -153,13 +128,19 @@ public class MonaLisaNearestNeighborAlgorithm implements IterativeAlgorithm<Mona
             y = p.y;
         }
 
+        radius = randomizeRadius(p.radius, radiusVariance);
+
         //if (random.nextDouble() < chanceToMutatePoint) {
             c = randomizeColor(p.color, colorVariance);
         //} else {
         //    c = p.color;
         //}
 
-        return new PointWithColor(x, y, c);
+        return new CircleWithColor(x, y, c, radius);
+    }
+
+    private double randomizeRadius(final double radius, final double radiusVariance) {
+        return radius + (random.nextDouble() - 0.5) * radiusVariance;
     }
 
     private static Color randomizeColor(Color color, int colorVariance) {
@@ -167,14 +148,12 @@ public class MonaLisaNearestNeighborAlgorithm implements IterativeAlgorithm<Mona
             return new Color(
                     color.getRed() + random.nextInt(colorVariance) - colorVariance / 2,
                     color.getGreen() + random.nextInt(colorVariance) - colorVariance / 2,
-                    color.getBlue() + random.nextInt(colorVariance) - colorVariance / 2);
+                    color.getBlue() + random.nextInt(colorVariance) - colorVariance / 2,
+                    color.getAlpha() + random.nextInt(colorVariance) - colorVariance / 2);
 
         } catch (Exception e) {
             return randomizeColor(color, colorVariance);
         }
     }
 
-    public MonaLisaNearestNeighborHypothesis getBestHypothesis() {
-        return bestHypothesis;
-    }
 }

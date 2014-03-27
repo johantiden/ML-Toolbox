@@ -8,13 +8,6 @@
     <version>1.0-SNAPSHOT</version>
     <packaging>pom</packaging>
 
-    <parent>
-        <groupId>se.jtiden.base</groupId>
-        <artifactId>base</artifactId>
-        <version>1.0-SNAPSHOT</version>
-        <relativePath>../../base/trunk</relativePath>
-    </parent>
-
     <name>build-all</name>
 
     <properties>

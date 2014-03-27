@@ -1,25 +1,26 @@
-package se.jtiden.ml.core.impl;
+package se.jtiden.ml.core.impl.nearestneighbor;
 
 import se.jtiden.ml.core.api.AlgorithmStepPainter;
 import se.jtiden.ml.core.api.Point;
 import se.jtiden.ml.core.api.PointWithColor;
+import se.jtiden.ml.core.impl.AbstractAlgorithmPainter;
 
 import java.awt.*;
 import java.util.*;
 import java.util.List;
 
 
-public class MonaLisaHypothesisPainter extends AbstractAlgorithmPainter {
+public class MonaLisaNearestNeighborHypothesisPainter extends AbstractAlgorithmPainter {
 
     private final MonaLisaNearestNeighborHypothesis hypothesis;
     private final int alpha;
     private final Map<Point, Color> colorCache = new TreeMap<Point, Color>();
     private int fakePixelSize;
 
-    public MonaLisaHypothesisPainter(MonaLisaNearestNeighborHypothesis hypothesis,
-                                     AlgorithmStepPainter innerPainter,
-                                     int alpha,
-                                     int fakePixelSize) {
+    public MonaLisaNearestNeighborHypothesisPainter(MonaLisaNearestNeighborHypothesis hypothesis,
+                                                    AlgorithmStepPainter innerPainter,
+                                                    int alpha,
+                                                    int fakePixelSize) {
         super(innerPainter);
         this.hypothesis = hypothesis;
         this.alpha = alpha;
@@ -51,27 +52,14 @@ public class MonaLisaHypothesisPainter extends AbstractAlgorithmPainter {
 
         for (int y = 0; y < hypothesis.getMonaLisa().getHeight(); y += fakePixelSize) {
             for (int x = 0; x < hypothesis.getMonaLisa().getWidth(); x += fakePixelSize) {
-                paintPixel(g, colorAt(x, y), x, y, fakePixelSize);
+                paintPixel(g, colorAt(x, y), x, y);
             }
         }
     }
 
-    private void paintPixel(Graphics g, Color color, int x, int y, int fakePixelSize) {
+    private void paintPixel(Graphics g, Color color, int x, int y) {
         g.setColor(color);
         g.fillRect(x, y, fakePixelSize, fakePixelSize);
-    }
-
-    private Color getMonaLisaColor(Point p) {
-        if (!colorCache.containsKey(p)) {
-            colorCache.put(p, hypothesis.getMonaLisa().getColorAt(p));
-        }
-
-        return colorCache.get(p);
-    }
-
-    private List<PointWithColor> findNearestNeighbors(final int x, final int y, int numNeighbors) {
-        return realNearestNeighbors(x, y, numNeighbors);
-        //return onlyOneNeighbor(x,y);
     }
 
     private PointWithColor onlyOneNeighbor(int x, int y) {

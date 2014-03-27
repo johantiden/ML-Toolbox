@@ -1,23 +1,23 @@
 package se.jtiden.ml.core.impl;
 
 import se.jtiden.ml.core.api.AlgorithmStepPainter;
+import se.jtiden.ml.core.api.HypothesisPainterFactory;
+import se.jtiden.ml.core.api.IterativeAlgorithm;
 
 import java.awt.*;
 
 public class MonaLisaAlgorithmPainter extends AbstractAlgorithmPainter {
-    private MonaLisaNearestNeighborAlgorithm algorithm;
-    private int alpha;
-    private int fakePixelSize;
+    private IterativeAlgorithm algorithm;
+    private HypothesisPainterFactory hypothesisPainterFactory;
 
 
     public MonaLisaAlgorithmPainter(
-            MonaLisaNearestNeighborAlgorithm algorithm,
-            int alpha,
-            AlgorithmStepPainter innerPainter, int fakePixelSize) {
+            IterativeAlgorithm algorithm,
+            AlgorithmStepPainter innerPainter,
+            final HypothesisPainterFactory hypothesisPainterFactory) {
         super(innerPainter);
         this.algorithm = algorithm;
-        this.alpha = alpha;
-        this.fakePixelSize = fakePixelSize;
+        this.hypothesisPainterFactory = hypothesisPainterFactory;
     }
 
     @Override
@@ -26,11 +26,7 @@ public class MonaLisaAlgorithmPainter extends AbstractAlgorithmPainter {
             innerPainter.paint(g);
         }
 
-        new MonaLisaHypothesisPainter(
-                algorithm.getBestHypothesis(),
-                null,
-                alpha,
-                fakePixelSize).paint(g);
+        hypothesisPainterFactory.create(algorithm.getBestHypothesis()).paint(g);
     }
 
     @Override

@@ -1,7 +1,4 @@
-package se.jtiden.ml.core.impl;
-
-import se.jtiden.ml.core.api.Hypothesis;
-import se.jtiden.ml.core.api.PointWithColor;
+package se.jtiden.ml.core.impl.circles;
 
 import java.awt.*;
 import java.math.BigInteger;
@@ -9,20 +6,21 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-public class MonaLisaNearestNeighborHypothesis implements Hypothesis {
+import se.jtiden.ml.core.api.CircleWithColor;
+import se.jtiden.ml.core.api.Hypothesis;
+import se.jtiden.ml.core.impl.MonaLisa;
 
-    private final List<PointWithColor> points;
+public class MonaLisaCirclesHypothesis implements Hypothesis {
+
+    private final List<CircleWithColor> points;
     private final MonaLisa monaLisa;
-    private int numNeighborsForClassification;
     private BigInteger lossCached;
 
-    public MonaLisaNearestNeighborHypothesis(
+    public MonaLisaCirclesHypothesis(
             MonaLisa monaLisa,
-            List<PointWithColor> points,
-            int numNeighborsForClassification) {
+            List<CircleWithColor> points) {
         this.monaLisa = monaLisa;
         this.points = points;
-        this.numNeighborsForClassification = numNeighborsForClassification;
     }
 
     @Override
@@ -46,17 +44,22 @@ public class MonaLisaNearestNeighborHypothesis implements Hypothesis {
     private static final Random random = new Random();
 
     private void calculateInnerLoss() {
-        MonaLisaHypothesisPainter painter = new MonaLisaHypothesisPainter(this, null, 255, 0);
+        MonaLisaCirclesHypothesisPainter painter = new MonaLisaCirclesHypothesisPainter(this, null, 255, 0, monaLisa.getWidth(), monaLisa.getHeight());
 
         BigInteger loss = BigInteger.ZERO;
         for (int y = 0; y < monaLisa.getHeight(); y += 2) {
             for (int x = 0; x < monaLisa.getWidth(); x += 2) {
-        //for(int i = 0; i < 500; ++i) {
-                //int x = random.nextInt(monaLisa.getWidth());
-                //int y = random.nextInt(monaLisa.getHeight());
-                loss = loss.subtract(colorDifference(
-                        getMonaLisa().getColorAt(x, y),
-                        painter.colorAt(x, y)));
+//        for(int i = 0; i < 500; ++i) {
+//                int x = random.nextInt(monaLisa.getWidth());
+//                int y = random.nextInt(monaLisa.getHeight());
+                Color estimate = painter.colorAt(x, y);
+                if (isBlack(estimate)) {
+                    loss = loss.subtract(BigInteger.valueOf(589824*2));
+                } else {
+                    loss = loss.subtract(colorDifferenceSquare(
+                            getMonaLisa().getColorAt(x, y),
+                            estimate));
+                }
 
             }
         }
@@ -64,8 +67,17 @@ public class MonaLisaNearestNeighborHypothesis implements Hypothesis {
         lossCached = loss;
     }
 
-    private BigInteger colorDifference(Color color1, Color color2) {
+    private boolean isBlack(final Color color) {
+        return color.getRed() == 0 &&
+                color.getGreen() == 0 &&
+                color.getBlue() == 0;
+    }
 
+    private BigInteger colorDifferenceSquare(Color color1, Color color2) {
+        return colorDifference(color1, color2).pow(2);
+    }
+
+    private BigInteger colorDifference(final Color color1, final Color color2) {
         int rDiff = Math.abs(color1.getRed() - color2.getRed());
         int gDiff = Math.abs(color1.getGreen() - color2.getGreen());
         int bDiff = Math.abs(color1.getBlue() - color2.getBlue());
@@ -74,8 +86,8 @@ public class MonaLisaNearestNeighborHypothesis implements Hypothesis {
     }
 
 
-    public List<PointWithColor> getPoints() {
-        return new ArrayList<PointWithColor>(points);
+    public List<CircleWithColor> getCircles() {
+        return new ArrayList<CircleWithColor>(points);
     }
 
     @Override
@@ -89,9 +101,5 @@ public class MonaLisaNearestNeighborHypothesis implements Hypothesis {
 
     public MonaLisa getMonaLisa() {
         return monaLisa;
-    }
-
-    public int getNumNeighborsForClassification() {
-        return numNeighborsForClassification;
     }
 }

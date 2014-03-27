@@ -2,6 +2,8 @@ package se.jtiden.ml.core.impl;
 
 
 import se.jtiden.ml.core.api.Point;
+import se.jtiden.ml.core.impl.nearestneighbor.MonaLisaNearestNeighborAlgorithm;
+import se.jtiden.ml.core.impl.nearestneighbor.MonaLisaNearestNeighborHypothesis;
 
 import java.util.List;
 
