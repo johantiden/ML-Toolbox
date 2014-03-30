@@ -1,33 +1,28 @@
 package se.jtiden.ml.core.impl.nearestneighbor;
 
 import se.jtiden.ml.core.api.Hypothesis;
+import se.jtiden.ml.core.api.JTColor;
 import se.jtiden.ml.core.api.PointWithColor;
 import se.jtiden.ml.core.impl.MonaLisa;
 
-import java.awt.*;
-import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 public class MonaLisaNearestNeighborHypothesis implements Hypothesis {
 
     private final List<PointWithColor> points;
     private final MonaLisa monaLisa;
-    private int numNeighborsForClassification;
-    private BigInteger lossCached;
+    private Double lossCached;
 
     public MonaLisaNearestNeighborHypothesis(
             MonaLisa monaLisa,
-            List<PointWithColor> points,
-            int numNeighborsForClassification) {
+            List<PointWithColor> points) {
         this.monaLisa = monaLisa;
         this.points = points;
-        this.numNeighborsForClassification = numNeighborsForClassification;
     }
 
     @Override
-    public BigInteger valueFunction() {
+    public double valueFunction() {
         return innerValueFunction();
 
         //if (parent == null) {
@@ -36,7 +31,7 @@ public class MonaLisaNearestNeighborHypothesis implements Hypothesis {
         //return innerValueFunction() - parent.valueFunction();
     }
 
-    public BigInteger innerValueFunction() {
+    public double innerValueFunction() {
         if (lossCached == null) {
             calculateInnerLoss();
         }
@@ -44,37 +39,26 @@ public class MonaLisaNearestNeighborHypothesis implements Hypothesis {
         return lossCached;
     }
 
-    private static final Random random = new Random();
 
     private void calculateInnerLoss() {
-        MonaLisaNearestNeighborHypothesisPainter painter = new MonaLisaNearestNeighborHypothesisPainter(this, null, 255, 0);
+        MonaLisaNearestNeighborHypothesisPainter painter = new MonaLisaNearestNeighborHypothesisPainter(this);
 
-        BigInteger loss = BigInteger.ZERO;
-//        for (int y = 0; y < monaLisa.getHeight(); y += 2) {
-//            for (int x = 0; x < monaLisa.getWidth(); x += 2) {
-        for(int i = 0; i < 500; ++i) {
-                int x = random.nextInt(monaLisa.getWidth());
-                int y = random.nextInt(monaLisa.getHeight());
-                loss = loss.subtract(colorDifferenceSquare(
+        double loss = 0;
+        for (int y = 0; y < monaLisa.getHeight(); y += 2) {
+            for (int x = 0; x < monaLisa.getWidth(); x += 2) {
+                loss -= colorDifferenceSquare(
                         getMonaLisa().getColorAt(x, y),
-                        painter.colorAt(x, y)));
+                        painter.getColorAt(x, y));
 
-//            }
+            }
         }
 
         lossCached = loss;
     }
 
-    private BigInteger colorDifferenceSquare(Color color1, Color color2) {
-        return colorDifference(color1, color2).pow(2);
-    }
-
-    private BigInteger colorDifference(final Color color1, final Color color2) {
-        int rDiff = Math.abs(color1.getRed() - color2.getRed());
-        int gDiff = Math.abs(color1.getGreen() - color2.getGreen());
-        int bDiff = Math.abs(color1.getBlue() - color2.getBlue());
-
-        return BigInteger.valueOf(rDiff + gDiff + bDiff);
+    private double colorDifferenceSquare(JTColor color1, JTColor color2) {
+        double diff = JTColor.difference(color1, color2);
+        return diff * diff;
     }
 
 
@@ -88,14 +72,10 @@ public class MonaLisaNearestNeighborHypothesis implements Hypothesis {
             return 0;
         }
 
-        return valueFunction().compareTo(o.valueFunction());
+        return valueFunction() > o.valueFunction() ? 1 : -1;
     }
 
     public MonaLisa getMonaLisa() {
         return monaLisa;
-    }
-
-    public int getNumNeighborsForClassification() {
-        return numNeighborsForClassification;
     }
 }

@@ -1,34 +1,25 @@
 package se.jtiden.ml.core.impl.nearestneighbor;
 
 import se.jtiden.ml.core.api.AlgorithmStepPainter;
-import se.jtiden.ml.core.api.Point;
+import se.jtiden.ml.core.api.JTColor;
 import se.jtiden.ml.core.api.PointWithColor;
-import se.jtiden.ml.core.impl.AbstractAlgorithmPainter;
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.awt.*;
 import java.util.*;
 import java.util.List;
 
 
-public class MonaLisaNearestNeighborHypothesisPainter extends AbstractAlgorithmPainter {
+public class MonaLisaNearestNeighborHypothesisPainter implements AlgorithmStepPainter {
 
     private final MonaLisaNearestNeighborHypothesis hypothesis;
-    private final int alpha;
-    private final Map<Point, Color> colorCache = new TreeMap<Point, Color>();
-    private int fakePixelSize;
 
-    public MonaLisaNearestNeighborHypothesisPainter(MonaLisaNearestNeighborHypothesis hypothesis,
-                                                    AlgorithmStepPainter innerPainter,
-                                                    int alpha,
-                                                    int fakePixelSize) {
-        super(innerPainter);
+    public MonaLisaNearestNeighborHypothesisPainter(MonaLisaNearestNeighborHypothesis hypothesis) {
         this.hypothesis = hypothesis;
-        this.alpha = alpha;
-        this.fakePixelSize = fakePixelSize;
     }
 
 
-    public Color colorAt(final int x, final int y) {
+    public JTColor getColorAt(final int x, final int y) {
 
         //int numNeighbors = hypothesis.getNumNeighborsForClassification();
 
@@ -44,23 +35,21 @@ public class MonaLisaNearestNeighborHypothesisPainter extends AbstractAlgorithmP
     }
 
     @Override
-    public void paint(Graphics g) {
+    public void paint() {
 
-        if (innerPainter != null) {
-            innerPainter.paint(g);
-        }
-
-        for (int y = 0; y < hypothesis.getMonaLisa().getHeight(); y += fakePixelSize) {
-            for (int x = 0; x < hypothesis.getMonaLisa().getWidth(); x += fakePixelSize) {
-                paintPixel(g, colorAt(x, y), x, y);
+        for (int y = 0; y < hypothesis.getMonaLisa().getHeight(); ++y) {
+            for (int x = 0; x < hypothesis.getMonaLisa().getWidth(); ++x) {
+                throw new NotImplementedException();
             }
         }
     }
 
-    private void paintPixel(Graphics g, Color color, int x, int y) {
-        g.setColor(color);
-        g.fillRect(x, y, fakePixelSize, fakePixelSize);
+    @Override
+    public Image getImage() {
+
+        throw new NotImplementedException();
     }
+
 
     private PointWithColor onlyOneNeighbor(int x, int y) {
         PointWithColor bestPoint = hypothesis.getPoints().get(0);
@@ -98,11 +87,12 @@ public class MonaLisaNearestNeighborHypothesisPainter extends AbstractAlgorithmP
 
     @Override
     public int getWidth() {
-        return innerPainter != null ? innerPainter.getWidth() : 0;
+        return hypothesis.getMonaLisa().getWidth();
     }
 
     @Override
     public int getHeight() {
-        return innerPainter != null ? innerPainter.getHeight() : 0;
+        return hypothesis.getMonaLisa().getHeight();
     }
+
 }

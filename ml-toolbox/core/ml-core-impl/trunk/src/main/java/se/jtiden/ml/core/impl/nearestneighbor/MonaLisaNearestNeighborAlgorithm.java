@@ -1,35 +1,32 @@
 package se.jtiden.ml.core.impl.nearestneighbor;
 
-import se.jtiden.ml.core.api.IterativeAlgorithm;
+import se.jtiden.ml.core.api.*;
 import se.jtiden.ml.core.api.Point;
-import se.jtiden.ml.core.api.PointWithColor;
 import se.jtiden.ml.core.impl.MonaLisa;
 
-import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
 
-public class MonaLisaNearestNeighborAlgorithm implements IterativeAlgorithm<MonaLisaNearestNeighborHypothesis> {
+public class MonaLisaNearestNeighborAlgorithm implements IterativeAlgorithm<MonaLisaNearestNeighborHypothesis, JTImage> {
 
     private final double mutationPointSpaceVariance;
-    private final int numNeighborsForClassification;
     private final static Random random = new Random();
     private final double chanceToMutatePoint;
     private final int mutationPointColorVariance;
     private MonaLisaNearestNeighborHypothesis bestHypothesis;
+    private Evaluator<JTImage> evaluator;
 
     public MonaLisaNearestNeighborAlgorithm(
             MonaLisa monaLisa,
             int numPoints,
             double mutationPointVariance,
-            int numNeighborsForClassification,
-            double chanceToMutatePoint, int mutationPointColorVariance) {
+            double chanceToMutatePoint, int mutationPointColorVariance, Evaluator<JTImage> evaluator) {
         this.mutationPointColorVariance = mutationPointColorVariance;
         this.mutationPointSpaceVariance = mutationPointVariance;
-        this.numNeighborsForClassification = numNeighborsForClassification;
         this.chanceToMutatePoint = chanceToMutatePoint;
+        this.evaluator = evaluator;
         createRandomInitialHypotheses(monaLisa, numPoints);
     }
 
@@ -44,7 +41,7 @@ public class MonaLisaNearestNeighborAlgorithm implements IterativeAlgorithm<Mona
         PointWithColor middleOfImage = new PointWithColor(
                 monaLisa.getWidth() / 2d,
                 monaLisa.getHeight() / 2d,
-                new Color(128, 128, 128));
+                JTColor.GRAY);
 
         List<PointWithColor> points = new ArrayList<PointWithColor>();
         for (int i = 0; i < numPoints; ++i) {
@@ -58,8 +55,7 @@ public class MonaLisaNearestNeighborAlgorithm implements IterativeAlgorithm<Mona
 
         MonaLisaNearestNeighborHypothesis hypothesis = new MonaLisaNearestNeighborHypothesis(
                 monaLisa,
-                points,
-                numNeighborsForClassification);
+                points);
 
         return hypothesis;
     }
@@ -71,8 +67,8 @@ public class MonaLisaNearestNeighborAlgorithm implements IterativeAlgorithm<Mona
 
             MonaLisaNearestNeighborHypothesis newHypothesis = selfBreed(bestHypothesis);
 
-            if (newHypothesis.valueFunction().longValue() > bestHypothesis.valueFunction().longValue()) {
-                System.out.println("New best! " + newHypothesis.valueFunction().longValue() + " old:" + bestHypothesis.valueFunction().longValue());
+            if (newHypothesis.valueFunction() > bestHypothesis.valueFunction()) {
+                System.out.println("New best! " + newHypothesis.valueFunction() + " old:" + bestHypothesis.valueFunction());
                 bestHypothesis = newHypothesis;
                 //hypotheses.add(newHypothesis);
                 //hypotheses.remove(hypotheses.last());
@@ -89,8 +85,13 @@ public class MonaLisaNearestNeighborAlgorithm implements IterativeAlgorithm<Mona
         return bestHypothesis;
     }
 
+    @Override
+    public Evaluator<JTImage> getEvaluator() {
+        return evaluator;
+    }
+
     private MonaLisaNearestNeighborHypothesis selfBreed(MonaLisaNearestNeighborHypothesis hypothesis) {
-        List<PointWithColor> points = new ArrayList<PointWithColor>();
+        List<PointWithColor> points;
 
         PointWithColor pointToMutate = hypothesis.getPoints().get(random.nextInt(hypothesis.getPoints().size()));
         points = hypothesis.getPoints();
@@ -99,8 +100,7 @@ public class MonaLisaNearestNeighborAlgorithm implements IterativeAlgorithm<Mona
 
         MonaLisaNearestNeighborHypothesis child = new MonaLisaNearestNeighborHypothesis(
                 hypothesis.getMonaLisa(),
-                points,
-                numNeighborsForClassification);
+                points);
 
         return child;
     }
@@ -125,8 +125,7 @@ public class MonaLisaNearestNeighborAlgorithm implements IterativeAlgorithm<Mona
 
         MonaLisaNearestNeighborHypothesis child = new MonaLisaNearestNeighborHypothesis(
                 hypothesis.getMonaLisa(),
-                points,
-                numNeighborsForClassification);
+                points);
 
 
         return child;
@@ -142,7 +141,7 @@ public class MonaLisaNearestNeighborAlgorithm implements IterativeAlgorithm<Mona
     private PointWithColor randomizePoint(PointWithColor p, double spaceVariance, int colorVariance) {
         double x;
         double y;
-        Color c;
+        JTColor c;
 
         if (random.nextDouble() < chanceToMutatePoint) {
             x = p.x + (random.nextDouble() - 0.5) * spaceVariance;
@@ -161,12 +160,12 @@ public class MonaLisaNearestNeighborAlgorithm implements IterativeAlgorithm<Mona
         return new PointWithColor(x, y, c);
     }
 
-    private static Color randomizeColor(Color color, int colorVariance) {
+    private static JTColor randomizeColor(JTColor color, int colorVariance) {
         try {
-            return new Color(
-                    color.getRed() + random.nextInt(colorVariance) - colorVariance / 2,
-                    color.getGreen() + random.nextInt(colorVariance) - colorVariance / 2,
-                    color.getBlue() + random.nextInt(colorVariance) - colorVariance / 2);
+            return new JTColor(
+                    color.r + random.nextInt(colorVariance) - colorVariance / 2,
+                    color.g + random.nextInt(colorVariance) - colorVariance / 2,
+                    color.b + random.nextInt(colorVariance) - colorVariance / 2);
 
         } catch (Exception e) {
             return randomizeColor(color, colorVariance);

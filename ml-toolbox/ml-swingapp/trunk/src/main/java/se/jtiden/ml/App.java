@@ -5,18 +5,17 @@ import se.jtiden.ml.core.api.Hypothesis;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.image.BufferStrategy;
 
 public class App extends JFrame {
+    public static final int SCALE_UP = 3;
     private Context context;
 
     protected App(Context context) {
-        setSize(context.getPainter().getWidth(),
-                context.getPainter().getHeight());
+        setSize(context.getHypothesisPainterFactory().getWidth() * SCALE_UP,
+                context.getHypothesisPainterFactory().getHeight() * SCALE_UP);
 
         setVisible(true);
         this.context = context;
-        this.createBufferStrategy(2);
 
         startSimulating();
         startPainting();
@@ -31,20 +30,19 @@ public class App extends JFrame {
             public void run() {
                 while (isVisible()) {
                     try {
-                        Thread.sleep(10);
+                        Thread.sleep(3000);
                         Hypothesis currentHypothesis = context.getAlgorithm().getBestHypothesis();
+
+
                         if (currentHypothesis != this.bestHypothesis) {
                             bestHypothesis = currentHypothesis;
 
-                            BufferStrategy bf = App.this.getBufferStrategy();
-                            Graphics g = bf.getDrawGraphics();
-                            try {
-                                context.getPainter().paint(g);
-                            } finally {
-                                g.dispose();
-                            }
-                            bf.show();
-                            Toolkit.getDefaultToolkit().sync();
+                            Graphics g = getGraphics();
+                            Image image = context.getHypothesisPainterFactory().create(currentHypothesis).getImage();
+                            g.drawImage(image,
+                                    0, 0,
+                                    image.getWidth(null) * SCALE_UP, image.getHeight(null) * SCALE_UP,
+                                    null);
                         }
                     } catch (Exception e) {
                         e.printStackTrace();
@@ -62,7 +60,7 @@ public class App extends JFrame {
             public void run() {
                 while (isVisible()) {
                     try {
-                        //Thread.sleep(3);
+                        Thread.sleep(1);
                         //System.out.println("Step " + (step++));
                         context.getAlgorithm().iterate();
                     } catch (Exception e) {

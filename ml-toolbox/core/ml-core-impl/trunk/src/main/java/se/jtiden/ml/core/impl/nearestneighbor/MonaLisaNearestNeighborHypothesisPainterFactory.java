@@ -4,17 +4,26 @@ import se.jtiden.ml.core.api.AlgorithmStepPainter;
 import se.jtiden.ml.core.api.HypothesisPainterFactory;
 
 public class MonaLisaNearestNeighborHypothesisPainterFactory implements HypothesisPainterFactory<MonaLisaNearestNeighborHypothesis> {
-    private final int alpha;
-    private final int fakePixelSize;
+    private int width;
+    private int height;
 
-    public MonaLisaNearestNeighborHypothesisPainterFactory(final int alpha, final int fakePixelSize) {
-
-        this.alpha = alpha;
-        this.fakePixelSize = fakePixelSize;
+    public MonaLisaNearestNeighborHypothesisPainterFactory(int width, int height) {
+        this.width = width;
+        this.height = height;
     }
 
     @Override
     public AlgorithmStepPainter create(final MonaLisaNearestNeighborHypothesis hypothesis) {
-        return new MonaLisaNearestNeighborHypothesisPainter(hypothesis, null, alpha, fakePixelSize);
+        return new MonaLisaNearestNeighborHypothesisPainter(hypothesis);
+    }
+
+    @Override
+    public int getWidth() {
+        return this.width;
+    }
+
+    @Override
+    public int getHeight() {
+        return this.height;
     }
 }

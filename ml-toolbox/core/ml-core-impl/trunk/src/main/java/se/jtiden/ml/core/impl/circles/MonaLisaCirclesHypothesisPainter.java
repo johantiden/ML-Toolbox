@@ -1,92 +1,53 @@
 package se.jtiden.ml.core.impl.circles;
 
-import java.awt.*;
-import java.awt.image.BufferedImage;
-import java.util.*;
-
 import se.jtiden.ml.core.api.AlgorithmStepPainter;
 import se.jtiden.ml.core.api.CircleWithColor;
-import se.jtiden.ml.core.api.Point;
-import se.jtiden.ml.core.impl.AbstractAlgorithmPainter;
+import se.jtiden.ml.core.api.JTGraphics;
+import se.jtiden.ml.core.impl.FastJTImage;
 
-public class MonaLisaCirclesHypothesisPainter extends AbstractAlgorithmPainter {
+import java.awt.*;
+
+public class MonaLisaCirclesHypothesisPainter implements AlgorithmStepPainter {
 
     private final MonaLisaCirclesHypothesis hypothesis;
-    private final int alpha;
-    private final Map<Point, Color> colorCache = new TreeMap<Point, Color>();
-    private int fakePixelSize;
-    private BufferedImage cachedImage;
     private int width;
     private int height;
 
     public MonaLisaCirclesHypothesisPainter(MonaLisaCirclesHypothesis hypothesis,
-                                            AlgorithmStepPainter innerPainter,
-                                            int alpha,
-                                            int fakePixelSize, final int width, final int height) {
-        super(innerPainter);
+                                            final int width, final int height) {
         this.hypothesis = hypothesis;
-        this.alpha = alpha;
-        this.fakePixelSize = fakePixelSize;
         this.width = width;
         this.height = height;
     }
 
 
-    public Color colorAt(final int x, final int y) {
-        if (cachedImage == null) {
-            paintCachedImage();
-        }
-
-        int argb = cachedImage.getRGB(x, y);
-
-        return new Color(
-                (argb >> 16) & 0xff, //red
-                (argb >> 8) & 0xff, //green
-                (argb) & 0xff  //blue
-        );
-    }
-
-
-    private void paintCachedImage() {
-        cachedImage = new BufferedImage(getWidth(), getHeight(), BufferedImage.TYPE_INT_RGB);
-
-        Graphics g = cachedImage.getGraphics();
+    private void paintCircles(JTGraphics graphics) {
         for (CircleWithColor circle : hypothesis.getCircles()) {
-            paintCircle(g, circle);
+            graphics.draw(circle);
         }
-    }
-
-    private void paintCircle(final Graphics g, final CircleWithColor circle) {
-        g.setColor(circle.color);
-        g.fillOval(circle.left(), circle.top(), circle.diameter(), circle.diameter());
     }
 
     @Override
-    public void paint(Graphics g) {
-
-        if (innerPainter != null) {
-            innerPainter.paint(g);
-        }
-
-        for (int y = 0; y < hypothesis.getMonaLisa().getHeight(); y += fakePixelSize) {
-            for (int x = 0; x < hypothesis.getMonaLisa().getWidth(); x += fakePixelSize) {
-                paintPixel(g, colorAt(x, y), x, y);
-            }
-        }
+    public void paint() {
+        hypothesis.setCachedImage(new FastJTImage(getWidth(), getHeight()));
+        JTGraphics graphics = hypothesis.getCachedImage().getGraphics();
+        paintCircles(graphics);
     }
 
-    private void paintPixel(Graphics g, Color color, int x, int y) {
-        g.setColor(color);
-        g.fillRect(x, y, fakePixelSize, fakePixelSize);
+    @Override
+    public Image getImage() {
+        return hypothesis.getCachedImage().asImage();
     }
+
 
     @Override
     public int getWidth() {
-        return innerPainter != null ? Math.max(innerPainter.getWidth(), width) : width;
+        return width;
     }
+
 
     @Override
     public int getHeight() {
-        return innerPainter != null ? Math.max(innerPainter.getHeight(), height) : height;
+        return height;
     }
 }

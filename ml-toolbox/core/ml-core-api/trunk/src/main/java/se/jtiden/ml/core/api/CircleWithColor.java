@@ -1,11 +1,9 @@
 package se.jtiden.ml.core.api;
 
-import java.awt.*;
-
 public class CircleWithColor extends PointWithColor{
     public double radius;
 
-    public CircleWithColor(final double x, final double y, final Color color, final double radius) {
+    public CircleWithColor(final double x, final double y, final JTColor color, final double radius) {
         super(x, y, color);
         this.radius = radius;
     }
