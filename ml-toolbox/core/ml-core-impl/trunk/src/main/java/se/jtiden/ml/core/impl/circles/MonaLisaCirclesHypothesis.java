@@ -9,27 +9,22 @@ import se.jtiden.ml.core.impl.MonaLisa;
 public class MonaLisaCirclesHypothesis implements Hypothesis {
 
     private final List<CircleWithColor> circles;
+    private final Evaluator<JTImage> imageEvaluator;
     private final MonaLisa monaLisa;
     private Double lossCached;
     private JTImage cachedImage;
-    private MonaLisaCirclesAlgorithm algorithm;
 
     public MonaLisaCirclesHypothesis(
             MonaLisa monaLisa,
-            List<CircleWithColor> points, MonaLisaCirclesAlgorithm algorithm) {
+            List<CircleWithColor> points, Evaluator<JTImage> imageEvaluator) {
         this.monaLisa = monaLisa;
         this.circles = points;
-        this.algorithm = algorithm;
+        this.imageEvaluator = imageEvaluator;
     }
 
     @Override
     public double valueFunction() {
         return innerValueFunction();
-
-        //if (parent == null) {
-        //    return innerValueFunction();
-        //}
-        //return innerValueFunction() - parent.valueFunction();
     }
 
     public double innerValueFunction() {
@@ -41,8 +36,8 @@ public class MonaLisaCirclesHypothesis implements Hypothesis {
     }
 
     private void calculateInnerLoss() {
-        Evaluator<JTImage> imageEvaluator = algorithm.getEvaluator();
         lossCached = imageEvaluator.getScore(getCachedImage());
+        lossCached -= circles.size();
     }
 
 
@@ -82,5 +77,13 @@ public class MonaLisaCirclesHypothesis implements Hypothesis {
 
     public void setCachedImage(JTImage cachedImage) {
         this.cachedImage = cachedImage;
+    }
+
+    public List<CircleWithColor> copyPoints() {
+        return new ArrayList<CircleWithColor>(circles);
+    }
+
+    public MonaLisaCirclesHypothesis copy() {
+        return new MonaLisaCirclesHypothesis(monaLisa, copyPoints(), imageEvaluator);
     }
 }

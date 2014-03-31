@@ -1,6 +1,6 @@
 package se.jtiden.ml.core.impl.circles;
 
-import se.jtiden.ml.core.api.DifferenceSquaredEvaluator;
+import se.jtiden.ml.core.impl.DifferenceSquaredEvaluator;
 import se.jtiden.ml.core.api.HypothesisPainterFactory;
 import se.jtiden.ml.core.api.IterativeAlgorithm;
 import se.jtiden.ml.core.impl.ContextImpl;
@@ -13,12 +13,15 @@ public class MonaLisaCirclesContextFactory {
     public static final int MIN_NUM_POINTS = 1;
     public static final int MAX_NUM_POINTS = 2000;
     public static final double CHANCE_TO_MUTATE_POINT = .5;
+    public static final double CHANCE_TO_CREATE_POINT = 0.1;
+    public static final double CHANCE_TO_DELETE_POINT = 0.01;
     public static final int MUTATION_POINT_COLOR_VARIANCE = 200;
     public static final int MUTATION_RADIUS_VARIANCE = 200;
-    public static final double CHANCE_TO_CREATE_POINT = 0.1;
+    public static final int FAKE_PIXEL_SIZE = 5;
+
 
     public ContextImpl getContext() {
-        MonaLisa monaLisa = new MonaLisa();
+        MonaLisa monaLisa = new MonaLisa(FAKE_PIXEL_SIZE);
         DifferenceSquaredEvaluator evaluator = new DifferenceSquaredEvaluator(monaLisa.getImage());
         IterativeAlgorithm algorithm = new MonaLisaCirclesAlgorithm(
                 monaLisa,
@@ -27,6 +30,7 @@ public class MonaLisaCirclesContextFactory {
                 MUTATION_POINT_VARIANCE,
                 CHANCE_TO_MUTATE_POINT,
                 CHANCE_TO_CREATE_POINT,
+                CHANCE_TO_DELETE_POINT,
                 MUTATION_POINT_COLOR_VARIANCE,
                 MUTATION_RADIUS_VARIANCE,
                 evaluator);
@@ -41,6 +45,7 @@ public class MonaLisaCirclesContextFactory {
                         hypothesisPainterFactory)
 //                )
                 ,
-                hypothesisPainterFactory);
+                hypothesisPainterFactory,
+                FAKE_PIXEL_SIZE);
     }
 }

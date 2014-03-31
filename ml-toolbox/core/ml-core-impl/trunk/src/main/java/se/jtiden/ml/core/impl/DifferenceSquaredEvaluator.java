@@ -1,4 +1,8 @@
-package se.jtiden.ml.core.api;
+package se.jtiden.ml.core.impl;
+
+import se.jtiden.ml.core.api.Evaluator;
+import se.jtiden.ml.core.api.JTColor;
+import se.jtiden.ml.core.api.JTImage;
 
 public class DifferenceSquaredEvaluator implements Evaluator<JTImage> {
 

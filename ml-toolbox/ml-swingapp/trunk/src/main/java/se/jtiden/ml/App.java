@@ -7,12 +7,11 @@ import javax.swing.*;
 import java.awt.*;
 
 public class App extends JFrame {
-    public static final int SCALE_UP = 3;
     private Context context;
 
     protected App(Context context) {
-        setSize(context.getHypothesisPainterFactory().getWidth() * SCALE_UP,
-                context.getHypothesisPainterFactory().getHeight() * SCALE_UP);
+        setSize(context.getHypothesisPainterFactory().getWidth() * context.getScale(),
+                context.getHypothesisPainterFactory().getHeight() * context.getScale());
 
         setVisible(true);
         this.context = context;
@@ -41,7 +40,7 @@ public class App extends JFrame {
                             Image image = context.getHypothesisPainterFactory().create(currentHypothesis).getImage();
                             g.drawImage(image,
                                     0, 0,
-                                    image.getWidth(null) * SCALE_UP, image.getHeight(null) * SCALE_UP,
+                                    image.getWidth(null) * context.getScale(), image.getHeight(null) * context.getScale(),
                                     null);
                         }
                     } catch (Exception e) {
@@ -60,7 +59,7 @@ public class App extends JFrame {
             public void run() {
                 while (isVisible()) {
                     try {
-                        Thread.sleep(1);
+                        Thread.yield();
                         //System.out.println("Step " + (step++));
                         context.getAlgorithm().iterate();
                     } catch (Exception e) {

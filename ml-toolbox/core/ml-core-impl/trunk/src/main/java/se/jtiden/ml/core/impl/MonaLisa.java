@@ -9,16 +9,19 @@ import java.io.IOException;
 import java.net.URL;
 
 public class MonaLisa {
-    private static final int DOWN_SCALE = 3;
+
+    private int downScale;
     private JTImage monaLisa;
 
-    public MonaLisa() {
+    public MonaLisa(final int downScale) {
+        this.downScale = downScale;
         //monaLisa = getImage("monalisa3.jpg");
+//        monaLisa = getImage("monalisa.jpg");
         monaLisa = getImage("japan.jpg");
     }
 
-    public static JTImage getImage(final String pathAndFileName) {
-        return FastJTImage.fromImage(getRealImage(pathAndFileName), DOWN_SCALE);
+    public JTImage getImage(final String pathAndFileName) {
+        return FastJTImage.fromImage(getRealImage(pathAndFileName), downScale);
     }
 
     private static BufferedImage getRealImage(final String pathAndFileName) {
