@@ -13,4 +13,6 @@ public interface JTImage {
     void setPixel(int x, int y, JTColor pixel);
 
     JTGraphics getGraphics();
+
+    JTImage copy();
 }

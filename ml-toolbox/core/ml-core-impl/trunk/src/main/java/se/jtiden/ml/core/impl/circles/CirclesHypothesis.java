@@ -6,7 +6,7 @@ import java.util.List;
 import se.jtiden.ml.core.api.*;
 import se.jtiden.ml.core.impl.MonaLisa;
 
-public class MonaLisaCirclesHypothesis implements Hypothesis {
+public class CirclesHypothesis implements Hypothesis {
 
     private final List<CircleWithColor> circles;
     private final Evaluator<JTImage> imageEvaluator;
@@ -14,7 +14,7 @@ public class MonaLisaCirclesHypothesis implements Hypothesis {
     private Double lossCached;
     private JTImage cachedImage;
 
-    public MonaLisaCirclesHypothesis(
+    public CirclesHypothesis(
             MonaLisa monaLisa,
             List<CircleWithColor> points, Evaluator<JTImage> imageEvaluator) {
         this.monaLisa = monaLisa;
@@ -66,7 +66,7 @@ public class MonaLisaCirclesHypothesis implements Hypothesis {
         if (cachedImage == null) {
             synchronized (this) {
                 if (cachedImage == null) {
-                    MonaLisaCirclesHypothesisPainter painter = new MonaLisaCirclesHypothesisPainter(this, monaLisa.getWidth(), monaLisa.getHeight());
+                    CirclesHypothesisPainter painter = new CirclesHypothesisPainter(this, monaLisa.getWidth(), monaLisa.getHeight());
                     painter.paint();
                 }
             }
@@ -83,7 +83,7 @@ public class MonaLisaCirclesHypothesis implements Hypothesis {
         return new ArrayList<CircleWithColor>(circles);
     }
 
-    public MonaLisaCirclesHypothesis copy() {
-        return new MonaLisaCirclesHypothesis(monaLisa, copyPoints(), imageEvaluator);
+    public CirclesHypothesis copy() {
+        return new CirclesHypothesis(monaLisa, copyPoints(), imageEvaluator);
     }
 }

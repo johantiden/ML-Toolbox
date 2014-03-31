@@ -15,8 +15,8 @@ public class DifferenceSquaredEvaluator implements Evaluator<JTImage> {
     @Override
     public double getScore(JTImage image) {
         double loss = 0;
-        for (int y = 0; y < targetImage.getHeight(); y += 10) {
-            for (int x = 0; x < targetImage.getWidth(); x += 10) {
+        for (int y = 0; y < targetImage.getHeight(); ++y) {
+            for (int x = 0; x < targetImage.getWidth(); ++x) {
 //        for(int i = 0; i < 500; ++i) {
 //                int x = random.nextInt(monaLisa.getWidth());
 //                int y = random.nextInt(monaLisa.getHeight());
@@ -32,7 +32,7 @@ public class DifferenceSquaredEvaluator implements Evaluator<JTImage> {
 
     private double colorDifferenceSquare(JTColor color1, JTColor color2) {
         int diff = JTColor.difference(color1, color2);
-        return diff * diff;
+        return diff * diff * diff;
     }
 
 }

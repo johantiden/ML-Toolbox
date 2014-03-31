@@ -10,14 +10,14 @@ import java.net.URL;
 
 public class MonaLisa {
 
-    private int downScale;
+    private double downScale;
     private JTImage monaLisa;
 
-    public MonaLisa(final int downScale) {
+    public MonaLisa(final double downScale) {
         this.downScale = downScale;
-        //monaLisa = getImage("monalisa3.jpg");
+        monaLisa = getImage("monalisa3.jpg");
 //        monaLisa = getImage("monalisa.jpg");
-        monaLisa = getImage("japan.jpg");
+        //monaLisa = getImage("japan.jpg");
     }
 
     public JTImage getImage(final String pathAndFileName) {

@@ -7,7 +7,7 @@ import se.jtiden.ml.core.impl.ContextImpl;
 import se.jtiden.ml.core.impl.MonaLisa;
 import se.jtiden.ml.core.impl.MonaLisaAlgorithmPainter;
 
-public class MonaLisaCirclesContextFactory {
+public class CirclesContextFactory {
 
     public static final int MUTATION_POINT_VARIANCE = 100;
     public static final int MIN_NUM_POINTS = 1;
@@ -23,7 +23,7 @@ public class MonaLisaCirclesContextFactory {
     public ContextImpl getContext() {
         MonaLisa monaLisa = new MonaLisa(FAKE_PIXEL_SIZE);
         DifferenceSquaredEvaluator evaluator = new DifferenceSquaredEvaluator(monaLisa.getImage());
-        IterativeAlgorithm algorithm = new MonaLisaCirclesAlgorithm(
+        IterativeAlgorithm algorithm = new CirclesAlgorithm(
                 monaLisa,
                 MIN_NUM_POINTS,
                 MAX_NUM_POINTS,
@@ -34,7 +34,7 @@ public class MonaLisaCirclesContextFactory {
                 MUTATION_POINT_COLOR_VARIANCE,
                 MUTATION_RADIUS_VARIANCE,
                 evaluator);
-        final HypothesisPainterFactory hypothesisPainterFactory = new MonaLisaCirclesHypothesisPainterFactory(
+        final HypothesisPainterFactory hypothesisPainterFactory = new CirclesHypothesisPainterFactory(
                 monaLisa.getWidth(), monaLisa.getHeight());
 
 

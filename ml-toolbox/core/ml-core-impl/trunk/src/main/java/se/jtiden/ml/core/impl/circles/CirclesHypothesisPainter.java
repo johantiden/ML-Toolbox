@@ -7,14 +7,14 @@ import se.jtiden.ml.core.impl.FastJTImage;
 
 import java.awt.*;
 
-public class MonaLisaCirclesHypothesisPainter implements AlgorithmStepPainter {
+public class CirclesHypothesisPainter implements AlgorithmStepPainter {
 
-    private final MonaLisaCirclesHypothesis hypothesis;
+    private final CirclesHypothesis hypothesis;
     private int width;
     private int height;
 
-    public MonaLisaCirclesHypothesisPainter(MonaLisaCirclesHypothesis hypothesis,
-                                            final int width, final int height) {
+    public CirclesHypothesisPainter(CirclesHypothesis hypothesis,
+                                    final int width, final int height) {
         this.hypothesis = hypothesis;
         this.width = width;
         this.height = height;

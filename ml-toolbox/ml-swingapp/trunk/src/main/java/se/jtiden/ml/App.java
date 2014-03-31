@@ -10,8 +10,8 @@ public class App extends JFrame {
     private Context context;
 
     protected App(Context context) {
-        setSize(context.getHypothesisPainterFactory().getWidth() * context.getScale(),
-                context.getHypothesisPainterFactory().getHeight() * context.getScale());
+        setSize((int)(context.getHypothesisPainterFactory().getWidth() * context.getScale()),
+                (int)(context.getHypothesisPainterFactory().getHeight() * context.getScale()));
 
         setVisible(true);
         this.context = context;
@@ -40,7 +40,8 @@ public class App extends JFrame {
                             Image image = context.getHypothesisPainterFactory().create(currentHypothesis).getImage();
                             g.drawImage(image,
                                     0, 0,
-                                    image.getWidth(null) * context.getScale(), image.getHeight(null) * context.getScale(),
+                                    (int)(image.getWidth(null) * context.getScale()),
+                                    (int)(image.getHeight(null) * context.getScale()),
                                     null);
                         }
                     } catch (Exception e) {

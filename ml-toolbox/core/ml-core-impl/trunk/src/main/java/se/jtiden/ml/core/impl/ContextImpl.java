@@ -9,9 +9,9 @@ public class ContextImpl implements Context {
 
     private IterativeAlgorithm algorithm;
     private HypothesisPainterFactory hypothesisPainterFactory;
-    private int scale;
+    private double scale;
 
-    public ContextImpl(IterativeAlgorithm algorithm, AlgorithmStepPainter painter, HypothesisPainterFactory hypothesisPainterFactory, final int scale) {
+    public ContextImpl(IterativeAlgorithm algorithm, AlgorithmStepPainter painter, HypothesisPainterFactory hypothesisPainterFactory, final double scale) {
         this.algorithm = algorithm;
         this.hypothesisPainterFactory = hypothesisPainterFactory;
         this.scale = scale;
@@ -28,7 +28,7 @@ public class ContextImpl implements Context {
     }
 
     @Override
-    public int getScale() {
+    public double getScale() {
         return scale;
     }
 }

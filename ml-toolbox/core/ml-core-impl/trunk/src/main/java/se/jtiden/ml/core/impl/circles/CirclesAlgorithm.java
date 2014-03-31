@@ -6,7 +6,7 @@ import se.jtiden.ml.core.api.*;
 import se.jtiden.ml.core.api.Point;
 import se.jtiden.ml.core.impl.MonaLisa;
 
-public class MonaLisaCirclesAlgorithm implements IterativeAlgorithm<MonaLisaCirclesHypothesis, JTImage> {
+public class CirclesAlgorithm implements IterativeAlgorithm<CirclesHypothesis, JTImage> {
 
     private final double mutationPointSpaceVariance;
     private final static Random random = new Random();
@@ -15,11 +15,11 @@ public class MonaLisaCirclesAlgorithm implements IterativeAlgorithm<MonaLisaCirc
     private final double chanceToCreatePoint;
     private final double chanceToDeletePoint;
     private final int mutationPointColorVariance;
-    private MonaLisaCirclesHypothesis bestHypothesis;
+    private CirclesHypothesis bestHypothesis;
     private final double radiusVariance;
     private Evaluator<JTImage> evaluator;
 
-    public MonaLisaCirclesAlgorithm(
+    public CirclesAlgorithm(
             MonaLisa monaLisa,
             int minNumPoints,
             int maxNumPoints,
@@ -44,7 +44,7 @@ public class MonaLisaCirclesAlgorithm implements IterativeAlgorithm<MonaLisaCirc
          bestHypothesis = randomHypothesis(monaLisa, numPoints);
     }
 
-    private MonaLisaCirclesHypothesis randomHypothesis(MonaLisa monaLisa, int numPoints) {
+    private CirclesHypothesis randomHypothesis(MonaLisa monaLisa, int numPoints) {
         List<CircleWithColor> circles = new ArrayList<CircleWithColor>();
         for (int i = 0; i < numPoints; ++i) {
             CircleWithColor newCircle = newRandomCircle(monaLisa);
@@ -55,7 +55,7 @@ public class MonaLisaCirclesAlgorithm implements IterativeAlgorithm<MonaLisaCirc
             circles.add(newCircle);
         }
 
-        MonaLisaCirclesHypothesis hypothesis = new MonaLisaCirclesHypothesis(
+        CirclesHypothesis hypothesis = new CirclesHypothesis(
                 monaLisa,
                 circles,
                 getEvaluator());
@@ -74,9 +74,9 @@ public class MonaLisaCirclesAlgorithm implements IterativeAlgorithm<MonaLisaCirc
 
     @Override
     public void iterate() {
-        List<MonaLisaCirclesHypothesis> newHypotheses = selfBreed(bestHypothesis);
+        List<CirclesHypothesis> newHypotheses = selfBreed(bestHypothesis);
 
-        for (MonaLisaCirclesHypothesis child : newHypotheses) {
+        for (CirclesHypothesis child : newHypotheses) {
 
             if (child.valueFunction() >= bestHypothesis.valueFunction()) {
                 System.out.println("New best! " + child.valueFunction() +
@@ -88,7 +88,7 @@ public class MonaLisaCirclesAlgorithm implements IterativeAlgorithm<MonaLisaCirc
     }
 
     @Override
-    public MonaLisaCirclesHypothesis getBestHypothesis() {
+    public CirclesHypothesis getBestHypothesis() {
         return bestHypothesis;
     }
 
@@ -97,18 +97,18 @@ public class MonaLisaCirclesAlgorithm implements IterativeAlgorithm<MonaLisaCirc
         return evaluator;
     }
 
-    private List<MonaLisaCirclesHypothesis> selfBreed(MonaLisaCirclesHypothesis hypothesis) {
-        MonaLisaCirclesHypothesis added = mutateAddPoint(hypothesis);
-        MonaLisaCirclesHypothesis mutated = mutateMutatePoint(hypothesis);
-        MonaLisaCirclesHypothesis removedPoint = mutateRemovePoint(hypothesis);
-        MonaLisaCirclesHypothesis removedPointUseless = removeUselessPoints(hypothesis);
+    private List<CirclesHypothesis> selfBreed(CirclesHypothesis hypothesis) {
+        CirclesHypothesis added = mutateAddPoint(hypothesis);
+        CirclesHypothesis mutated = mutateMutatePoint(hypothesis);
+        CirclesHypothesis removedPoint = mutateRemovePoint(hypothesis);
+        CirclesHypothesis removedPointUseless = removeUselessPoints(hypothesis);
 
         return Arrays.asList(added, mutated, removedPoint, removedPointUseless);
     }
 
 
-    private MonaLisaCirclesHypothesis mutateMutatePoint(final MonaLisaCirclesHypothesis hypothesis) {
-        MonaLisaCirclesHypothesis child = hypothesis.copy();
+    private CirclesHypothesis mutateMutatePoint(final CirclesHypothesis hypothesis) {
+        CirclesHypothesis child = hypothesis.copy();
 
         CircleWithColor pointToMutate = child.getCircles().get(random.nextInt(child.getCircles().size()));
         child.getCircles().remove(pointToMutate);
@@ -118,15 +118,15 @@ public class MonaLisaCirclesAlgorithm implements IterativeAlgorithm<MonaLisaCirc
         return child;
     }
 
-    private MonaLisaCirclesHypothesis mutateRemovePoint(final MonaLisaCirclesHypothesis hypothesis) {
-        MonaLisaCirclesHypothesis child = hypothesis.copy();
+    private CirclesHypothesis mutateRemovePoint(final CirclesHypothesis hypothesis) {
+        CirclesHypothesis child = hypothesis.copy();
         int index2 = random.nextInt(child.getCircles().size());
         child.getCircles().remove(index2);
         return child;
     }
 
-    private MonaLisaCirclesHypothesis mutateAddPoint(final MonaLisaCirclesHypothesis hypothesis) {
-        MonaLisaCirclesHypothesis child = hypothesis.copy();
+    private CirclesHypothesis mutateAddPoint(final CirclesHypothesis hypothesis) {
+        CirclesHypothesis child = hypothesis.copy();
 
         if (child.getCircles().size() < maxNumPoints) {
             int index = random.nextInt(child.getCircles().size());
@@ -135,8 +135,8 @@ public class MonaLisaCirclesAlgorithm implements IterativeAlgorithm<MonaLisaCirc
         return child;
     }
 
-    private MonaLisaCirclesHypothesis removeUselessPoints(final MonaLisaCirclesHypothesis hypothesis) {
-        MonaLisaCirclesHypothesis child = hypothesis.copy();
+    private CirclesHypothesis removeUselessPoints(final CirclesHypothesis hypothesis) {
+        CirclesHypothesis child = hypothesis.copy();
         Iterator<CircleWithColor> iterator = child.getCircles().iterator();
         while (iterator.hasNext()) {
             CircleWithColor circle = iterator.next();

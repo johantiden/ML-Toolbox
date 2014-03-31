@@ -1,9 +1,7 @@
 package se.jtiden.ml.core.impl.nearestneighbor;
 
-import se.jtiden.ml.core.api.AlgorithmStepPainter;
-import se.jtiden.ml.core.api.JTColor;
-import se.jtiden.ml.core.api.PointWithColor;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
+import se.jtiden.ml.core.api.*;
+import se.jtiden.ml.core.impl.FastJTImage;
 
 import java.awt.*;
 import java.util.*;
@@ -13,6 +11,7 @@ import java.util.List;
 public class MonaLisaNearestNeighborHypothesisPainter implements AlgorithmStepPainter {
 
     private final MonaLisaNearestNeighborHypothesis hypothesis;
+    private JTImage cachedImage;
 
     public MonaLisaNearestNeighborHypothesisPainter(MonaLisaNearestNeighborHypothesis hypothesis) {
         this.hypothesis = hypothesis;
@@ -36,18 +35,26 @@ public class MonaLisaNearestNeighborHypothesisPainter implements AlgorithmStepPa
 
     @Override
     public void paint() {
+        if (cachedImage == null) {
+            innerPaint();
+        }
+    }
+
+    private void innerPaint() {
+        cachedImage = new FastJTImage(hypothesis.getMonaLisa().getWidth(), hypothesis.getMonaLisa().getHeight());
 
         for (int y = 0; y < hypothesis.getMonaLisa().getHeight(); ++y) {
             for (int x = 0; x < hypothesis.getMonaLisa().getWidth(); ++x) {
-                throw new NotImplementedException();
+                JTColor nearestNeighbor = getColorAt(x, y);
+                cachedImage.setPixel(x, y, nearestNeighbor);
             }
         }
     }
 
     @Override
     public Image getImage() {
-
-        throw new NotImplementedException();
+        paint();
+        return cachedImage.asImage();
     }
 
 

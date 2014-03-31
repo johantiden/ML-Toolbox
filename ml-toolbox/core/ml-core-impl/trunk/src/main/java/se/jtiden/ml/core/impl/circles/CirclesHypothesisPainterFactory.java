@@ -3,18 +3,18 @@ package se.jtiden.ml.core.impl.circles;
 import se.jtiden.ml.core.api.AlgorithmStepPainter;
 import se.jtiden.ml.core.api.HypothesisPainterFactory;
 
-public class MonaLisaCirclesHypothesisPainterFactory implements HypothesisPainterFactory<MonaLisaCirclesHypothesis> {
+public class CirclesHypothesisPainterFactory implements HypothesisPainterFactory<CirclesHypothesis> {
     private int width;
     private int height;
 
-    public MonaLisaCirclesHypothesisPainterFactory(final int width, final int height) {
+    public CirclesHypothesisPainterFactory(final int width, final int height) {
         this.width = width;
         this.height = height;
     }
 
     @Override
-    public AlgorithmStepPainter create(final MonaLisaCirclesHypothesis hypothesis) {
-        return new MonaLisaCirclesHypothesisPainter(hypothesis, width, height);
+    public AlgorithmStepPainter create(final CirclesHypothesis hypothesis) {
+        return new CirclesHypothesisPainter(hypothesis, width, height);
     }
 
     @Override

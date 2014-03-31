@@ -7,24 +7,40 @@ public class JTColor {
     public static final JTColor BLACK = new JTColor(0, 0, 0);
     public static final JTColor WHITE = new JTColor(255, 255, 255);
 
-    public char r;
+    public final char r;
+    public final char g;
+    public final char b;
+    public final char a;
 
-    public char g;
-    public char b;
-    public JTColor(char r, char g, char b) {
+    public JTColor(char r, char g, char b, char a) {
         this.r = r;
         this.g = g;
         this.b = b;
+        this.a = a;
+    }
+
+    public JTColor(int r, int g, int b, int a) {
+        this((char)r, (char)b, (char)g, (char)a);
     }
 
     public JTColor(int r, int g, int b) {
-        this((char)r, (char)b, (char)g);
+        this(r,g,b,255);
     }
 
     public static int difference(JTColor color1, JTColor color2) {
         int rDiff = Math.abs(color1.r - color2.r);
         int gDiff = Math.abs(color1.g - color2.g);
         int bDiff = Math.abs(color1.b - color2.b);
+        return rDiff + gDiff + bDiff;
+    }
+
+    public static int differenceSquarePerChannel(JTColor color1, JTColor color2) {
+        int rDiff = (color1.r - color2.r);
+        rDiff *= rDiff;
+        int gDiff = (color1.g - color2.g);
+        gDiff *= gDiff;
+        int bDiff = (color1.b - color2.b);
+        bDiff *= bDiff;
         return rDiff + gDiff + bDiff;
     }
 
