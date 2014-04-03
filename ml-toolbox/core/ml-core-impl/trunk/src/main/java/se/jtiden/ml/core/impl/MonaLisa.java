@@ -10,6 +10,8 @@ import java.net.URL;
 
 public class MonaLisa {
 
+    public static final String RGB = "rgb.gif";
+    public static final String MONALISA = "monalisa.jpg";
     private double downScale;
     private JTImage monaLisa;
 
@@ -17,9 +19,9 @@ public class MonaLisa {
         this.downScale = downScale;
 //      monaLisa = getImage("monalisa3.jpg");
 //      monaLisa = getImage("stranden.jpg");
-        monaLisa = getImage("monalisa.jpg");
+        monaLisa = getImage(MONALISA);
 //        monaLisa = getImage("japan.jpg");
-//        monaLisa = getImage("rgb.gif");
+//        monaLisa = getImage(RGB);
     }
 
     public JTImage getImage(final String pathAndFileName) {

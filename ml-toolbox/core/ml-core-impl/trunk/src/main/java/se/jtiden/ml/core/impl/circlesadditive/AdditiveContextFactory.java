@@ -12,7 +12,8 @@ public class AdditiveContextFactory {
 
     public static final double SCALE_DOWN_BEFORE = OriginalContextFactory.SCALE_DOWN_BEFORE;
     public static final double SCALE_UP_AFTER = OriginalContextFactory.SCALE_UP_AFTER;
-    public static final int BASE_ALPHA = 240;
+    public static final int BASE_ALPHA = 250;
+    public static final int MIN_RADIUS = 3;
 
 
     public ContextImpl getContext() {
@@ -20,7 +21,7 @@ public class AdditiveContextFactory {
         DifferenceSquaredEvaluator evaluator = new DifferenceSquaredEvaluator(monaLisa.getImage());
         IterativeAlgorithm algorithm = new AddititveAlgorithm(
                 monaLisa,
-                evaluator, BASE_ALPHA);
+                evaluator, BASE_ALPHA, MIN_RADIUS);
         final HypothesisPainterFactory hypothesisPainterFactory = new AdditiveHypothesisPainterFactory(
                 monaLisa.getWidth(), monaLisa.getHeight());
 

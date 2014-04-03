@@ -7,6 +7,7 @@ import se.jtiden.ml.core.api.JTImage;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.util.Arrays;
 
 
 public class FastJTImage implements JTImage {
@@ -218,6 +219,10 @@ public class FastJTImage implements JTImage {
 
     @Override
     public JTImage copy() {
-        return new FastJTImage(width, height, r.clone(), g.clone(), b.clone());
+        return new FastJTImage(width, height, copy(r),  copy(g), copy(b));
+    }
+
+    private char[] copy(char[] array) {
+        return Arrays.copyOf(array, array.length);
     }
 }

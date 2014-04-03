@@ -19,5 +19,6 @@
         <module>../../ml-toolbox/core/ml-core-api/trunk</module>
         <module>../../ml-toolbox/core/ml-core-impl/trunk</module>
         <module>../../ml-toolbox/ml-swingapp/trunk</module>
+        <module>../../common/trunk</module>
     </modules>
 </project>

@@ -8,8 +8,8 @@ import java.awt.*;
 
 public class OriginalContextFactory {
 
-    public static final double SCALE_DOWN_BEFORE = 0.5;
-    public static final double SCALE_UP_AFTER = 1;
+    public static final double SCALE_DOWN_BEFORE = 1;
+    public static final double SCALE_UP_AFTER = 2;
 
     public ContextImpl getContext() {
         final MonaLisa monaLisa = new MonaLisa(SCALE_DOWN_BEFORE);

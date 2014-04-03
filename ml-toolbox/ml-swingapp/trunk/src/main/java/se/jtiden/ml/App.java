@@ -7,23 +7,51 @@ import javax.swing.*;
 import java.awt.*;
 
 public class App extends JFrame {
-    private Context context;
+    private final JPanel canvas;
+    private final Context context;
+    public Hypothesis bestHypothesis;
 
-    protected App(Context context) {
-        setSize((int)(context.getHypothesisPainterFactory().getWidth() * context.getScale()),
-                (int)(context.getHypothesisPainterFactory().getHeight() * context.getScale()));
+    protected App(final Context context) {
 
-        setVisible(true);
+
         this.context = context;
 
+
+        this.canvas = new JPanel() {
+            @Override
+            public void paint(Graphics g) {
+                Image image = context.getHypothesisPainterFactory().create(bestHypothesis).getImage();
+                g.drawImage(image,
+                        0, 0,
+                        (int) (image.getWidth(null) * context.getScale()),
+                        (int) (image.getHeight(null) * context.getScale()),
+                        null);
+            }
+        };
+        this.canvas.setSize(imageWidth(), imageHeight());
+
+        this.add(canvas);
+        this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+
+        this.setSize(imageWidth()+16, imageHeight()+38);
+
+        setVisible(true);
         startSimulating();
         startPainting();
+    }
+
+    private int imageHeight() {
+        return (int)(context.getHypothesisPainterFactory().getHeight() * context.getScale());
+    }
+
+    private int imageWidth() {
+        return (int)(context.getHypothesisPainterFactory().getWidth() * context.getScale());
     }
 
 
     private void startPainting() {
         new Thread(new Runnable() {
-            public Hypothesis bestHypothesis;
+
 
             @Override
             public void run() {
@@ -32,17 +60,9 @@ public class App extends JFrame {
                         Thread.sleep(3000);
                         Hypothesis currentHypothesis = context.getAlgorithm().getBestHypothesis();
 
-
-                        if (currentHypothesis != this.bestHypothesis) {
+                        if (currentHypothesis != bestHypothesis) {
                             bestHypothesis = currentHypothesis;
-
-                            Graphics g = getGraphics();
-                            Image image = context.getHypothesisPainterFactory().create(currentHypothesis).getImage();
-                            g.drawImage(image,
-                                    0, 0,
-                                    (int)(image.getWidth(null) * context.getScale()),
-                                    (int)(image.getHeight(null) * context.getScale()),
-                                    null);
+                            canvas.repaint();
                         }
                     } catch (Exception e) {
                         e.printStackTrace();
@@ -50,6 +70,10 @@ public class App extends JFrame {
                 }
             }
         }).start();
+    }
+
+    private Graphics graphics() {
+        return canvas.getGraphics();
     }
 
     private void startSimulating() {
