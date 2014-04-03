@@ -24,11 +24,11 @@ public class MonaLisaNearestNeighborHypothesis implements Hypothesis {
     @Override
     public double valueFunction() {
         return innerValueFunction();
+    }
 
-        //if (parent == null) {
-        //    return innerValueFunction();
-        //}
-        //return innerValueFunction() - parent.valueFunction();
+    @Override
+    public Hypothesis copy() {
+        return new MonaLisaNearestNeighborHypothesis(monaLisa, new ArrayList<PointWithColor>(points));
     }
 
     public double innerValueFunction() {
