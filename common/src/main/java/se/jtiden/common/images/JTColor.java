@@ -1,7 +1,5 @@
 package se.jtiden.common.images;
 
-import java.awt.*;
-
 public class JTColor {
     public static final JTColor GRAY = new JTColor(128, 128, 128);
     public static final JTColor BLACK = new JTColor(0, 0, 0);
@@ -58,10 +56,6 @@ public class JTColor {
         return rDiff + gDiff + bDiff;
     }
 
-
-    public Color toAwtColor() {
-        return new Color(r, g, b);
-    }
 
     @Override
     public boolean equals(final Object o) {

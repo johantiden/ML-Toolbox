@@ -1,11 +1,6 @@
 package se.jtiden.common.images;
 
-import java.awt.*;
-import java.awt.image.BufferedImage;
 import java.util.Arrays;
-
-import se.jtiden.common.images.awt.AwtColorConverterImpl;
-import se.jtiden.common.images.awt.AwtImageConverter;
 
 public class FastJTImage implements JTImage {
 
@@ -29,31 +24,6 @@ public class FastJTImage implements JTImage {
         this.g = g;
         this.b = b;
     }
-
-    public static FastJTImage fromImage(final BufferedImage realImage, final double downscale) {
-        FastJTImage fastJTImage = new FastJTImage(
-                (int) (realImage.getWidth(null) / downscale),
-                (int) (realImage.getHeight(null) / downscale));
-
-        for (int y = 0; y < fastJTImage.getHeight(); ++y) {
-            for (int x = 0; x < fastJTImage.getWidth(); ++x) {
-                int argb = realImage.getRGB((int) (x * downscale), (int) (y * downscale));
-
-                Color pixel = new Color(
-                        (argb >> 16) & 0xff, //red
-                        (argb >> 0) & 0xff, //green
-                        (argb >> 8) & 0xff  //blue
-                );
-
-                fastJTImage.setPixel(x, y,
-                        (char) pixel.getRed(),
-                        (char) pixel.getGreen(),
-                        (char) pixel.getBlue());
-            }
-        }
-        return fastJTImage;
-    }
-
 
     @Override
     public int getWidth() {
@@ -93,11 +63,6 @@ public class FastJTImage implements JTImage {
                 r[index],
                 g[index],
                 b[index]);
-    }
-
-    @Override
-    public AwtImageConverter getImageConverter() {
-        return new AwtColorConverterImpl(this);
     }
 
     @Override

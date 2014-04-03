@@ -5,9 +5,9 @@ import java.io.IOException;
 import java.net.URL;
 import javax.imageio.ImageIO;
 
-import se.jtiden.common.images.FastJTImage;
 import se.jtiden.common.images.JTColor;
 import se.jtiden.common.images.JTImage;
+import se.jtiden.common.images.awt.ImageConverter;
 import se.jtiden.common.math.Point;
 
 public class MonaLisa {
@@ -27,7 +27,7 @@ public class MonaLisa {
     }
 
     public JTImage getImage(final String pathAndFileName) {
-        return FastJTImage.fromImage(getRealImage(pathAndFileName), downScale);
+        return ImageConverter.toFastJTImage(getRealImage(pathAndFileName), downScale);
     }
 
     private static BufferedImage getRealImage(final String pathAndFileName) {

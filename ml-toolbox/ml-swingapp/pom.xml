@@ -6,7 +6,7 @@
         <groupId>se.jtiden.base</groupId>
         <artifactId>base</artifactId>
         <version>1.0-SNAPSHOT</version>
-        <relativePath>../../base</relativePath>
+        <relativePath>../../base/pom.xml</relativePath>
     </parent>
 
     <artifactId>ml-swingapp</artifactId>

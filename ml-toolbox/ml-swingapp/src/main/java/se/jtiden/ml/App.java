@@ -4,6 +4,7 @@ package se.jtiden.ml;
 import java.awt.*;
 import javax.swing.*;
 
+import se.jtiden.common.images.awt.ImageConverter;
 import se.jtiden.ml.imagealgorithms.Context;
 import se.jtiden.ml.imagealgorithms.algorithm.api.Hypothesis;
 
@@ -22,7 +23,7 @@ public class App extends JFrame {
         this.canvas = new JPanel() {
             @Override
             public void paint(Graphics g) {
-                Image image = context.getHypothesisPainterFactory().create(bestHypothesis).getImage().getImageConverter().getAwtImage();
+                Image image = ImageConverter.toAwtImage(context.getHypothesisPainterFactory().create(bestHypothesis).getImage());
                 g.drawImage(image,
                         0, 0,
                         (int) (image.getWidth(null) * context.getScale()),
