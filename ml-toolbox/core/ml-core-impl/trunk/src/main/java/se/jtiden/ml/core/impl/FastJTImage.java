@@ -43,8 +43,8 @@ public class FastJTImage implements JTImage {
 
                 Color pixel = new Color(
                         (argb >> 16) & 0xff, //red
-                        (argb >> 8) & 0xff, //green
-                        (argb) & 0xff  //blue
+                        (argb >> 0) & 0xff, //green
+                        (argb >> 8) & 0xff  //blue
                 );
 
                 fastJTImage.setPixel(x, y,
@@ -137,7 +137,7 @@ public class FastJTImage implements JTImage {
     public JTGraphics getGraphics() {
         return new JTGraphics() {
             @Override
-            public void draw(CircleWithColor circle) {
+            public void drawCircle(CircleWithColor circle) {
                 final int left = Math.max(circle.left(), 0);
                 final int top = Math.max(circle.top(), 0);
                 final int right = Math.min(left + circle.diameter() + 1, width - 1);
@@ -152,6 +152,27 @@ public class FastJTImage implements JTImage {
                             //                                                                (y - circle.y) * (y - circle.y)) / circle.radius*200, 0)));
 
                             mixPixel(index, circle.color.r, circle.color.g, circle.color.b, circle.color.a);
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void drawRadial(CircleWithColor circle) {
+                final int left = Math.max(circle.left(), 0);
+                final int top = Math.max(circle.top(), 0);
+                final int right = Math.min(left + circle.diameter() + 1, width - 1);
+                final int bottom = Math.min(top + circle.diameter() + 1, height - 1);
+
+                for (int y = top; y < bottom; ++y) {
+                    for (int x = left; x < right; ++x) {
+                        final int index = getIndex(x, y);
+
+                        if (isInsideCircle(circle, x, y)) {
+                            char alpha = (char) ((Math.max(circle.color.a * Math.pow((circle.radius - Math.sqrt((x - circle.x) * (x - circle.x) +
+                                                                                            (y - circle.y) * (y - circle.y))) / circle.radius, 2), 0)));
+
+                            mixPixel(index, circle.color.r, circle.color.g, circle.color.b, alpha);
                         }
                     }
                 }

@@ -23,7 +23,7 @@ public class CirclesHypothesisPainter implements AlgorithmStepPainter {
 
     private void paintCircles(JTGraphics graphics) {
         for (CircleWithColor circle : hypothesis.getCircles()) {
-            graphics.draw(circle);
+            graphics.drawCircle(circle);
         }
     }
 

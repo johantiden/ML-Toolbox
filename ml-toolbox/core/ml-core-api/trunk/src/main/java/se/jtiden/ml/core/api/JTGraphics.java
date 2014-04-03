@@ -1,5 +1,7 @@
 package se.jtiden.ml.core.api;
 
 public interface JTGraphics {
-    void draw(CircleWithColor circle);
+    void drawCircle(CircleWithColor circle);
+
+    void drawRadial(CircleWithColor circleWithColor);
 }

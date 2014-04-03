@@ -60,7 +60,7 @@ public class AdditiveHypothesis implements Hypothesis {
     }
 
     public void draw(CircleWithColor circleWithColor) {
-        image.getGraphics().draw(circleWithColor);
+        image.getGraphics().drawRadial(circleWithColor);
     }
 
     public JTImage getImage() {

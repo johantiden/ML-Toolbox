@@ -4,7 +4,7 @@ import se.jtiden.ml.core.api.*;
 import se.jtiden.ml.core.impl.FastJTImage;
 import se.jtiden.ml.core.impl.MonaLisa;
 
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
@@ -14,11 +14,13 @@ public class AddititveAlgorithm implements IterativeAlgorithm<AdditiveHypothesis
     private final static Random random = new Random();
     private AdditiveHypothesis bestHypothesis;
     private Evaluator<JTImage> evaluator;
+    private int baseAlpha;
 
     public AddititveAlgorithm(
             MonaLisa monaLisa,
-            Evaluator<JTImage> evaluator) {
+            Evaluator<JTImage> evaluator, int baseAlpha) {
         this.evaluator = evaluator;
+        this.baseAlpha = baseAlpha;
         createRandomInitialHypotheses(monaLisa);
     }
 
@@ -31,10 +33,10 @@ public class AddititveAlgorithm implements IterativeAlgorithm<AdditiveHypothesis
 
     private CircleWithColor newRandomCircle(MonaLisa monaLisa) {
         return new CircleWithColor(
-                random.nextInt(monaLisa.getWidth() * 2 - monaLisa.getWidth()/2),
-                random.nextInt(monaLisa.getHeight() * 2 - monaLisa.getHeight()/2),
-                new JTColor(random.nextInt(256), random.nextInt(256), random.nextInt(256), 10),
-                random.nextInt(monaLisa.getWidth()*3));
+                random.nextInt((int) (monaLisa.getWidth())),
+                random.nextInt((int) (monaLisa.getHeight())),
+                new JTColor(random.nextInt(256), random.nextInt(256), random.nextInt(256), random.nextInt(230)),
+                random.nextInt(monaLisa.getWidth()/8));
     }
 
     @Override
@@ -62,9 +64,13 @@ public class AddititveAlgorithm implements IterativeAlgorithm<AdditiveHypothesis
     }
 
     private List<AdditiveHypothesis> selfBreed(AdditiveHypothesis hypothesis) {
-        AdditiveHypothesis added = mutateAddPoint(hypothesis);
 
-        return Arrays.asList(added);
+        List<AdditiveHypothesis> list = new ArrayList<AdditiveHypothesis>();
+        for (int i = 0; i < 20; ++i) {
+            list.add(mutateAddPoint(hypothesis));
+        }
+
+        return list;
     }
 
 

@@ -13,10 +13,24 @@ public class JTColor {
     public final char a;
 
     public JTColor(char r, char g, char b, char a) {
+        verify(r,g,b,a);
         this.r = r;
         this.g = g;
         this.b = b;
         this.a = a;
+    }
+
+    private void verify(char r, char g, char b, char a) {
+        verify(a);
+        verify(r);
+        verify(g);
+        verify(b);
+    }
+
+    private void verify(char c) {
+        if (c < 0 || c > 255) {
+            throw new RuntimeException("Color value out of bounds: " + ((int)c));
+        }
     }
 
     public JTColor(int r, int g, int b, int a) {

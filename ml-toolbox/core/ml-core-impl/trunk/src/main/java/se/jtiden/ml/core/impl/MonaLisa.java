@@ -15,9 +15,11 @@ public class MonaLisa {
 
     public MonaLisa(final double downScale) {
         this.downScale = downScale;
-        monaLisa = getImage("monalisa3.jpg");
-//        monaLisa = getImage("monalisa.jpg");
-        //monaLisa = getImage("japan.jpg");
+//      monaLisa = getImage("monalisa3.jpg");
+//      monaLisa = getImage("stranden.jpg");
+        monaLisa = getImage("monalisa.jpg");
+//        monaLisa = getImage("japan.jpg");
+//        monaLisa = getImage("rgb.gif");
     }
 
     public JTImage getImage(final String pathAndFileName) {
