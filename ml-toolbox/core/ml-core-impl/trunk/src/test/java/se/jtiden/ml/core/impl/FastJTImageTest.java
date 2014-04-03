@@ -2,7 +2,8 @@ package se.jtiden.ml.core.impl;
 
 
 import org.junit.Test;
-import se.jtiden.ml.core.api.JTColor;
+import se.jtiden.common.images.FastJTImage;
+import se.jtiden.common.images.JTColor;
 
 import static org.junit.Assert.assertEquals;
 
