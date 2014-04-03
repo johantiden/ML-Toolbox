@@ -1,8 +1,9 @@
 package se.jtiden.ml;
 
-import se.jtiden.ml.core.api.Context;
-import se.jtiden.ml.core.impl.circlesadditive.AdditiveContextFactory;
-import se.jtiden.ml.core.impl.original.OriginalContextFactory;
+
+import se.jtiden.ml.imagealgorithms.Context;
+import se.jtiden.ml.imagealgorithms.circlesadditive.AdditiveContextFactory;
+import se.jtiden.ml.imagealgorithms.original.OriginalContextFactory;
 
 public class MonaLisa extends App {
 

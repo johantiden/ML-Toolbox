@@ -4,8 +4,9 @@ package se.jtiden.ml;
 import javax.swing.*;
 import java.awt.*;
 
-import se.jtiden.ml.core.api.Context;
-import se.jtiden.ml.core.api.Hypothesis;
+import se.jtiden.ml.imagealgorithms.Context;
+import se.jtiden.ml.imagealgorithms.algorithm.api.Hypothesis;
+
 
 public class App extends JFrame {
     private final JPanel canvas;
