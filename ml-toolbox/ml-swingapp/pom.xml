@@ -12,9 +12,6 @@
     <artifactId>ml-swingapp</artifactId>
     <packaging>jar</packaging>
 
-    <name>ml-swingapp</name>
-    <url>http://maven.apache.org</url>
-
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
