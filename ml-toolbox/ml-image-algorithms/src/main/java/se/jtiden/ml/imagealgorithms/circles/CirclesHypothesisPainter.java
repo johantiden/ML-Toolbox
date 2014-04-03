@@ -1,11 +1,10 @@
 package se.jtiden.ml.imagealgorithms.circles;
 
 import se.jtiden.common.images.CircleWithColor;
+import se.jtiden.common.images.FastJTImage;
 import se.jtiden.common.images.JTGraphics;
-import se.jtiden.ml.imagealgorithms.FastJTImage;
+import se.jtiden.common.images.JTImage;
 import se.jtiden.ml.imagealgorithms.painter.AlgorithmStepPainter;
-
-import java.awt.*;
 
 public class CirclesHypothesisPainter implements AlgorithmStepPainter {
 
@@ -35,8 +34,8 @@ public class CirclesHypothesisPainter implements AlgorithmStepPainter {
     }
 
     @Override
-    public Image getImage() {
-        return hypothesis.getCachedImage().asImage();
+    public JTImage getImage() {
+        return hypothesis.getCachedImage();
     }
 
 

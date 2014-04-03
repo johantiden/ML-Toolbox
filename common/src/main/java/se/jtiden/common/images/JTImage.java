@@ -1,6 +1,6 @@
 package se.jtiden.common.images;
 
-import java.awt.*;
+import se.jtiden.common.images.awt.AwtImageConverter;
 
 public interface JTImage {
     int getWidth();
@@ -8,7 +8,7 @@ public interface JTImage {
 
     JTColor getColorAt(int x, int y);
 
-    Image asImage();
+    AwtImageConverter getImageConverter();
 
     void setPixel(int x, int y, JTColor pixel);
 

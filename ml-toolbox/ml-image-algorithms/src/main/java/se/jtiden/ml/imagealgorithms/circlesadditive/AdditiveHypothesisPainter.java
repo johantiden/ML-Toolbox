@@ -1,9 +1,8 @@
 package se.jtiden.ml.imagealgorithms.circlesadditive;
 
+import se.jtiden.common.images.JTImage;
 import se.jtiden.ml.imagealgorithms.painter.AlgorithmStepPainter;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
-
-import java.awt.*;
 
 public class AdditiveHypothesisPainter implements AlgorithmStepPainter {
 
@@ -25,8 +24,8 @@ public class AdditiveHypothesisPainter implements AlgorithmStepPainter {
     }
 
     @Override
-    public Image getImage() {
-        return hypothesis.getImage().asImage();
+    public JTImage getImage() {
+        return hypothesis.getImage();
     }
 
 

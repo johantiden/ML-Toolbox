@@ -1,5 +1,6 @@
 package se.jtiden.ml.imagealgorithms.original;
 
+import se.jtiden.common.images.JTImage;
 import se.jtiden.ml.imagealgorithms.ContextImpl;
 import se.jtiden.ml.imagealgorithms.MonaLisa;
 import se.jtiden.ml.imagealgorithms.algorithm.api.Hypothesis;
@@ -7,8 +8,6 @@ import se.jtiden.ml.imagealgorithms.algorithm.api.IterativeAlgorithm;
 import se.jtiden.ml.imagealgorithms.evaluator.Evaluator;
 import se.jtiden.ml.imagealgorithms.painter.AlgorithmStepPainter;
 import se.jtiden.ml.imagealgorithms.painter.HypothesisPainterFactory;
-
-import java.awt.*;
 
 public class OriginalContextFactory {
 
@@ -24,8 +23,8 @@ public class OriginalContextFactory {
             }
 
             @Override
-            public Image getImage() {
-                return monaLisa.getImage().asImage();
+            public JTImage getImage() {
+                return monaLisa.getImage();
             }
 
             @Override

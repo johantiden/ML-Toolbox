@@ -2,6 +2,7 @@ package se.jtiden.ml.imagealgorithms;
 
 import java.awt.*;
 
+import se.jtiden.common.images.JTImage;
 import se.jtiden.ml.imagealgorithms.algorithm.api.IterativeAlgorithm;
 import se.jtiden.ml.imagealgorithms.painter.AlgorithmStepPainter;
 import se.jtiden.ml.imagealgorithms.painter.HypothesisPainterFactory;
@@ -26,7 +27,7 @@ public class MonaLisaAlgorithmPainter implements AlgorithmStepPainter {
     }
 
     @Override
-    public Image getImage() {
+    public JTImage getImage() {
         throw new NotImplementedException();
     }
 

@@ -1,5 +1,6 @@
 package se.jtiden.ml.imagealgorithms;
 
+import se.jtiden.common.images.FastJTImage;
 import se.jtiden.common.images.JTColor;
 import se.jtiden.common.images.JTImage;
 import se.jtiden.common.math.Point;

@@ -4,6 +4,9 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.Arrays;
 
+import se.jtiden.common.images.awt.AwtColorConverterImpl;
+import se.jtiden.common.images.awt.AwtImageConverter;
+
 public class FastJTImage implements JTImage {
 
     private final int width;
@@ -78,25 +81,6 @@ public class FastJTImage implements JTImage {
         }
     }
 
-    @Override
-    public Image asImage() {
-
-        BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
-
-        Graphics g = image.getGraphics();
-
-
-        for (int y = 0; y < height; ++y) {
-            for (int x = 0; x < width; ++x) {
-                g.setColor(getColorAt(x, y).toAwtColor());
-                g.fillRect(x, y, 1, 1);
-            }
-        }
-
-        g.dispose();
-
-        return image;
-    }
 
     @Override
     public JTColor getColorAt(int x, int y) {
@@ -109,6 +93,11 @@ public class FastJTImage implements JTImage {
                 r[index],
                 g[index],
                 b[index]);
+    }
+
+    @Override
+    public AwtImageConverter getImageConverter() {
+        return new AwtColorConverterImpl(this);
     }
 
     @Override

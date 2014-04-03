@@ -22,7 +22,7 @@ public class App extends JFrame {
         this.canvas = new JPanel() {
             @Override
             public void paint(Graphics g) {
-                Image image = context.getHypothesisPainterFactory().create(bestHypothesis).getImage();
+                Image image = context.getHypothesisPainterFactory().create(bestHypothesis).getImage().getImageConverter().getAwtImage();
                 g.drawImage(image,
                         0, 0,
                         (int) (image.getWidth(null) * context.getScale()),

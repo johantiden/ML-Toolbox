@@ -1,12 +1,11 @@
 package se.jtiden.ml.imagealgorithms.nearestneighbor;
 
+import se.jtiden.common.images.FastJTImage;
 import se.jtiden.common.images.JTColor;
 import se.jtiden.common.images.JTImage;
 import se.jtiden.common.images.PointWithColor;
-import se.jtiden.ml.imagealgorithms.FastJTImage;
 import se.jtiden.ml.imagealgorithms.painter.AlgorithmStepPainter;
 
-import java.awt.*;
 import java.util.*;
 import java.util.List;
 
@@ -55,9 +54,9 @@ public class MonaLisaNearestNeighborHypothesisPainter implements AlgorithmStepPa
     }
 
     @Override
-    public Image getImage() {
+    public JTImage getImage() {
         paint();
-        return cachedImage.asImage();
+        return cachedImage;
     }
 
 

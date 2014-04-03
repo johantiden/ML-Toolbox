@@ -2,9 +2,9 @@ package se.jtiden.ml.imagealgorithms.circlesadditive;
 
 import se.jtiden.common.concurrency.Parallel;
 import se.jtiden.common.images.CircleWithColor;
+import se.jtiden.common.images.FastJTImage;
 import se.jtiden.common.images.JTColor;
 import se.jtiden.common.images.JTImage;
-import se.jtiden.ml.imagealgorithms.FastJTImage;
 import se.jtiden.ml.imagealgorithms.MonaLisa;
 import se.jtiden.ml.imagealgorithms.algorithm.api.IterativeAlgorithm;
 import se.jtiden.ml.imagealgorithms.evaluator.Evaluator;

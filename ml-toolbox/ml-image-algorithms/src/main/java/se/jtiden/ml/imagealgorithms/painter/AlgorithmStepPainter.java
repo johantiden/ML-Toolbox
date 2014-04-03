@@ -1,10 +1,11 @@
 package se.jtiden.ml.imagealgorithms.painter;
 
-import java.awt.*;
+
+import se.jtiden.common.images.JTImage;
 
 public interface AlgorithmStepPainter {
     void paint();
-    Image getImage();
+    JTImage getImage();
 
     int getWidth();
     int getHeight();

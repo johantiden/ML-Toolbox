@@ -1,8 +1,5 @@
 package se.jtiden.common.images;
 
-import se.jtiden.common.images.JTColor;
-import se.jtiden.common.images.PointWithColor;
-
 public class CircleWithColor extends PointWithColor {
     public double radius;
 
