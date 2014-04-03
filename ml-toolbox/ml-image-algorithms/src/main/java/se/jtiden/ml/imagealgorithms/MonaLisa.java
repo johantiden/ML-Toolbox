@@ -1,14 +1,14 @@
 package se.jtiden.ml.imagealgorithms;
 
-import java.awt.image.BufferedImage;
-import java.io.IOException;
-import java.net.URL;
-import javax.imageio.ImageIO;
-
 import se.jtiden.common.images.JTColor;
 import se.jtiden.common.images.JTImage;
 import se.jtiden.common.images.awt.ImageConverter;
 import se.jtiden.common.math.Point;
+
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
+import java.net.URL;
 
 public class MonaLisa {
 
@@ -17,7 +17,7 @@ public class MonaLisa {
     private double downScale;
     private JTImage monaLisa;
 
-    public MonaLisa(final double downScale) {
+    public MonaLisa(double downScale) {
         this.downScale = downScale;
 //      monaLisa = getImage("monalisa3.jpg");
 //      monaLisa = getImage("stranden.jpg");
@@ -26,13 +26,13 @@ public class MonaLisa {
 //        monaLisa = getImage(RGB);
     }
 
-    public JTImage getImage(final String pathAndFileName) {
+    private JTImage getImage(String pathAndFileName) {
         return ImageConverter.toFastJTImage(getRealImage(pathAndFileName), downScale);
     }
 
-    private static BufferedImage getRealImage(final String pathAndFileName) {
+    private static BufferedImage getRealImage(String pathAndFileName) {
         try {
-            final URL url = Thread.currentThread().getContextClassLoader().getResource(pathAndFileName);
+            URL url = Thread.currentThread().getContextClassLoader().getResource(pathAndFileName);
             return ImageIO.read(url);
         } catch (IOException e) {
             e.printStackTrace();
@@ -59,5 +59,13 @@ public class MonaLisa {
 
     public JTColor getColorAt(Point p) {
         return getColorAt(p.xInt(), p.yInt());
+    }
+
+    @Override
+    public String toString() {
+        return "MonaLisa{" +
+                "downScale=" + downScale +
+                ", monaLisa=" + monaLisa +
+                '}';
     }
 }

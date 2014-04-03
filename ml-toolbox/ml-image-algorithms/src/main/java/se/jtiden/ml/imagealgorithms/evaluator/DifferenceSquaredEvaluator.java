@@ -29,9 +29,9 @@ public class DifferenceSquaredEvaluator implements Evaluator<JTImage> {
         return loss;
     }
 
-    private double colorDifferenceSquare(JTColor color1, JTColor color2) {
-        int diff = JTColor.difference(color1, color2);
-        return diff * diff * diff;
+    private static double colorDifferenceSquare(JTColor color1, JTColor color2) {
+        double diff = (double) color1.difference(color2);
+        return diff * diff;
     }
 
 }

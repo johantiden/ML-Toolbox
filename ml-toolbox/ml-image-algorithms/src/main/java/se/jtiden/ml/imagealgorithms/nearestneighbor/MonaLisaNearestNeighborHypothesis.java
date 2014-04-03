@@ -1,12 +1,12 @@
 package se.jtiden.ml.imagealgorithms.nearestneighbor;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import se.jtiden.common.images.JTColor;
 import se.jtiden.common.images.PointWithColor;
 import se.jtiden.ml.imagealgorithms.MonaLisa;
 import se.jtiden.ml.imagealgorithms.algorithm.api.Hypothesis;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class MonaLisaNearestNeighborHypothesis implements Hypothesis {
 
@@ -57,7 +57,7 @@ public class MonaLisaNearestNeighborHypothesis implements Hypothesis {
     }
 
     private double colorDifferenceSquare(JTColor color1, JTColor color2) {
-        double diff = JTColor.difference(color1, color2);
+        double diff = color1.difference(color2);
         return diff * diff;
     }
 

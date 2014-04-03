@@ -6,18 +6,18 @@ public class FastJTImage implements JTImage {
 
     private final int width;
     private final int height;
-    private final char[] r;
-    private final char[] g;
-    private final char[] b;
+    private final int[] r;
+    private final int[] g;
+    private final int[] b;
 
     public FastJTImage(int width, int height) {
         this(
-                width, height, new char[width * height],
-                new char[width * height],
-                new char[width * height]);
+                width, height, new int[width * height],
+                new int[width * height],
+                new int[width * height]);
     }
 
-    public FastJTImage(int width, int height, char[] r, char[] g, char[] b) {
+    public FastJTImage(int width, int height, int[] r, int[] g, int[] b) {
         this.width = width;
         this.height = height;
         this.r = r;
@@ -59,7 +59,7 @@ public class FastJTImage implements JTImage {
             System.err.println("Index out of bounds! x:" + x + " y:" + y + " size: " + r.length + " index:" + index + ".");
             return null;
         }
-        return new JTColor(
+        return new JTColorImpl(
                 r[index],
                 g[index],
                 b[index]);
@@ -70,12 +70,13 @@ public class FastJTImage implements JTImage {
         setPixel(
                 x,
                 y,
-                color.r,
-                color.g,
-                color.b);
+                color.getR(),
+                color.getG(),
+                color.getB());
     }
 
-    public void setPixel(int x, int y, char r, char g, char b) {
+    @Override
+    public void setPixel(int x, int y, int r, int g, int b) {
         final int index = getIndex(x, y);
         this.r[index] = r;
         this.g[index] = g;
@@ -89,8 +90,8 @@ public class FastJTImage implements JTImage {
             public void drawCircle(CircleWithColor circle) {
                 final int left = Math.max(circle.left(), 0);
                 final int top = Math.max(circle.top(), 0);
-                final int right = Math.min(left + circle.diameter() + 1, width - 1);
-                final int bottom = Math.min(top + circle.diameter() + 1, height - 1);
+                final int right = Math.min(left + circle.diameterInt() + 1, width - 1);
+                final int bottom = Math.min(top + circle.diameterInt() + 1, height - 1);
 
                 for (int y = top; y < bottom; ++y) {
                     for (int x = left; x < right; ++x) {
@@ -100,7 +101,7 @@ public class FastJTImage implements JTImage {
                             //char alpha = (char) ((Math.max(circle.color.a - Math.sqrt((x - circle.x) * (x - circle.x) +
                             //                                                                (y - circle.y) * (y - circle.y)) / circle.radius*200, 0)));
 
-                            mixPixel(index, circle.color.r, circle.color.g, circle.color.b, circle.color.a);
+                            mixPixel(index, circle.getColor().getR(), circle.getColor().getG(), circle.getColor().getB(), circle.getColor().getA());
                         }
                     }
                 }
@@ -110,24 +111,25 @@ public class FastJTImage implements JTImage {
             public void drawRadial(CircleWithColor circle) {
                 final int left = Math.max(circle.left(), 0);
                 final int top = Math.max(circle.top(), 0);
-                final int right = Math.min(left + circle.diameter() + 1, width - 1);
-                final int bottom = Math.min(top + circle.diameter() + 1, height - 1);
+                final int right = Math.min(left + circle.diameterInt() + 1, width - 1);
+                final int bottom = Math.min(top + circle.diameterInt() + 1, height - 1);
 
                 for (int y = top; y < bottom; ++y) {
                     for (int x = left; x < right; ++x) {
                         final int index = getIndex(x, y);
 
                         if (isInsideCircle(circle, x, y)) {
-                            char alpha = (char) ((Math.max(circle.color.a * Math.pow((circle.radius - Math.sqrt((x - circle.x) * (x - circle.x) +
-                                    (y - circle.y) * (y - circle.y))) / circle.radius, 2), 0)));
+                            JTColor color = circle.getColor();
+                            char alpha = (char) Math.max(color.getA() * Math.pow((circle.getRadius() - Math.sqrt((x - circle.x) * (x - circle.x) +
+                                    (y - circle.y) * (y - circle.y))) / circle.getRadius(), 2), 0);
 
-                            mixPixel(index, circle.color.r, circle.color.g, circle.color.b, alpha);
+                            mixPixel(index, color.getR(), color.getG(), color.getB(), alpha);
                         }
                     }
                 }
             }
 
-            private void mixPixel(int index, char r, char g, char b, char a) {
+            private void mixPixel(int index, int r, int g, int b, int a) {
                 if (a == 255) {
                     FastJTImage.this.r[index] = r;
                     FastJTImage.this.g[index] = g;
@@ -160,7 +162,7 @@ public class FastJTImage implements JTImage {
             private boolean isInsideCircle(final CircleWithColor circle, final int x, final int y) {
                 return ((x - circle.x) * (x - circle.x) +
                         (y - circle.y) * (y - circle.y))
-                        < (circle.radius * circle.radius);
+                        < (circle.getRadius() * circle.getRadius());
             }
         };
     }
@@ -170,7 +172,7 @@ public class FastJTImage implements JTImage {
         return new FastJTImage(width, height, copy(r), copy(g), copy(b));
     }
 
-    private char[] copy(char[] array) {
+    private int[] copy(int[] array) {
         return Arrays.copyOf(array, array.length);
     }
 }

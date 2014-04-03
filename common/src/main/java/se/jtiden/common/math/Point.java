@@ -1,47 +1,19 @@
 package se.jtiden.common.math;
 
+public interface Point extends Comparable<Point> {
+    int xInt();
 
-public class Point implements Comparable<Point> {
-    public double x;
-    public double y;
+    int yInt();
 
-    public Point(double x, double y) {
-        this.x = x;
-        this.y = y;
-    }
-
-    public int xInt() {
-        return (int) Math.round(x);
-    }
-
-    public int yInt() {
-        return (int) Math.round(y);
-    }
-
-    public double distanceSquaredFrom(double x, double y) {
-        double dx = (this.x - x);
-        double dy = (this.y - y);
-        double distance = dx * dx + dy * dy;
-        //if (x < 0 || y < 0 || this.x < 0 || this.y < 0) {
-        //System.out.println("This: ("+this.x+","+this.y+")"+ " other: ("+x+","+y+") distance:" + distance);
-        //}
-        return distance;
-    }
+    double distanceSquaredFrom(double x, double y);
 
     @Override
-    public int compareTo(Point o) {
-        if (this == o) {
-            return 0;
-        }
+    int compareTo(Point o);
 
-        if (this.x < o.x) {
-            return -1;
-        }
+    @Override
+    String toString();
 
-        if (this.y < o.y) {
-            return -1;
-        }
+    double getX();
 
-        return 1;
-    }
+    double getY();
 }

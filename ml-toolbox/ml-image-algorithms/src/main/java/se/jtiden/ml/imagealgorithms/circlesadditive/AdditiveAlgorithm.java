@@ -1,31 +1,30 @@
 package se.jtiden.ml.imagealgorithms.circlesadditive;
 
+import se.jtiden.common.concurrency.Operation;
+import se.jtiden.common.concurrency.Parallel;
+import se.jtiden.common.images.*;
+import se.jtiden.ml.imagealgorithms.MonaLisa;
+import se.jtiden.ml.imagealgorithms.algorithm.api.IterativeAlgorithm;
+import se.jtiden.ml.imagealgorithms.evaluator.Evaluator;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Random;
 import java.util.concurrent.ConcurrentSkipListSet;
 
-import se.jtiden.common.concurrency.Parallel;
-import se.jtiden.common.images.CircleWithColor;
-import se.jtiden.common.images.FastJTImage;
-import se.jtiden.common.images.JTColor;
-import se.jtiden.common.images.JTImage;
-import se.jtiden.ml.imagealgorithms.MonaLisa;
-import se.jtiden.ml.imagealgorithms.algorithm.api.IterativeAlgorithm;
-import se.jtiden.ml.imagealgorithms.evaluator.Evaluator;
 
+public class AdditiveAlgorithm implements IterativeAlgorithm<AdditiveHypothesis, JTImage> {
 
-public class AddititveAlgorithm implements IterativeAlgorithm<AdditiveHypothesis, JTImage> {
-
-    private final static Random random = new Random();
+    private static final Random random = new Random();
+    public static final double RADIUS_SHRINK_RATE_PER_MISS = 0.9999;
     private AdditiveHypothesis bestHypothesis;
-    private Evaluator<JTImage> evaluator;
-    private int baseAlpha;
+    private final Evaluator<JTImage> evaluator;
+    private final int baseAlpha;
     private double currentMaxRadius;
-    private int minRadius;
+    private final double minRadius;
 
-    public AddititveAlgorithm(
+    public AdditiveAlgorithm(
             MonaLisa monaLisa,
             Evaluator<JTImage> evaluator, int baseAlpha, final int minRadius) {
         this.evaluator = evaluator;
@@ -46,7 +45,7 @@ public class AddititveAlgorithm implements IterativeAlgorithm<AdditiveHypothesis
         return new CircleWithColor(
                 random.nextInt((int) (monaLisa.getWidth())),
                 random.nextInt((int) (monaLisa.getHeight())),
-                new JTColor(random.nextInt(256), random.nextInt(256), random.nextInt(256), random.nextInt(baseAlpha)),
+                new JTColorImpl(random.nextInt(256), random.nextInt(256), random.nextInt(256), random.nextInt(baseAlpha)),
                 random.nextInt((int) currentMaxRadius));
     }
 
@@ -68,7 +67,7 @@ public class AddititveAlgorithm implements IterativeAlgorithm<AdditiveHypothesis
         }
 
         if (!foundBetter && currentMaxRadius > minRadius) {
-            currentMaxRadius *= 0.9999;
+            currentMaxRadius *= RADIUS_SHRINK_RATE_PER_MISS;
             System.out.println("No better found, reducing radius to " + currentMaxRadius);
         }
     }
@@ -85,7 +84,7 @@ public class AddititveAlgorithm implements IterativeAlgorithm<AdditiveHypothesis
 
     private Collection<AdditiveHypothesis> selfBreed(final AdditiveHypothesis hypothesis) {
         final Collection<AdditiveHypothesis> list = new ConcurrentSkipListSet<AdditiveHypothesis>();
-        Parallel.For(range(20), new Parallel.Operation<Integer>() {
+        Parallel.For(range(20), new Operation<Integer>() {
             @Override
             public void perform(final Integer pParameter) {
                 AdditiveHypothesis child = mutateAddPoint(hypothesis);
@@ -113,4 +112,14 @@ public class AddititveAlgorithm implements IterativeAlgorithm<AdditiveHypothesis
         return child;
     }
 
+    @Override
+    public String toString() {
+        return "AdditiveAlgorithm{" +
+                "bestHypothesis=" + bestHypothesis +
+                ", evaluator=" + evaluator +
+                ", baseAlpha=" + baseAlpha +
+                ", currentMaxRadius=" + currentMaxRadius +
+                ", minRadius=" + minRadius +
+                '}';
+    }
 }

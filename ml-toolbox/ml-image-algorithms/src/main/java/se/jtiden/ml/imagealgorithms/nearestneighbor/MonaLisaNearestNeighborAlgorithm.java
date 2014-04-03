@@ -1,16 +1,17 @@
 package se.jtiden.ml.imagealgorithms.nearestneighbor;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
-
 import se.jtiden.common.images.JTColor;
+import se.jtiden.common.images.JTColorImpl;
 import se.jtiden.common.images.JTImage;
 import se.jtiden.common.images.PointWithColor;
 import se.jtiden.common.math.Point;
 import se.jtiden.ml.imagealgorithms.MonaLisa;
 import se.jtiden.ml.imagealgorithms.algorithm.api.IterativeAlgorithm;
 import se.jtiden.ml.imagealgorithms.evaluator.Evaluator;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
 
 
 public class MonaLisaNearestNeighborAlgorithm implements IterativeAlgorithm<MonaLisaNearestNeighborHypothesis, JTImage> {
@@ -44,7 +45,7 @@ public class MonaLisaNearestNeighborAlgorithm implements IterativeAlgorithm<Mona
         PointWithColor middleOfImage = new PointWithColor(
                 monaLisa.getWidth() / 2d,
                 monaLisa.getHeight() / 2d,
-                JTColor.GRAY);
+                JTColorImpl.GRAY);
 
         List<PointWithColor> points = new ArrayList<PointWithColor>();
         for (int i = 0; i < numPoints; ++i) {
@@ -155,7 +156,7 @@ public class MonaLisaNearestNeighborAlgorithm implements IterativeAlgorithm<Mona
         }
 
         //if (random.nextDouble() < chanceToMutatePoint) {
-        c = randomizeColor(p.color, colorVariance);
+        c = randomizeColor(p.getColor(), colorVariance);
         //} else {
         //    c = p.color;
         //}
@@ -165,10 +166,10 @@ public class MonaLisaNearestNeighborAlgorithm implements IterativeAlgorithm<Mona
 
     private static JTColor randomizeColor(JTColor color, int colorVariance) {
         try {
-            return new JTColor(
-                    color.r + random.nextInt(colorVariance) - colorVariance / 2,
-                    color.g + random.nextInt(colorVariance) - colorVariance / 2,
-                    color.b + random.nextInt(colorVariance) - colorVariance / 2);
+            return new JTColorImpl(
+                    color.getR() + random.nextInt(colorVariance) - colorVariance / 2,
+                    color.getG() + random.nextInt(colorVariance) - colorVariance / 2,
+                    color.getB() + random.nextInt(colorVariance) - colorVariance / 2);
 
         } catch (Exception e) {
             return randomizeColor(color, colorVariance);

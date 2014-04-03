@@ -19,7 +19,7 @@ public class AdditiveContextFactory {
     public ContextImpl getContext() {
         MonaLisa monaLisa = new MonaLisa(SCALE_DOWN_BEFORE);
         DifferenceSquaredEvaluator evaluator = new DifferenceSquaredEvaluator(monaLisa.getImage());
-        IterativeAlgorithm algorithm = new AddititveAlgorithm(
+        IterativeAlgorithm algorithm = new AdditiveAlgorithm(
                 monaLisa,
                 evaluator, BASE_ALPHA, MIN_RADIUS);
         final HypothesisPainterFactory hypothesisPainterFactory = new AdditiveHypothesisPainterFactory(

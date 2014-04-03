@@ -1,17 +1,19 @@
 package se.jtiden.ml.imagealgorithms.circles;
 
-import java.util.*;
-
 import se.jtiden.common.images.CircleWithColor;
 import se.jtiden.common.images.JTColor;
+import se.jtiden.common.images.JTColorImpl;
 import se.jtiden.common.images.JTImage;
 import se.jtiden.common.math.Point;
 import se.jtiden.ml.imagealgorithms.MonaLisa;
 import se.jtiden.ml.imagealgorithms.algorithm.api.IterativeAlgorithm;
 import se.jtiden.ml.imagealgorithms.evaluator.Evaluator;
 
+import java.util.*;
+
 public class CirclesAlgorithm implements IterativeAlgorithm<CirclesHypothesis, JTImage> {
 
+    public static final int ALPHA = 255;
     private final double mutationPointSpaceVariance;
     private final static Random random = new Random();
     private final double chanceToMutatePoint;
@@ -71,7 +73,7 @@ public class CirclesAlgorithm implements IterativeAlgorithm<CirclesHypothesis, J
         CircleWithColor newCircle = new CircleWithColor(
                 random.nextInt(monaLisa.getWidth()),
                 random.nextInt(monaLisa.getHeight()),
-                new JTColor(random.nextInt(256), random.nextInt(256), random.nextInt(256)),
+                new JTColorImpl(random.nextInt(256), random.nextInt(256), random.nextInt(256)),
                 random.nextInt(monaLisa.getWidth()));
         return randomizeCircle(newCircle);
     }
@@ -144,7 +146,7 @@ public class CirclesAlgorithm implements IterativeAlgorithm<CirclesHypothesis, J
         Iterator<CircleWithColor> iterator = child.getCircles().iterator();
         while (iterator.hasNext()) {
             CircleWithColor circle = iterator.next();
-            if (circle.radius < 1) {
+            if (circle.getRadius() < 1) {
                 iterator.remove();
             }
         }
@@ -172,19 +174,19 @@ public class CirclesAlgorithm implements IterativeAlgorithm<CirclesHypothesis, J
             y = p.y;
         }
 
-        radius = randomizeRadius(p.radius, radiusVariance);
+        radius = randomizeRadius(p.getRadius(), radiusVariance);
 
 
         if (random.nextDouble() < chanceToMutatePoint) {
-            c = randomizeColor(p.color, mutationPointColorVariance);
+            c = randomizeColor(p.getColor(), mutationPointColorVariance);
         } else {
-            c = p.color;
+            c = p.getColor();
         }
 
         return new CircleWithColor(x, y, c, radius);
     }
 
-    private double randomizeRadius(final double radius, final double radiusVariance) {
+    private double randomizeRadius(double radius, double radiusVariance) {
         if (random.nextDouble() < chanceToMutatePoint) {
             return Math.min(radius + (random.nextDouble() - 0.5) * radiusVariance, 1000000);
         } else {
@@ -194,10 +196,10 @@ public class CirclesAlgorithm implements IterativeAlgorithm<CirclesHypothesis, J
 
     private static JTColor randomizeColor(JTColor color, int colorVariance) {
 
-        return new JTColor(
-                Math.max(0, Math.min(color.r + random.nextInt(colorVariance) - colorVariance / 2, 255)),
-                Math.max(0, Math.min(color.g + random.nextInt(colorVariance) - colorVariance / 2, 255)),
-                Math.max(0, Math.min(color.b + random.nextInt(colorVariance) - colorVariance / 2, 255)));
+        return new JTColorImpl(
+                Math.max(0, Math.min(color.getR() + random.nextInt(colorVariance) - colorVariance / 2, ALPHA)),
+                Math.max(0, Math.min(color.getG() + random.nextInt(colorVariance) - colorVariance / 2, ALPHA)),
+                Math.max(0, Math.min(color.getB() + random.nextInt(colorVariance) - colorVariance / 2, ALPHA)));
 
 
     }

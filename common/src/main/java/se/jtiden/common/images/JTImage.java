@@ -7,9 +7,11 @@ public interface JTImage {
 
     JTColor getColorAt(int x, int y);
 
-    void setPixel(int x, int y, JTColor pixel);
-
     JTGraphics getGraphics();
 
     JTImage copy();
+
+    void setPixel(int x, int y, JTColor pixel);
+
+    void setPixel(int x, int y, int r, int g, int b);
 }

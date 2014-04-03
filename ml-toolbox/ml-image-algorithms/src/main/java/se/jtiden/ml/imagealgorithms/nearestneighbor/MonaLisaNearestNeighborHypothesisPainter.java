@@ -1,15 +1,15 @@
 package se.jtiden.ml.imagealgorithms.nearestneighbor;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
-
 import se.jtiden.common.images.FastJTImage;
 import se.jtiden.common.images.JTColor;
 import se.jtiden.common.images.JTImage;
 import se.jtiden.common.images.PointWithColor;
 import se.jtiden.ml.imagealgorithms.painter.AlgorithmStepPainter;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
 
 
 public class MonaLisaNearestNeighborHypothesisPainter implements AlgorithmStepPainter {
@@ -34,7 +34,7 @@ public class MonaLisaNearestNeighborHypothesisPainter implements AlgorithmStepPa
         //weakClassifiedColors.add(meanColorFromPoints(nearestPoints2));
 
         //return getMonaLisaColor(nearestPoint); //meanColor(weakClassifiedColors);
-        return nearestPoint.color; //meanColor(weakClassifiedColors);
+        return nearestPoint.getColor(); //meanColor(weakClassifiedColors);
     }
 
     @Override

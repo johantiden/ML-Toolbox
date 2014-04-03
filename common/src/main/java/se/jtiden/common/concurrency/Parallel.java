@@ -1,24 +1,26 @@
 package se.jtiden.common.concurrency;
 
+import net.sf.ehcache.util.NamedThreadFactory;
+
 import java.util.Collection;
 import java.util.LinkedList;
-import java.util.List;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-
-import net.sf.ehcache.util.NamedThreadFactory;
 
 
 /**
  * Kudos to http://stackoverflow.com/questions/4010185/parallel-for-for-java
  */
-public class Parallel {
+public final class Parallel {
     private static final int NUM_CORES = Runtime.getRuntime().availableProcessors();
 
     private static final ExecutorService forPool = Executors.newFixedThreadPool(NUM_CORES * 2, new NamedThreadFactory("Parallel.For"));
 
-    public static <T> void For(final Iterable<T> elements, final Operation<T> operation) {
+    private Parallel() {
+    }
+
+    public static <T> void For(Iterable<T> elements, Operation<T> operation) {
         try {
             // invokeAll blocks for us until all submitted tasks in the call complete
             forPool.invokeAll(createCallables(elements, operation));
@@ -27,8 +29,8 @@ public class Parallel {
         }
     }
 
-    public static <T> Collection<Callable<Void>> createCallables(final Iterable<T> elements, final Operation<T> operation) {
-        List<Callable<Void>> callables = new LinkedList<Callable<Void>>();
+    public static <T> Collection<Callable<Void>> createCallables(Iterable<T> elements, final Operation<T> operation) {
+        Collection<Callable<Void>> callables = new LinkedList<Callable<Void>>();
         for (final T elem : elements) {
             callables.add(new Callable<Void>() {
                 @Override
@@ -42,7 +44,5 @@ public class Parallel {
         return callables;
     }
 
-    public static interface Operation<T> {
-        public void perform(T pParameter);
-    }
+
 }
