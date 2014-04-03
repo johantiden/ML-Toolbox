@@ -1,14 +1,14 @@
 package se.jtiden.ml.imagealgorithms;
 
+import java.awt.image.BufferedImage;
+import java.io.IOException;
+import java.net.URL;
+import javax.imageio.ImageIO;
+
 import se.jtiden.common.images.FastJTImage;
 import se.jtiden.common.images.JTColor;
 import se.jtiden.common.images.JTImage;
 import se.jtiden.common.math.Point;
-
-import javax.imageio.ImageIO;
-import java.awt.image.BufferedImage;
-import java.io.IOException;
-import java.net.URL;
 
 public class MonaLisa {
 

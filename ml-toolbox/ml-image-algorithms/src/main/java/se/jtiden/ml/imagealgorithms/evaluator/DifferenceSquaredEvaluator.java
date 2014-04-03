@@ -19,9 +19,9 @@ public class DifferenceSquaredEvaluator implements Evaluator<JTImage> {
 //        for(int i = 0; i < 500; ++i) {
 //                int x = random.nextInt(monaLisa.getWidth());
 //                int y = random.nextInt(monaLisa.getHeight());
-                    loss -= colorDifferenceSquare(
-                            targetImage.getColorAt(x, y),
-                            image.getColorAt(x, y));
+                loss -= colorDifferenceSquare(
+                        targetImage.getColorAt(x, y),
+                        image.getColorAt(x, y));
 
             }
         }

@@ -5,6 +5,7 @@ import se.jtiden.ml.imagealgorithms.painter.HypothesisPainterFactory;
 
 public interface Context {
     IterativeAlgorithm getAlgorithm();
+
     HypothesisPainterFactory getHypothesisPainterFactory();
 
     double getScale();

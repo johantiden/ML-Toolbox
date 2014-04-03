@@ -6,5 +6,6 @@ public interface HypothesisPainterFactory<T extends Hypothesis> {
     AlgorithmStepPainter create(final T hypothesis);
 
     int getWidth();
+
     int getHeight();
 }

@@ -84,9 +84,10 @@ public class OriginalContextFactory {
 
                     @Override
                     public int getHeight() {
-                        return  monaLisa.getHeight();
+                        return monaLisa.getHeight();
                     }
                 },
-                SCALE_UP_AFTER);
+                SCALE_UP_AFTER
+        );
     }
 }

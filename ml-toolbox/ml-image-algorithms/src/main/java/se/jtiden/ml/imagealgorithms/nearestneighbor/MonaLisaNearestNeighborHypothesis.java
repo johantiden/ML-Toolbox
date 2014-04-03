@@ -1,12 +1,12 @@
 package se.jtiden.ml.imagealgorithms.nearestneighbor;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import se.jtiden.common.images.JTColor;
 import se.jtiden.common.images.PointWithColor;
 import se.jtiden.ml.imagealgorithms.MonaLisa;
 import se.jtiden.ml.imagealgorithms.algorithm.api.Hypothesis;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class MonaLisaNearestNeighborHypothesis implements Hypothesis {
 

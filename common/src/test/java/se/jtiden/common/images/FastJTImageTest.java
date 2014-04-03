@@ -3,9 +3,6 @@ package se.jtiden.common.images;
 
 import org.junit.Assert;
 import org.junit.Test;
-import se.jtiden.common.images.JTColor;
-
-import static org.junit.Assert.assertEquals;
 
 public class FastJTImageTest {
 

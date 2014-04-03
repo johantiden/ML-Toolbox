@@ -32,12 +32,12 @@ public class FastJTImage implements JTImage {
 
     public static FastJTImage fromImage(final BufferedImage realImage, final double downscale) {
         FastJTImage fastJTImage = new FastJTImage(
-                (int)(realImage.getWidth(null) / downscale),
-                (int)(realImage.getHeight(null) / downscale));
+                (int) (realImage.getWidth(null) / downscale),
+                (int) (realImage.getHeight(null) / downscale));
 
         for (int y = 0; y < fastJTImage.getHeight(); ++y) {
             for (int x = 0; x < fastJTImage.getWidth(); ++x) {
-                int argb = realImage.getRGB((int)(x * downscale), (int)(y * downscale));
+                int argb = realImage.getRGB((int) (x * downscale), (int) (y * downscale));
 
                 Color pixel = new Color(
                         (argb >> 16) & 0xff, //red
@@ -154,7 +154,7 @@ public class FastJTImage implements JTImage {
 
                         if (isInsideCircle(circle, x, y)) {
                             char alpha = (char) ((Math.max(circle.color.a * Math.pow((circle.radius - Math.sqrt((x - circle.x) * (x - circle.x) +
-                                                                                            (y - circle.y) * (y - circle.y))) / circle.radius, 2), 0)));
+                                    (y - circle.y) * (y - circle.y))) / circle.radius, 2), 0)));
 
                             mixPixel(index, circle.color.r, circle.color.g, circle.color.b, alpha);
                         }
@@ -168,10 +168,10 @@ public class FastJTImage implements JTImage {
                     FastJTImage.this.g[index] = g;
                     FastJTImage.this.b[index] = b;
                 } else {
-                    double alphaPercent = a/255d;
-                    char rFromOld = (char) ((1-alphaPercent) * FastJTImage.this.r[index]);
-                    char gFromOld = (char) ((1-alphaPercent) * FastJTImage.this.g[index]);
-                    char bFromOld = (char) ((1-alphaPercent) * FastJTImage.this.b[index]);
+                    double alphaPercent = a / 255d;
+                    char rFromOld = (char) ((1 - alphaPercent) * FastJTImage.this.r[index]);
+                    char gFromOld = (char) ((1 - alphaPercent) * FastJTImage.this.g[index]);
+                    char bFromOld = (char) ((1 - alphaPercent) * FastJTImage.this.b[index]);
 
                     char rFromNew = (char) (alphaPercent * r);
                     char gFromNew = (char) (alphaPercent * g);
@@ -202,7 +202,7 @@ public class FastJTImage implements JTImage {
 
     @Override
     public JTImage copy() {
-        return new FastJTImage(width, height, copy(r),  copy(g), copy(b));
+        return new FastJTImage(width, height, copy(r), copy(g), copy(b));
     }
 
     private char[] copy(char[] array) {

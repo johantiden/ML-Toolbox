@@ -1,5 +1,11 @@
 package se.jtiden.ml.imagealgorithms.circlesadditive;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.Random;
+import java.util.concurrent.ConcurrentSkipListSet;
+
 import se.jtiden.common.concurrency.Parallel;
 import se.jtiden.common.images.CircleWithColor;
 import se.jtiden.common.images.FastJTImage;
@@ -8,12 +14,6 @@ import se.jtiden.common.images.JTImage;
 import se.jtiden.ml.imagealgorithms.MonaLisa;
 import se.jtiden.ml.imagealgorithms.algorithm.api.IterativeAlgorithm;
 import se.jtiden.ml.imagealgorithms.evaluator.Evaluator;
-
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Random;
-import java.util.concurrent.ConcurrentSkipListSet;
 
 
 public class AddititveAlgorithm implements IterativeAlgorithm<AdditiveHypothesis, JTImage> {
@@ -36,7 +36,7 @@ public class AddititveAlgorithm implements IterativeAlgorithm<AdditiveHypothesis
     }
 
     private void createRandomInitialHypotheses(MonaLisa monaLisa) {
-         bestHypothesis = new AdditiveHypothesis(
+        bestHypothesis = new AdditiveHypothesis(
                 monaLisa,
                 new FastJTImage(monaLisa.getWidth(), monaLisa.getHeight()),
                 getEvaluator());
@@ -69,7 +69,7 @@ public class AddititveAlgorithm implements IterativeAlgorithm<AdditiveHypothesis
 
         if (!foundBetter && currentMaxRadius > minRadius) {
             currentMaxRadius *= 0.9999;
-            System.out.println("No better found, reducing radius to " +  currentMaxRadius);
+            System.out.println("No better found, reducing radius to " + currentMaxRadius);
         }
     }
 

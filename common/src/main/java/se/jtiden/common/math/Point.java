@@ -19,11 +19,11 @@ public class Point implements Comparable<Point> {
     }
 
     public double distanceSquaredFrom(double x, double y) {
-        double dx = (this.x-x);
-        double dy = (this.y-y);
-        double distance = dx*dx + dy*dy;
+        double dx = (this.x - x);
+        double dy = (this.y - y);
+        double distance = dx * dx + dy * dy;
         //if (x < 0 || y < 0 || this.x < 0 || this.y < 0) {
-            //System.out.println("This: ("+this.x+","+this.y+")"+ " other: ("+x+","+y+") distance:" + distance);
+        //System.out.println("This: ("+this.x+","+this.y+")"+ " other: ("+x+","+y+") distance:" + distance);
         //}
         return distance;
     }

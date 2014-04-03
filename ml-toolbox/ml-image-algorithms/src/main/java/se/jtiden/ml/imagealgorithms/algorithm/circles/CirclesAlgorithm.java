@@ -45,7 +45,7 @@ public class CirclesAlgorithm implements IterativeAlgorithm<CirclesHypothesis, J
     }
 
     private void createRandomInitialHypotheses(MonaLisa monaLisa, int numPoints) {
-         bestHypothesis = randomHypothesis(monaLisa, numPoints);
+        bestHypothesis = randomHypothesis(monaLisa, numPoints);
     }
 
     private CirclesHypothesis randomHypothesis(MonaLisa monaLisa, int numPoints) {
@@ -173,7 +173,6 @@ public class CirclesAlgorithm implements IterativeAlgorithm<CirclesHypothesis, J
         }
 
         radius = randomizeRadius(p.radius, radiusVariance);
-
 
 
         if (random.nextDouble() < chanceToMutatePoint) {

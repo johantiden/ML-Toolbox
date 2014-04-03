@@ -13,7 +13,7 @@ public class JTColor {
     public final char a;
 
     public JTColor(char r, char g, char b, char a) {
-        verify(r,g,b,a);
+        verify(r, g, b, a);
         this.r = r;
         this.g = g;
         this.b = b;
@@ -29,16 +29,16 @@ public class JTColor {
 
     private void verify(char c) {
         if (c < 0 || c > 255) {
-            throw new RuntimeException("Color value out of bounds: " + ((int)c));
+            throw new RuntimeException("Color value out of bounds: " + ((int) c));
         }
     }
 
     public JTColor(int r, int g, int b, int a) {
-        this((char)r, (char)b, (char)g, (char)a);
+        this((char) r, (char) b, (char) g, (char) a);
     }
 
     public JTColor(int r, int g, int b) {
-        this(r,g,b,255);
+        this(r, g, b, 255);
     }
 
     public static int difference(JTColor color1, JTColor color2) {

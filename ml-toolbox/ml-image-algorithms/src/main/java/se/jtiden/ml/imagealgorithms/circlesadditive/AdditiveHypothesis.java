@@ -40,7 +40,6 @@ public class AdditiveHypothesis implements Hypothesis {
     }
 
 
-
     @Override
     public int compareTo(Hypothesis o) {
         if (this == o) {

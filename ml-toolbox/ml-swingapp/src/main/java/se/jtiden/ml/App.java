@@ -1,8 +1,8 @@
 package se.jtiden.ml;
 
 
-import javax.swing.*;
 import java.awt.*;
+import javax.swing.*;
 
 import se.jtiden.ml.imagealgorithms.Context;
 import se.jtiden.ml.imagealgorithms.algorithm.api.Hypothesis;
@@ -35,7 +35,7 @@ public class App extends JFrame {
         this.add(canvas);
         this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
-        this.setSize(imageWidth()+16, imageHeight()+38);
+        this.setSize(imageWidth() + 16, imageHeight() + 38);
 
         setVisible(true);
         startSimulating();
@@ -43,11 +43,11 @@ public class App extends JFrame {
     }
 
     private int imageHeight() {
-        return (int)(context.getHypothesisPainterFactory().getHeight() * context.getScale());
+        return (int) (context.getHypothesisPainterFactory().getHeight() * context.getScale());
     }
 
     private int imageWidth() {
-        return (int)(context.getHypothesisPainterFactory().getWidth() * context.getScale());
+        return (int) (context.getHypothesisPainterFactory().getWidth() * context.getScale());
     }
 
 

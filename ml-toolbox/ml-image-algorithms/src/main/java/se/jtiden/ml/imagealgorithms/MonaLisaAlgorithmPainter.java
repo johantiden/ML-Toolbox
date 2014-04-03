@@ -1,7 +1,5 @@
 package se.jtiden.ml.imagealgorithms;
 
-import java.awt.*;
-
 import se.jtiden.common.images.JTImage;
 import se.jtiden.ml.imagealgorithms.algorithm.api.IterativeAlgorithm;
 import se.jtiden.ml.imagealgorithms.painter.AlgorithmStepPainter;

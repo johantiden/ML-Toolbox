@@ -17,6 +17,6 @@ public class CircleWithColor extends PointWithColor {
     }
 
     public int diameter() {
-        return (int) (radius*2);
+        return (int) (radius * 2);
     }
 }

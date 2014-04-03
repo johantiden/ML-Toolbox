@@ -1,5 +1,9 @@
 package se.jtiden.ml.imagealgorithms.nearestneighbor;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
+
 import se.jtiden.common.images.JTColor;
 import se.jtiden.common.images.JTImage;
 import se.jtiden.common.images.PointWithColor;
@@ -7,10 +11,6 @@ import se.jtiden.common.math.Point;
 import se.jtiden.ml.imagealgorithms.MonaLisa;
 import se.jtiden.ml.imagealgorithms.algorithm.api.IterativeAlgorithm;
 import se.jtiden.ml.imagealgorithms.evaluator.Evaluator;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
 
 
 public class MonaLisaNearestNeighborAlgorithm implements IterativeAlgorithm<MonaLisaNearestNeighborHypothesis, JTImage> {
@@ -35,11 +35,10 @@ public class MonaLisaNearestNeighborAlgorithm implements IterativeAlgorithm<Mona
     }
 
     private void createRandomInitialHypotheses(MonaLisa monaLisa, int numPoints) {
-         bestHypothesis = randomHypothesis(monaLisa, numPoints);
+        bestHypothesis = randomHypothesis(monaLisa, numPoints);
     }
 
     private MonaLisaNearestNeighborHypothesis randomHypothesis(MonaLisa monaLisa, int numPoints) {
-
 
 
         PointWithColor middleOfImage = new PointWithColor(
@@ -67,20 +66,20 @@ public class MonaLisaNearestNeighborAlgorithm implements IterativeAlgorithm<Mona
     @Override
     public void iterate() {
         //synchronized (hypotheses) {
-            //MonaLisaNearestNeighborHypothesis first = hypotheses.first();
+        //MonaLisaNearestNeighborHypothesis first = hypotheses.first();
 
-            MonaLisaNearestNeighborHypothesis newHypothesis = selfBreed(bestHypothesis);
+        MonaLisaNearestNeighborHypothesis newHypothesis = selfBreed(bestHypothesis);
 
-            if (newHypothesis.valueFunction() > bestHypothesis.valueFunction()) {
-                System.out.println("New best! " + newHypothesis.valueFunction() + " old:" + bestHypothesis.valueFunction());
-                bestHypothesis = newHypothesis;
-                //hypotheses.add(newHypothesis);
-                //hypotheses.remove(hypotheses.last());
+        if (newHypothesis.valueFunction() > bestHypothesis.valueFunction()) {
+            System.out.println("New best! " + newHypothesis.valueFunction() + " old:" + bestHypothesis.valueFunction());
+            bestHypothesis = newHypothesis;
+            //hypotheses.add(newHypothesis);
+            //hypotheses.remove(hypotheses.last());
 
-                //if (newHypothesis.getParent() != null) {
-                //    hypotheses.add(newHypothesis.getParent());
-                //}
-            }
+            //if (newHypothesis.getParent() != null) {
+            //    hypotheses.add(newHypothesis.getParent());
+            //}
+        }
         //}
     }
 
@@ -121,7 +120,7 @@ public class MonaLisaNearestNeighborAlgorithm implements IterativeAlgorithm<Mona
                     newPoint = randomizePoint(p, mutationPointSpaceVariance, mutationPointColorVariance);
                 }
             } else {
-               newPoint = p;
+                newPoint = p;
             }
 
             points.add(newPoint);
@@ -156,7 +155,7 @@ public class MonaLisaNearestNeighborAlgorithm implements IterativeAlgorithm<Mona
         }
 
         //if (random.nextDouble() < chanceToMutatePoint) {
-            c = randomizeColor(p.color, colorVariance);
+        c = randomizeColor(p.color, colorVariance);
         //} else {
         //    c = p.color;
         //}
