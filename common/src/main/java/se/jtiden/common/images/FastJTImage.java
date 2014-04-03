@@ -36,7 +36,7 @@ public class FastJTImage implements JTImage {
     }
 
 
-    private int getIndex(int x, int y) {
+    int getIndex(int x, int y) {
         verify(x, y);
         return y * width + x;
     }
@@ -77,7 +77,11 @@ public class FastJTImage implements JTImage {
 
     @Override
     public void setPixel(int x, int y, int r, int g, int b) {
-        final int index = getIndex(x, y);
+        int index = getIndex(x, y);
+        setPixel(index, r, g, b);
+    }
+
+    void setPixel(int index, int r, int g, int b) {
         this.r[index] = r;
         this.g[index] = g;
         this.b[index] = b;
@@ -85,86 +89,7 @@ public class FastJTImage implements JTImage {
 
     @Override
     public JTGraphics getGraphics() {
-        return new JTGraphics() {
-            @Override
-            public void drawCircle(CircleWithColor circle) {
-                final int left = Math.max(circle.left(), 0);
-                final int top = Math.max(circle.top(), 0);
-                final int right = Math.min(left + circle.diameterInt() + 1, width - 1);
-                final int bottom = Math.min(top + circle.diameterInt() + 1, height - 1);
-
-                for (int y = top; y < bottom; ++y) {
-                    for (int x = left; x < right; ++x) {
-                        final int index = getIndex(x, y);
-
-                        if (isInsideCircle(circle, x, y)) {
-                            //char alpha = (char) ((Math.max(circle.color.a - Math.sqrt((x - circle.x) * (x - circle.x) +
-                            //                                                                (y - circle.y) * (y - circle.y)) / circle.radius*200, 0)));
-
-                            mixPixel(index, circle.getColor().getR(), circle.getColor().getG(), circle.getColor().getB(), circle.getColor().getA());
-                        }
-                    }
-                }
-            }
-
-            @Override
-            public void drawRadial(CircleWithColor circle) {
-                final int left = Math.max(circle.left(), 0);
-                final int top = Math.max(circle.top(), 0);
-                final int right = Math.min(left + circle.diameterInt() + 1, width - 1);
-                final int bottom = Math.min(top + circle.diameterInt() + 1, height - 1);
-
-                for (int y = top; y < bottom; ++y) {
-                    for (int x = left; x < right; ++x) {
-                        final int index = getIndex(x, y);
-
-                        if (isInsideCircle(circle, x, y)) {
-                            JTColor color = circle.getColor();
-                            char alpha = (char) Math.max(color.getA() * Math.pow((circle.getRadius() - Math.sqrt((x - circle.x) * (x - circle.x) +
-                                    (y - circle.y) * (y - circle.y))) / circle.getRadius(), 2), 0);
-
-                            mixPixel(index, color.getR(), color.getG(), color.getB(), alpha);
-                        }
-                    }
-                }
-            }
-
-            private void mixPixel(int index, int r, int g, int b, int a) {
-                if (a == 255) {
-                    FastJTImage.this.r[index] = r;
-                    FastJTImage.this.g[index] = g;
-                    FastJTImage.this.b[index] = b;
-                } else {
-                    double alphaPercent = a / 255d;
-                    char rFromOld = (char) ((1 - alphaPercent) * FastJTImage.this.r[index]);
-                    char gFromOld = (char) ((1 - alphaPercent) * FastJTImage.this.g[index]);
-                    char bFromOld = (char) ((1 - alphaPercent) * FastJTImage.this.b[index]);
-
-                    char rFromNew = (char) (alphaPercent * r);
-                    char gFromNew = (char) (alphaPercent * g);
-                    char bFromNew = (char) (alphaPercent * b);
-
-                    char mixedR = (char) (rFromOld + rFromNew);
-                    char mixedG = (char) (gFromOld + gFromNew);
-                    char mixedB = (char) (bFromOld + bFromNew);
-
-                    FastJTImage.this.r[index] = mixedR;
-                    FastJTImage.this.g[index] = mixedG;
-                    FastJTImage.this.b[index] = mixedB;
-                }
-            }
-
-
-            private void mixPixel(int index, JTColor color) {
-
-            }
-
-            private boolean isInsideCircle(final CircleWithColor circle, final int x, final int y) {
-                return ((x - circle.x) * (x - circle.x) +
-                        (y - circle.y) * (y - circle.y))
-                        < (circle.getRadius() * circle.getRadius());
-            }
-        };
+        return new FastJTImageGraphics(this);
     }
 
     @Override
@@ -172,7 +97,19 @@ public class FastJTImage implements JTImage {
         return new FastJTImage(width, height, copy(r), copy(g), copy(b));
     }
 
-    private int[] copy(int[] array) {
+    private static int[] copy(int[] array) {
         return Arrays.copyOf(array, array.length);
+    }
+
+    public int getR(int index) {
+        return r[index];
+    }
+
+    public int getG(int index) {
+        return g[index];
+    }
+
+    public int getB(int index) {
+        return b[index];
     }
 }

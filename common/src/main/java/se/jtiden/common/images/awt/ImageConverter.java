@@ -6,7 +6,10 @@ import se.jtiden.common.images.JTImage;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 
-public class ImageConverter {
+public final class ImageConverter {
+
+    private ImageConverter() {
+    }
 
     public static BufferedImage toAwtImage(JTImage image) {
         BufferedImage bufferedImage = new BufferedImage(image.getWidth(), image.getHeight(), BufferedImage.TYPE_INT_RGB);
@@ -25,7 +28,7 @@ public class ImageConverter {
         return bufferedImage;
     }
 
-    public static FastJTImage toFastJTImage(BufferedImage image, final double downscale) {
+    public static FastJTImage toFastJTImage(BufferedImage image, double downscale) {
         FastJTImage fastJTImage = new FastJTImage(
                 (int) (image.getWidth(null) / downscale),
                 (int) (image.getHeight(null) / downscale));
@@ -35,15 +38,15 @@ public class ImageConverter {
                 int argb = image.getRGB((int) (x * downscale), (int) (y * downscale));
 
                 Color pixel = new Color(
-                        (argb >> 16) & 0xff, //red
-                        (argb >> 0) & 0xff, //green
-                        (argb >> 8) & 0xff  //blue
+                        argb >> 16 & 0xff, //red
+                        argb >> 0 & 0xff, //green
+                        argb >> 8 & 0xff  //blue
                 );
 
                 fastJTImage.setPixel(x, y,
-                        (char) pixel.getRed(),
-                        (char) pixel.getGreen(),
-                        (char) pixel.getBlue());
+                        pixel.getRed(),
+                        pixel.getGreen(),
+                        pixel.getBlue());
             }
         }
         return fastJTImage;

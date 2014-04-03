@@ -1,12 +1,13 @@
 package se.jtiden.ml;
 
 
-import java.awt.*;
-import javax.swing.*;
-
 import se.jtiden.common.images.awt.ImageConverter;
 import se.jtiden.ml.imagealgorithms.Context;
 import se.jtiden.ml.imagealgorithms.algorithm.api.Hypothesis;
+import se.jtiden.ml.imagealgorithms.algorithm.api.IterativeAlgorithm;
+
+import javax.swing.*;
+import java.awt.*;
 
 
 public class App extends JFrame {
@@ -53,26 +54,7 @@ public class App extends JFrame {
 
 
     private void startPainting() {
-        new Thread(new Runnable() {
-
-
-            @Override
-            public void run() {
-                while (isVisible()) {
-                    try {
-                        Thread.sleep(3000);
-                        Hypothesis currentHypothesis = context.getAlgorithm().getBestHypothesis();
-
-                        if (currentHypothesis != bestHypothesis) {
-                            bestHypothesis = currentHypothesis;
-                            canvas.repaint();
-                        }
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                }
-            }
-        }).start();
+        new Thread(new PaintRunnable()).start();
     }
 
     private Graphics graphics() {
@@ -80,21 +62,44 @@ public class App extends JFrame {
     }
 
     private void startSimulating() {
-        new Thread(new Runnable() {
-            public long step;
+        new Thread(new AlgorithmRunnable()).start();
+    }
 
-            @Override
-            public void run() {
-                while (isVisible()) {
-                    try {
-                        Thread.yield();
-                        //System.out.println("Step " + (step++));
-                        context.getAlgorithm().iterate();
-                    } catch (Exception e) {
-                        e.printStackTrace();
+    private class PaintRunnable implements Runnable {
+
+
+        @Override
+        public void run() {
+            while (isVisible()) {
+                try {
+                    Thread.sleep(3000);
+                    IterativeAlgorithm algorithm = context.getAlgorithm();
+                    Hypothesis currentHypothesis = algorithm.getBestHypothesis();
+
+                    if (currentHypothesis != bestHypothesis) {
+                        bestHypothesis = currentHypothesis;
+                        canvas.repaint();
                     }
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
                 }
             }
-        }).start();
+        }
+    }
+
+    private class AlgorithmRunnable implements Runnable {
+
+        @Override
+        public void run() {
+            while (isVisible()) {
+                try {
+                    Thread.yield();
+                    IterativeAlgorithm algorithm = context.getAlgorithm();
+                    algorithm.iterate();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }
     }
 }

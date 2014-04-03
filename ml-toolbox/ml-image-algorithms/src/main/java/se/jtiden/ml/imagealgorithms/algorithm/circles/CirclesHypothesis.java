@@ -1,13 +1,13 @@
 package se.jtiden.ml.imagealgorithms.algorithm.circles;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import se.jtiden.common.images.CircleWithColor;
 import se.jtiden.common.images.JTImage;
 import se.jtiden.ml.imagealgorithms.MonaLisa;
 import se.jtiden.ml.imagealgorithms.algorithm.api.Hypothesis;
 import se.jtiden.ml.imagealgorithms.evaluator.Evaluator;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class CirclesHypothesis implements Hypothesis {
 
@@ -19,9 +19,9 @@ public class CirclesHypothesis implements Hypothesis {
 
     public CirclesHypothesis(
             MonaLisa monaLisa,
-            List<CircleWithColor> points, Evaluator<JTImage> imageEvaluator) {
+            List<CircleWithColor> circles, Evaluator<JTImage> imageEvaluator) {
         this.monaLisa = monaLisa;
-        this.circles = points;
+        this.circles = circles;
         this.imageEvaluator = imageEvaluator;
     }
 

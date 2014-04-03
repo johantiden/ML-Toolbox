@@ -29,8 +29,13 @@ public class DifferenceSquaredEvaluator implements Evaluator<JTImage> {
         return loss;
     }
 
+    @Override
+    public JTImage getTarget() {
+        return targetImage;
+    }
+
     private static double colorDifferenceSquare(JTColor color1, JTColor color2) {
-        double diff = (double) color1.difference(color2);
+        double diff = color1.difference(color2);
         return diff * diff;
     }
 
