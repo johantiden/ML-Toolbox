@@ -7,4 +7,6 @@ public interface JTColor {
     int getA();
 
     int difference(JTColor color2);
+
+    JTColor randomizeColor(int colorVariance);
 }

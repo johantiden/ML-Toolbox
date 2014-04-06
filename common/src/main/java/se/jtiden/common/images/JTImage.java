@@ -1,6 +1,8 @@
 package se.jtiden.common.images;
 
-public interface JTImage {
+import java.io.Serializable;
+
+public interface JTImage extends Serializable {
     int getWidth();
 
     int getHeight();

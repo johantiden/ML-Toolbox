@@ -6,6 +6,7 @@ import se.jtiden.ml.imagealgorithms.ContextImpl;
 import se.jtiden.ml.imagealgorithms.MonaLisaAlgorithmPainter;
 import se.jtiden.ml.imagealgorithms.algorithm.api.IterativeAlgorithm;
 import se.jtiden.ml.imagealgorithms.evaluator.DifferenceSquaredEvaluator;
+import se.jtiden.ml.imagealgorithms.evaluator.Evaluator;
 import se.jtiden.ml.imagealgorithms.original.OriginalContextFactory;
 import se.jtiden.ml.imagealgorithms.painter.HypothesisPainterFactory;
 
@@ -18,13 +19,12 @@ public class AdditiveContextFactory {
 
 
     public ContextImpl getContext() {
-        JTImage monaLisa = ImageConverter.loadImage(OriginalContextFactory.IMAGE, SCALE_DOWN_BEFORE);
-        DifferenceSquaredEvaluator evaluator = new DifferenceSquaredEvaluator(monaLisa);
+        JTImage targetImage = ImageConverter.loadImage(OriginalContextFactory.IMAGE, SCALE_DOWN_BEFORE);
+        Evaluator<JTImage> evaluator = new DifferenceSquaredEvaluator(targetImage);
         IterativeAlgorithm algorithm = new AdditiveAlgorithm(
-                monaLisa,
                 evaluator, BASE_ALPHA, MIN_RADIUS);
-        final HypothesisPainterFactory hypothesisPainterFactory = new AdditiveHypothesisPainterFactory(
-                monaLisa.getWidth(), monaLisa.getHeight());
+        HypothesisPainterFactory hypothesisPainterFactory = new AdditiveHypothesisPainterFactory(
+                targetImage.getWidth(), targetImage.getHeight());
 
 
         return new ContextImpl(

@@ -78,4 +78,26 @@ public class MonaLisaNearestNeighborHypothesis implements Hypothesis {
     public JTImage getTargetImage() {
         return targetImage;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof MonaLisaNearestNeighborHypothesis)) return false;
+
+        MonaLisaNearestNeighborHypothesis that = (MonaLisaNearestNeighborHypothesis) o;
+
+        if (lossCached != null ? !lossCached.equals(that.lossCached) : that.lossCached != null) return false;
+        if (!points.equals(that.points)) return false;
+        if (!targetImage.equals(that.targetImage)) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = points.hashCode();
+        result = 31 * result + targetImage.hashCode();
+        result = 31 * result + (lossCached != null ? lossCached.hashCode() : 0);
+        return result;
+    }
 }

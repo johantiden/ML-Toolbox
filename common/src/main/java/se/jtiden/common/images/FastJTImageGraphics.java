@@ -1,6 +1,6 @@
 package se.jtiden.common.images;
 
-class FastJTImageGraphics implements JTGraphics {
+public class FastJTImageGraphics implements JTGraphics {
     private FastJTImage fastJTImage;
 
     public FastJTImageGraphics(FastJTImage fastJTImage) {
@@ -9,10 +9,10 @@ class FastJTImageGraphics implements JTGraphics {
 
     @Override
     public void drawCircle(CircleWithColor circle) {
-        final int left = Math.max(circle.left(), 0);
-        final int top = Math.max(circle.top(), 0);
-        final int right = Math.min(left + circle.diameterInt() + 1, fastJTImage.getWidth() - 1);
-        final int bottom = Math.min(top + circle.diameterInt() + 1, fastJTImage.getHeight() - 1);
+        int left = Math.max(circle.left(), 0);
+        int top = Math.max(circle.top(), 0);
+        int right = (int) Math.min(left + circle.getRadius()*2 + 1, fastJTImage.getWidth() - 1);
+        int bottom = (int) Math.min(top + circle.getRadius()*2 + 1, fastJTImage.getHeight() - 1);
 
         for (int y = top; y < bottom; ++y) {
             for (int x = left; x < right; ++x) {
@@ -30,19 +30,19 @@ class FastJTImageGraphics implements JTGraphics {
 
     @Override
     public void drawRadial(CircleWithColor circle) {
-        final int left = Math.max(circle.left(), 0);
-        final int top = Math.max(circle.top(), 0);
-        final int right = Math.min(left + circle.diameterInt() + 1, fastJTImage.getWidth() - 1);
-        final int bottom = Math.min(top + circle.diameterInt() + 1, fastJTImage.getHeight() - 1);
+        int left = Math.max(circle.left(), 0);
+        int top = Math.max(circle.top(), 0);
+        int right = (int) Math.min(left + circle.getRadius()*2 + 1, fastJTImage.getWidth() - 1);
+        int bottom = (int) Math.min(top + circle.getRadius()*2 + 1, fastJTImage.getHeight() - 1);
 
         for (int y = top; y < bottom; ++y) {
             for (int x = left; x < right; ++x) {
-                final int index = fastJTImage.getIndex(x, y);
+                int index = fastJTImage.getIndex(x, y);
 
                 if (isInsideCircle(circle, x, y)) {
                     JTColor color = circle.getColor();
-                    char alpha = (char) Math.max(color.getA() * Math.pow((circle.getRadius() - Math.sqrt((x - circle.x) * (x - circle.x) +
-                            (y - circle.y) * (y - circle.y))) / circle.getRadius(), 2), 0);
+                    char alpha = (char) Math.max(color.getA() * Math.pow((circle.getRadius() - Math.sqrt((x - circle.getX()) * (x - circle.getX()) +
+                            (y - circle.getY()) * (y - circle.getY()))) / circle.getRadius(), 2), 0);
 
                     mixPixel(index, color.getR(), color.getG(), color.getB(), alpha);
                 }
@@ -77,9 +77,9 @@ class FastJTImageGraphics implements JTGraphics {
 
     }
 
-    private boolean isInsideCircle(final CircleWithColor circle, final int x, final int y) {
-        return ((x - circle.x) * (x - circle.x) +
-                (y - circle.y) * (y - circle.y))
+    private boolean isInsideCircle(CircleWithColor circle, int x, int y) {
+        return ((x - circle.getX()) * (x - circle.getX()) +
+                (y - circle.getY()) * (y - circle.getY()))
                 < (circle.getRadius() * circle.getRadius());
     }
 }

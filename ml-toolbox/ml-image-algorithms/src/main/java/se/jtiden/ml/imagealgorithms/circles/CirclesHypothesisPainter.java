@@ -1,9 +1,6 @@
 package se.jtiden.ml.imagealgorithms.circles;
 
-import se.jtiden.common.images.CircleWithColor;
-import se.jtiden.common.images.FastJTImage;
-import se.jtiden.common.images.JTGraphics;
-import se.jtiden.common.images.JTImage;
+import se.jtiden.common.images.*;
 import se.jtiden.ml.imagealgorithms.painter.AlgorithmStepPainter;
 
 public class CirclesHypothesisPainter implements AlgorithmStepPainter {

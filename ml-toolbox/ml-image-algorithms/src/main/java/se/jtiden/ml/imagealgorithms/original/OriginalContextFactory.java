@@ -111,7 +111,7 @@ public class OriginalContextFactory implements ContextFactory {
 
             @Override
             public Object getTarget() {
-                return null;
+                return new Object();
             }
 
             @Override

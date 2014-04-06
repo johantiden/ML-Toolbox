@@ -1,9 +1,6 @@
 package se.jtiden.ml.imagealgorithms.circles;
 
-import se.jtiden.common.images.CircleWithColor;
-import se.jtiden.common.images.JTColor;
-import se.jtiden.common.images.JTColorImpl;
-import se.jtiden.common.images.JTImage;
+import se.jtiden.common.images.*;
 import se.jtiden.common.math.Point;
 import se.jtiden.ml.imagealgorithms.algorithm.api.IterativeAlgorithm;
 import se.jtiden.ml.imagealgorithms.evaluator.Evaluator;
@@ -68,7 +65,7 @@ public class CirclesAlgorithm implements IterativeAlgorithm<CirclesHypothesis, J
     }
 
     private CircleWithColor newRandomCircle(JTImage targetImage) {
-        CircleWithColor newCircle = new CircleWithColor(
+        CircleWithColorImpl newCircle = new CircleWithColorImpl(
                 random.nextInt(targetImage.getWidth()),
                 random.nextInt(targetImage.getHeight()),
                 new JTColorImpl(random.nextInt(256), random.nextInt(256), random.nextInt(256)),
@@ -158,48 +155,32 @@ public class CirclesAlgorithm implements IterativeAlgorithm<CirclesHypothesis, J
                 newPoint.yInt() >= targetImage.getHeight();
     }
 
-    private CircleWithColor randomizeCircle(CircleWithColor p) {
+    private CircleWithColor randomizeCircle(CircleWithColor circleWithColor) {
         double x;
         double y;
-        double radius;
-        JTColor c;
 
         if (random.nextDouble() < chanceToMutatePoint) {
-            x = p.x + (random.nextDouble() - 0.5) * mutationPointSpaceVariance;
-            y = p.y + (random.nextDouble() - 0.5) * mutationPointSpaceVariance;
+            x = circleWithColor.getX() + (random.nextDouble() - 0.5) * mutationPointSpaceVariance;
+            y = circleWithColor.getY() + (random.nextDouble() - 0.5) * mutationPointSpaceVariance;
         } else {
-            x = p.x;
-            y = p.y;
+            x = circleWithColor.getX();
+            y = circleWithColor.getY();
         }
 
-        radius = randomizeRadius(p.getRadius(), radiusVariance);
+        double radius = randomizeRadius(circleWithColor.getRadius(), radiusVariance);
 
 
-        if (random.nextDouble() < chanceToMutatePoint) {
-            c = randomizeColor(p.getColor(), mutationPointColorVariance);
-        } else {
-            c = p.getColor();
-        }
+        JTColor c = random.nextDouble() < chanceToMutatePoint ?
+                circleWithColor.getColor().randomizeColor(mutationPointColorVariance) :
+                circleWithColor.getColor();
 
-        return new CircleWithColor(x, y, c, radius);
+        return new CircleWithColorImpl(x, y, c, radius);
     }
 
     private double randomizeRadius(double radius, double radiusVariance) {
-        if (random.nextDouble() < chanceToMutatePoint) {
-            return Math.min(radius + (random.nextDouble() - 0.5) * radiusVariance, 1000000);
-        } else {
-            return radius;
-        }
-    }
-
-    private static JTColor randomizeColor(JTColor color, int colorVariance) {
-
-        return new JTColorImpl(
-                Math.max(0, Math.min(color.getR() + random.nextInt(colorVariance) - colorVariance / 2, ALPHA)),
-                Math.max(0, Math.min(color.getG() + random.nextInt(colorVariance) - colorVariance / 2, ALPHA)),
-                Math.max(0, Math.min(color.getB() + random.nextInt(colorVariance) - colorVariance / 2, ALPHA)));
-
-
+        return random.nextDouble() < chanceToMutatePoint ?
+                Math.min(radius + (random.nextDouble() - 0.5) * radiusVariance, 1000000) :
+                radius;
     }
 
 }

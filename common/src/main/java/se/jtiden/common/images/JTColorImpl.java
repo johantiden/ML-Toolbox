@@ -1,5 +1,7 @@
 package se.jtiden.common.images;
 
+import java.util.Random;
+
 public class JTColorImpl implements JTColor {
     public static final JTColor GRAY = new JTColorImpl(128, 128, 128);
     public static final JTColor BLACK = new JTColorImpl(0, 0, 0);
@@ -11,6 +13,7 @@ public class JTColorImpl implements JTColor {
     private final int g;
     private final int b;
     private final int a;
+    private final Random random = new Random();
 
     public JTColorImpl(int r, int g, int b, int a) {
         verify(r, g, b, a);
@@ -35,6 +38,14 @@ public class JTColorImpl implements JTColor {
 
     public JTColorImpl(int r, int g, int b) {
         this(r, g, b, COLOR_MAX_LIMIT);
+    }
+
+    @Override
+    public JTColor randomizeColor(int colorVariance) {
+        return new JTColorImpl(
+                Math.max(0, Math.min(r + random.nextInt(colorVariance) - colorVariance / 2, a)),
+                Math.max(0, Math.min(g + random.nextInt(colorVariance) - colorVariance / 2, a)),
+                Math.max(0, Math.min(b + random.nextInt(colorVariance) - colorVariance / 2, a)));
     }
 
     @Override

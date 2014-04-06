@@ -1,18 +1,14 @@
 package se.jtiden.ml.imagealgorithms.circlesadditive;
 
 import se.jtiden.common.concurrency.Operation;
-import se.jtiden.common.concurrency.Parallel;
-import se.jtiden.common.images.CircleWithColor;
-import se.jtiden.common.images.FastJTImage;
-import se.jtiden.common.images.JTColorImpl;
-import se.jtiden.common.images.JTImage;
+import se.jtiden.common.concurrency.ParallelPooled;
+import se.jtiden.common.images.*;
+import se.jtiden.common.math.Lists;
 import se.jtiden.ml.imagealgorithms.algorithm.api.Hypothesis;
 import se.jtiden.ml.imagealgorithms.algorithm.api.IterativeAlgorithm;
 import se.jtiden.ml.imagealgorithms.evaluator.Evaluator;
 
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 import java.util.Random;
 import java.util.concurrent.ConcurrentSkipListSet;
 
@@ -21,6 +17,7 @@ public class AdditiveAlgorithm implements IterativeAlgorithm<AdditiveHypothesis,
 
     private static final Random random = new Random();
     public static final double RADIUS_SHRINK_RATE_PER_MISS = 0.999;
+    public static final int NUM_CHILDREN_PER_GENERATION = 20;
     private final Evaluator<JTImage> evaluator;
     private final int baseAlpha;
     private final int width;
@@ -31,30 +28,24 @@ public class AdditiveAlgorithm implements IterativeAlgorithm<AdditiveHypothesis,
     private Hypothesis bestHypothesis;
 
     public AdditiveAlgorithm(
-            JTImage targetImage,
-            Evaluator<JTImage> evaluator, int baseAlpha, final int minRadius) {
+            Evaluator<JTImage> evaluator, int baseAlpha, int minRadius) {
         this.evaluator = evaluator;
         this.baseAlpha = baseAlpha;
         this.minRadius = minRadius;
-        width = evaluator.getTarget().getWidth();
-        height = evaluator.getTarget().getHeight();
-        this.currentMaxRadius = targetImage.getWidth() / 2;
-        createRandomInitialHypotheses(targetImage);
+        JTImage target = evaluator.getTarget();
+        width = target.getWidth();
+        height = target.getHeight();
+        currentMaxRadius = target.getWidth() / 2;
+        createRandomInitialHypotheses(target);
     }
 
     private void createRandomInitialHypotheses(JTImage targetImage) {
         bestHypothesis = new AdditiveHypothesis(
                 new FastJTImage(targetImage.getWidth(), targetImage.getHeight()),
-                getEvaluator());
+                evaluator);
     }
 
-    private CircleWithColor newRandomCircle(int width, int height) {
-        return new CircleWithColor(
-                random.nextInt(width),
-                random.nextInt(height),
-                new JTColorImpl(random.nextInt(256), random.nextInt(256), random.nextInt(256), random.nextInt(baseAlpha)),
-                random.nextInt((int) currentMaxRadius));
-    }
+
 
     @Override
     public void iterate() {
@@ -87,39 +78,24 @@ public class AdditiveAlgorithm implements IterativeAlgorithm<AdditiveHypothesis,
         return evaluator;
     }
 
-    private Collection<Hypothesis> selfBreed(final Hypothesis hypothesis) {
-        final Collection<Hypothesis> list = new ConcurrentSkipListSet<Hypothesis>();
-        Parallel.For(range(20), new MutateAndAddToListOperation(hypothesis, list));
+    private Collection<Hypothesis> selfBreed(Hypothesis hypothesis) {
+        Collection<Hypothesis> list = new ConcurrentSkipListSet<Hypothesis>();
+        new ParallelPooled().For(Lists.range(NUM_CHILDREN_PER_GENERATION), new MutateAndAddToListOperation(hypothesis, list));
 
         return list;
     }
 
-    private List<Integer> range(final int maxExclusive) {
-        List<Integer> range = new ArrayList<Integer>();
-        for (int i = 0; i < maxExclusive; ++i) {
-            range.add(i);
-        }
-        return range;
-    }
-
-
-    private Hypothesis mutateAddPoint(Hypothesis hypothesis) {
-        Hypothesis child = hypothesis.copy();
-
-
-        ((AdditiveHypothesis)child).draw(newRandomCircle(width, height));
-
-        return child;
-    }
 
     @Override
     public String toString() {
         return "AdditiveAlgorithm{" +
-                "bestHypothesis=" + bestHypothesis +
-                ", evaluator=" + evaluator +
+                "evaluator=" + evaluator +
                 ", baseAlpha=" + baseAlpha +
-                ", currentMaxRadius=" + currentMaxRadius +
+                ", width=" + width +
+                ", height=" + height +
                 ", minRadius=" + minRadius +
+                ", currentMaxRadius=" + currentMaxRadius +
+                ", bestHypothesis=" + bestHypothesis +
                 '}';
     }
 
@@ -136,6 +112,23 @@ public class AdditiveAlgorithm implements IterativeAlgorithm<AdditiveHypothesis,
         public void perform(Integer pParameter) {
             Hypothesis child = mutateAddPoint(hypothesis);
             list.add(child);
+        }
+
+        private Hypothesis mutateAddPoint(Hypothesis hypothesis) {
+            Hypothesis child = hypothesis.copy();
+
+
+            ((AdditiveHypothesis)child).draw(newRandomCircle(width, height));
+
+            return child;
+        }
+
+        private CircleWithColorImpl newRandomCircle(int width, int height) {
+            return new CircleWithColorImpl(
+                    random.nextInt(width),
+                    random.nextInt(height),
+                    new JTColorImpl(random.nextInt(256), random.nextInt(256), random.nextInt(256), random.nextInt(baseAlpha)),
+                    random.nextInt((int) currentMaxRadius));
         }
     }
 }

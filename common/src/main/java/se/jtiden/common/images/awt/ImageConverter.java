@@ -56,8 +56,8 @@ public final class ImageConverter {
 
                 Color pixel = new Color(
                         argb >> 16 & 0xff, //red
-                        argb >> 0 & 0xff, //green
-                        argb >> 8 & 0xff  //blue
+                        argb >> 8 & 0xff, //green
+                        argb >> 0 & 0xff  //blue
                 );
 
                 fastJTImage.setPixel(x, y,

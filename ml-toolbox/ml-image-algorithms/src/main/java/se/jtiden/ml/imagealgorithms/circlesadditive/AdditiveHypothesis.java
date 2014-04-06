@@ -1,6 +1,6 @@
 package se.jtiden.ml.imagealgorithms.circlesadditive;
 
-import se.jtiden.common.images.CircleWithColor;
+import se.jtiden.common.images.CircleWithColorImpl;
 import se.jtiden.common.images.JTImage;
 import se.jtiden.ml.imagealgorithms.algorithm.api.Hypothesis;
 import se.jtiden.ml.imagealgorithms.evaluator.Evaluator;
@@ -50,7 +50,7 @@ public class AdditiveHypothesis implements Hypothesis {
         return new AdditiveHypothesis(image.copy(), imageEvaluator);
     }
 
-    public void draw(CircleWithColor circleWithColor) {
+    public void draw(CircleWithColorImpl circleWithColor) {
         image.getGraphics().drawRadial(circleWithColor);
     }
 
