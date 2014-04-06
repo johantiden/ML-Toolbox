@@ -65,7 +65,7 @@ public class CirclesAlgorithm implements IterativeAlgorithm<CirclesHypothesis, J
     }
 
     private CircleWithColor newRandomCircle(JTImage targetImage) {
-        CircleWithColorImpl newCircle = new CircleWithColorImpl(
+        CircleWithColor newCircle = new CircleWithColorImpl(
                 random.nextInt(targetImage.getWidth()),
                 random.nextInt(targetImage.getHeight()),
                 new JTColorImpl(random.nextInt(256), random.nextInt(256), random.nextInt(256)),

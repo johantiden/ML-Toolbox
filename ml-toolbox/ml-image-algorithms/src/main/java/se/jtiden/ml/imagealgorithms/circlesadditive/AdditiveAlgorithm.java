@@ -19,19 +19,17 @@ public class AdditiveAlgorithm implements IterativeAlgorithm<AdditiveHypothesis,
     public static final double RADIUS_SHRINK_RATE_PER_MISS = 0.999;
     public static final int NUM_CHILDREN_PER_GENERATION = 20;
     private final Evaluator<JTImage> evaluator;
-    private final int baseAlpha;
     private final int width;
     private final int height;
-    private final double minRadius;
 
     private double currentMaxRadius;
     private Hypothesis bestHypothesis;
 
+
+
     public AdditiveAlgorithm(
-            Evaluator<JTImage> evaluator, int baseAlpha, int minRadius) {
+            Evaluator<JTImage> evaluator) {
         this.evaluator = evaluator;
-        this.baseAlpha = baseAlpha;
-        this.minRadius = minRadius;
         JTImage target = evaluator.getTarget();
         width = target.getWidth();
         height = target.getHeight();
@@ -62,7 +60,7 @@ public class AdditiveAlgorithm implements IterativeAlgorithm<AdditiveHypothesis,
             }
         }
 
-        if (shrinkRadius && currentMaxRadius > minRadius) {
+        if (shrinkRadius && currentMaxRadius > AdditiveContextFactory.MIN_RADIUS) {
             currentMaxRadius *= RADIUS_SHRINK_RATE_PER_MISS;
             System.out.println("No better found, reducing radius to " + currentMaxRadius);
         }
@@ -90,10 +88,8 @@ public class AdditiveAlgorithm implements IterativeAlgorithm<AdditiveHypothesis,
     public String toString() {
         return "AdditiveAlgorithm{" +
                 "evaluator=" + evaluator +
-                ", baseAlpha=" + baseAlpha +
                 ", width=" + width +
                 ", height=" + height +
-                ", minRadius=" + minRadius +
                 ", currentMaxRadius=" + currentMaxRadius +
                 ", bestHypothesis=" + bestHypothesis +
                 '}';
@@ -123,11 +119,11 @@ public class AdditiveAlgorithm implements IterativeAlgorithm<AdditiveHypothesis,
             return child;
         }
 
-        private CircleWithColorImpl newRandomCircle(int width, int height) {
+        private CircleWithColor newRandomCircle(int width, int height) {
             return new CircleWithColorImpl(
                     random.nextInt(width),
                     random.nextInt(height),
-                    new JTColorImpl(random.nextInt(256), random.nextInt(256), random.nextInt(256), random.nextInt(baseAlpha)),
+                    new JTColorImpl(random.nextInt(256), random.nextInt(256), random.nextInt(256), random.nextInt(AdditiveContextFactory.BASE_ALPHA)),
                     random.nextInt((int) currentMaxRadius));
         }
     }
