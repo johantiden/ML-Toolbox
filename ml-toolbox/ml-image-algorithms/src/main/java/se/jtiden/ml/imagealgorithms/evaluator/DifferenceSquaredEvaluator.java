@@ -5,6 +5,7 @@ import se.jtiden.common.images.JTImage;
 
 public class DifferenceSquaredEvaluator implements Evaluator<JTImage> {
 
+    private static final long serialVersionUID = -8450646889497689178L;
     private final JTImage targetImage;
 
     public DifferenceSquaredEvaluator(JTImage targetImage) {
@@ -32,6 +33,16 @@ public class DifferenceSquaredEvaluator implements Evaluator<JTImage> {
     @Override
     public JTImage getTarget() {
         return targetImage;
+    }
+
+    @Override
+    public int getWidth() {
+        return targetImage.getWidth();
+    }
+
+    @Override
+    public int getHeight() {
+        return targetImage.getHeight();
     }
 
     private static double colorDifferenceSquare(JTColor color1, JTColor color2) {

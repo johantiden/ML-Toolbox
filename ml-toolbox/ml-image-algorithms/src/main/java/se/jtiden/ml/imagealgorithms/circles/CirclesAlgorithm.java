@@ -5,7 +5,6 @@ import se.jtiden.common.images.JTColor;
 import se.jtiden.common.images.JTColorImpl;
 import se.jtiden.common.images.JTImage;
 import se.jtiden.common.math.Point;
-import se.jtiden.ml.imagealgorithms.MonaLisa;
 import se.jtiden.ml.imagealgorithms.algorithm.api.IterativeAlgorithm;
 import se.jtiden.ml.imagealgorithms.evaluator.Evaluator;
 
@@ -26,55 +25,54 @@ public class CirclesAlgorithm implements IterativeAlgorithm<CirclesHypothesis, J
     private Evaluator<JTImage> evaluator;
 
     public CirclesAlgorithm(
-            MonaLisa monaLisa,
+            JTImage targetImage,
             int minNumPoints,
             int maxNumPoints,
-            double mutationPointVariance,
+            double mutationPointSpaceVariance,
             double chanceToMutatePoint,
             double chanceToCreatePoint,
             double chanceToDeletePoint,
             int mutationPointColorVariance,
-            final double radiusVariance, Evaluator<JTImage> evaluator) {
+            double radiusVariance, Evaluator<JTImage> evaluator) {
         this.maxNumPoints = maxNumPoints;
         this.chanceToCreatePoint = chanceToCreatePoint;
         this.chanceToDeletePoint = chanceToDeletePoint;
         this.mutationPointColorVariance = mutationPointColorVariance;
-        this.mutationPointSpaceVariance = mutationPointVariance;
+        this.mutationPointSpaceVariance = mutationPointSpaceVariance;
         this.chanceToMutatePoint = chanceToMutatePoint;
         this.radiusVariance = radiusVariance;
         this.evaluator = evaluator;
-        createRandomInitialHypotheses(monaLisa, minNumPoints);
+        createRandomInitialHypotheses(targetImage, minNumPoints);
     }
 
-    private void createRandomInitialHypotheses(MonaLisa monaLisa, int numPoints) {
-        bestHypothesis = randomHypothesis(monaLisa, numPoints);
+    private void createRandomInitialHypotheses(JTImage targetImage, int numPoints) {
+        bestHypothesis = randomHypothesis(targetImage, numPoints);
     }
 
-    private CirclesHypothesis randomHypothesis(MonaLisa monaLisa, int numPoints) {
+    private CirclesHypothesis randomHypothesis(JTImage targetImage, int numPoints) {
         List<CircleWithColor> circles = new ArrayList<CircleWithColor>();
         for (int i = 0; i < numPoints; ++i) {
-            CircleWithColor newCircle = newRandomCircle(monaLisa);
-            while (isOutsideOfBounds(newCircle, monaLisa)) {
-                newCircle = newRandomCircle(monaLisa);
+            CircleWithColor newCircle = newRandomCircle(targetImage);
+            while (isOutsideOfBounds(newCircle, targetImage)) {
+                newCircle = newRandomCircle(targetImage);
             }
 
             circles.add(newCircle);
         }
 
         CirclesHypothesis hypothesis = new CirclesHypothesis(
-                monaLisa,
                 circles,
                 getEvaluator());
 
         return hypothesis;
     }
 
-    private CircleWithColor newRandomCircle(MonaLisa monaLisa) {
+    private CircleWithColor newRandomCircle(JTImage targetImage) {
         CircleWithColor newCircle = new CircleWithColor(
-                random.nextInt(monaLisa.getWidth()),
-                random.nextInt(monaLisa.getHeight()),
+                random.nextInt(targetImage.getWidth()),
+                random.nextInt(targetImage.getHeight()),
                 new JTColorImpl(random.nextInt(256), random.nextInt(256), random.nextInt(256)),
-                random.nextInt(monaLisa.getWidth()));
+                random.nextInt(targetImage.getWidth()));
         return randomizeCircle(newCircle);
     }
 
@@ -136,7 +134,7 @@ public class CirclesAlgorithm implements IterativeAlgorithm<CirclesHypothesis, J
 
         if (child.getCircles().size() < maxNumPoints) {
             int index = random.nextInt(child.getCircles().size());
-            child.getCircles().add(index, newRandomCircle(hypothesis.getMonaLisa()));
+            child.getCircles().add(index, newRandomCircle(hypothesis.getTargetImage()));
         }
         return child;
     }
@@ -153,11 +151,11 @@ public class CirclesAlgorithm implements IterativeAlgorithm<CirclesHypothesis, J
         return child;
     }
 
-    private boolean isOutsideOfBounds(Point newPoint, MonaLisa monaLisa) {
+    private boolean isOutsideOfBounds(Point newPoint, JTImage targetImage) {
         return newPoint.xInt() < 0 ||
                 newPoint.yInt() < 0 ||
-                newPoint.xInt() >= monaLisa.getWidth() ||
-                newPoint.yInt() >= monaLisa.getHeight();
+                newPoint.xInt() >= targetImage.getWidth() ||
+                newPoint.yInt() >= targetImage.getHeight();
     }
 
     private CircleWithColor randomizeCircle(CircleWithColor p) {

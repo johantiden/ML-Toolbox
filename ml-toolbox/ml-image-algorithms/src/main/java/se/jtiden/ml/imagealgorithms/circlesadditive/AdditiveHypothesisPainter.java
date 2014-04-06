@@ -1,5 +1,6 @@
 package se.jtiden.ml.imagealgorithms.circlesadditive;
 
+import com.sun.istack.internal.NotNull;
 import se.jtiden.common.images.JTImage;
 import se.jtiden.ml.imagealgorithms.painter.AlgorithmStepPainter;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
@@ -10,7 +11,7 @@ public class AdditiveHypothesisPainter implements AlgorithmStepPainter {
     private int width;
     private int height;
 
-    public AdditiveHypothesisPainter(AdditiveHypothesis hypothesis,
+    public AdditiveHypothesisPainter(@NotNull AdditiveHypothesis hypothesis,
                                      final int width, final int height) {
         this.hypothesis = hypothesis;
         this.width = width;

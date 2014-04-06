@@ -45,10 +45,10 @@ public class MonaLisaNearestNeighborHypothesisPainter implements AlgorithmStepPa
     }
 
     private void innerPaint() {
-        cachedImage = new FastJTImage(hypothesis.getMonaLisa().getWidth(), hypothesis.getMonaLisa().getHeight());
+        cachedImage = new FastJTImage(hypothesis.getTargetImage().getWidth(), hypothesis.getTargetImage().getHeight());
 
-        for (int y = 0; y < hypothesis.getMonaLisa().getHeight(); ++y) {
-            for (int x = 0; x < hypothesis.getMonaLisa().getWidth(); ++x) {
+        for (int y = 0; y < hypothesis.getTargetImage().getHeight(); ++y) {
+            for (int x = 0; x < hypothesis.getTargetImage().getWidth(); ++x) {
                 JTColor nearestNeighbor = getColorAt(x, y);
                 cachedImage.setPixel(x, y, nearestNeighbor);
             }
@@ -98,12 +98,12 @@ public class MonaLisaNearestNeighborHypothesisPainter implements AlgorithmStepPa
 
     @Override
     public int getWidth() {
-        return hypothesis.getMonaLisa().getWidth();
+        return hypothesis.getTargetImage().getWidth();
     }
 
     @Override
     public int getHeight() {
-        return hypothesis.getMonaLisa().getHeight();
+        return hypothesis.getTargetImage().getHeight();
     }
 
 }

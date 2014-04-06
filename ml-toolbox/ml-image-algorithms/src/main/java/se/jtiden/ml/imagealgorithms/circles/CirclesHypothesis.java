@@ -2,7 +2,6 @@ package se.jtiden.ml.imagealgorithms.circles;
 
 import se.jtiden.common.images.CircleWithColor;
 import se.jtiden.common.images.JTImage;
-import se.jtiden.ml.imagealgorithms.MonaLisa;
 import se.jtiden.ml.imagealgorithms.algorithm.api.Hypothesis;
 import se.jtiden.ml.imagealgorithms.evaluator.Evaluator;
 
@@ -13,14 +12,11 @@ public class CirclesHypothesis implements Hypothesis {
 
     private final List<CircleWithColor> circles;
     private final Evaluator<JTImage> imageEvaluator;
-    private final MonaLisa monaLisa;
     private Double lossCached;
     private JTImage cachedImage;
 
     public CirclesHypothesis(
-            MonaLisa monaLisa,
             List<CircleWithColor> circles, Evaluator<JTImage> imageEvaluator) {
-        this.monaLisa = monaLisa;
         this.circles = circles;
         this.imageEvaluator = imageEvaluator;
     }
@@ -32,15 +28,10 @@ public class CirclesHypothesis implements Hypothesis {
 
     public double innerValueFunction() {
         if (lossCached == null) {
-            calculateInnerLoss();
+            lossCached = imageEvaluator.getScore(getCachedImage());
         }
 
         return lossCached;
-    }
-
-    private void calculateInnerLoss() {
-        lossCached = imageEvaluator.getScore(getCachedImage());
-        lossCached -= circles.size();
     }
 
 
@@ -57,8 +48,8 @@ public class CirclesHypothesis implements Hypothesis {
         return valueFunction() > o.valueFunction() ? 1 : -1;
     }
 
-    public MonaLisa getMonaLisa() {
-        return monaLisa;
+    public JTImage getTargetImage() {
+        return imageEvaluator.getTarget();
     }
 
     public int countCircles() {
@@ -69,7 +60,7 @@ public class CirclesHypothesis implements Hypothesis {
         if (cachedImage == null) {
             synchronized (this) {
                 if (cachedImage == null) {
-                    CirclesHypothesisPainter painter = new CirclesHypothesisPainter(this, monaLisa.getWidth(), monaLisa.getHeight());
+                    CirclesHypothesisPainter painter = new CirclesHypothesisPainter(this, imageEvaluator.getWidth(), imageEvaluator.getHeight());
                     painter.paint();
                 }
             }
@@ -87,6 +78,6 @@ public class CirclesHypothesis implements Hypothesis {
     }
 
     public CirclesHypothesis copy() {
-        return new CirclesHypothesis(monaLisa, copyPoints(), imageEvaluator);
+        return new CirclesHypothesis(copyPoints(), imageEvaluator);
     }
 }

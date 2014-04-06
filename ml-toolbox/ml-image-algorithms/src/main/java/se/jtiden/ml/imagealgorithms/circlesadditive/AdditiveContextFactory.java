@@ -1,7 +1,8 @@
 package se.jtiden.ml.imagealgorithms.circlesadditive;
 
+import se.jtiden.common.images.JTImage;
+import se.jtiden.common.images.awt.ImageConverter;
 import se.jtiden.ml.imagealgorithms.ContextImpl;
-import se.jtiden.ml.imagealgorithms.MonaLisa;
 import se.jtiden.ml.imagealgorithms.MonaLisaAlgorithmPainter;
 import se.jtiden.ml.imagealgorithms.algorithm.api.IterativeAlgorithm;
 import se.jtiden.ml.imagealgorithms.evaluator.DifferenceSquaredEvaluator;
@@ -17,8 +18,8 @@ public class AdditiveContextFactory {
 
 
     public ContextImpl getContext() {
-        MonaLisa monaLisa = new MonaLisa(SCALE_DOWN_BEFORE);
-        DifferenceSquaredEvaluator evaluator = new DifferenceSquaredEvaluator(monaLisa.getImage());
+        JTImage monaLisa = ImageConverter.loadImage(OriginalContextFactory.IMAGE, SCALE_DOWN_BEFORE);
+        DifferenceSquaredEvaluator evaluator = new DifferenceSquaredEvaluator(monaLisa);
         IterativeAlgorithm algorithm = new AdditiveAlgorithm(
                 monaLisa,
                 evaluator, BASE_ALPHA, MIN_RADIUS);

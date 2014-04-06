@@ -3,12 +3,29 @@ package se.jtiden.common.images.awt;
 import se.jtiden.common.images.FastJTImage;
 import se.jtiden.common.images.JTImage;
 
+import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.io.IOException;
+import java.net.URL;
 
 public final class ImageConverter {
 
     private ImageConverter() {
+    }
+
+    public static JTImage loadImage(String pathAndFileName, double scaleDown) {
+        return toFastJTImage(getRealImage(pathAndFileName), scaleDown);
+    }
+
+    private static BufferedImage getRealImage(String pathAndFileName) {
+        try {
+            URL url = Thread.currentThread().getContextClassLoader().getResource(pathAndFileName);
+            return ImageIO.read(url);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     public static BufferedImage toAwtImage(JTImage image) {

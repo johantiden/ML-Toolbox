@@ -1,10 +1,10 @@
 package se.jtiden.ml.imagealgorithms.original;
 
 import se.jtiden.common.images.JTImage;
+import se.jtiden.common.images.awt.ImageConverter;
 import se.jtiden.ml.imagealgorithms.Context;
 import se.jtiden.ml.imagealgorithms.ContextFactory;
 import se.jtiden.ml.imagealgorithms.ContextImpl;
-import se.jtiden.ml.imagealgorithms.MonaLisa;
 import se.jtiden.ml.imagealgorithms.algorithm.api.Hypothesis;
 import se.jtiden.ml.imagealgorithms.algorithm.api.IterativeAlgorithm;
 import se.jtiden.ml.imagealgorithms.evaluator.Evaluator;
@@ -13,19 +13,27 @@ import se.jtiden.ml.imagealgorithms.painter.HypothesisPainterFactory;
 
 public class OriginalContextFactory implements ContextFactory {
 
-    public static final double SCALE_DOWN_BEFORE = 1;
+    public static final String RGB = "rgb.gif";
+    public static final String MONALISA = "monalisa.jpg";
+    public static final String LOVE = "monalisa3.jpg";
+    public static final String STRANDED = "stranden.jpg";
+    public static final String JAPAN = "japan.jpg";
+
+
+    public static final double SCALE_DOWN_BEFORE = 2;
     public static final double SCALE_UP_AFTER = 2;
+    public static final String IMAGE = MONALISA;
 
     @Override
     public Context getContext() {
-        MonaLisa monaLisa = new MonaLisa(SCALE_DOWN_BEFORE);
+        JTImage targetImage = ImageConverter.loadImage(OriginalContextFactory.IMAGE, SCALE_DOWN_BEFORE);
 
-        AlgorithmStepPainter painter = new Painter(monaLisa);
+        AlgorithmStepPainter painter = new Painter(targetImage);
         return new ContextImpl(
-                new NoAlgorithm(),
+                new NoAlgorithm(targetImage),
                 painter
                 ,
-                new MyHypothesisPainterFactory(painter, monaLisa),
+                new MyHypothesisPainterFactory(painter, targetImage),
                 SCALE_UP_AFTER
         );
     }
@@ -49,11 +57,11 @@ public class OriginalContextFactory implements ContextFactory {
 
     private static class MyHypothesisPainterFactory implements HypothesisPainterFactory {
         private final AlgorithmStepPainter painter;
-        private final MonaLisa monaLisa;
+        private final JTImage targetImage;
 
-        public MyHypothesisPainterFactory(AlgorithmStepPainter painter, MonaLisa monaLisa) {
+        public MyHypothesisPainterFactory(AlgorithmStepPainter painter, JTImage targetImage) {
             this.painter = painter;
-            this.monaLisa = monaLisa;
+            this.targetImage = targetImage;
         }
 
         @Override
@@ -63,16 +71,23 @@ public class OriginalContextFactory implements ContextFactory {
 
         @Override
         public int getWidth() {
-            return monaLisa.getWidth();
+            return targetImage.getWidth();
         }
 
         @Override
         public int getHeight() {
-            return monaLisa.getHeight();
+            return targetImage.getHeight();
         }
     }
 
     private static class NoAlgorithm implements IterativeAlgorithm {
+        private final JTImage targetImage;
+
+        public NoAlgorithm(JTImage targetImage) {
+
+            this.targetImage = targetImage;
+        }
+
         @Override
         public void iterate() {
 
@@ -88,7 +103,7 @@ public class OriginalContextFactory implements ContextFactory {
             return new NoEvaluator();
         }
 
-        private static class NoEvaluator implements Evaluator {
+        private class NoEvaluator implements Evaluator {
             @Override
             public double getScore(Object o) {
                 return 0;
@@ -98,14 +113,24 @@ public class OriginalContextFactory implements ContextFactory {
             public Object getTarget() {
                 return null;
             }
+
+            @Override
+            public int getWidth() {
+                return targetImage.getWidth();
+            }
+
+            @Override
+            public int getHeight() {
+                return targetImage.getHeight();
+            }
         }
     }
 
     private static class Painter implements AlgorithmStepPainter {
-        private final MonaLisa monaLisa;
+        private final JTImage targetImage;
 
-        public Painter(MonaLisa monaLisa) {
-            this.monaLisa = monaLisa;
+        public Painter(JTImage targetImage) {
+            this.targetImage = targetImage;
         }
 
         @Override
@@ -114,17 +139,17 @@ public class OriginalContextFactory implements ContextFactory {
 
         @Override
         public JTImage getImage() {
-            return monaLisa.getImage();
+            return targetImage;
         }
 
         @Override
         public int getWidth() {
-            return monaLisa.getWidth();
+            return targetImage.getWidth();
         }
 
         @Override
         public int getHeight() {
-            return monaLisa.getHeight();
+            return targetImage.getHeight();
         }
     }
 }

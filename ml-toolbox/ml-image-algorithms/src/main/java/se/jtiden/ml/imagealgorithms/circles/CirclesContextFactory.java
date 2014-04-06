@@ -1,10 +1,12 @@
 package se.jtiden.ml.imagealgorithms.circles;
 
+import se.jtiden.common.images.JTImage;
+import se.jtiden.common.images.awt.ImageConverter;
 import se.jtiden.ml.imagealgorithms.ContextImpl;
-import se.jtiden.ml.imagealgorithms.MonaLisa;
 import se.jtiden.ml.imagealgorithms.MonaLisaAlgorithmPainter;
 import se.jtiden.ml.imagealgorithms.algorithm.api.IterativeAlgorithm;
 import se.jtiden.ml.imagealgorithms.evaluator.DifferenceSquaredEvaluator;
+import se.jtiden.ml.imagealgorithms.original.OriginalContextFactory;
 import se.jtiden.ml.imagealgorithms.painter.HypothesisPainterFactory;
 
 public class CirclesContextFactory {
@@ -21,8 +23,8 @@ public class CirclesContextFactory {
 
 
     public ContextImpl getContext() {
-        MonaLisa monaLisa = new MonaLisa(FAKE_PIXEL_SIZE);
-        DifferenceSquaredEvaluator evaluator = new DifferenceSquaredEvaluator(monaLisa.getImage());
+        JTImage monaLisa = ImageConverter.loadImage(OriginalContextFactory.IMAGE, FAKE_PIXEL_SIZE);
+        DifferenceSquaredEvaluator evaluator = new DifferenceSquaredEvaluator(monaLisa);
         IterativeAlgorithm algorithm = new CirclesAlgorithm(
                 monaLisa,
                 MIN_NUM_POINTS,

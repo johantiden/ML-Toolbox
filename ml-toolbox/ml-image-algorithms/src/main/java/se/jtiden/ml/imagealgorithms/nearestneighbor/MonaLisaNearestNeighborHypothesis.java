@@ -1,8 +1,8 @@
 package se.jtiden.ml.imagealgorithms.nearestneighbor;
 
 import se.jtiden.common.images.JTColor;
+import se.jtiden.common.images.JTImage;
 import se.jtiden.common.images.PointWithColor;
-import se.jtiden.ml.imagealgorithms.MonaLisa;
 import se.jtiden.ml.imagealgorithms.algorithm.api.Hypothesis;
 
 import java.util.ArrayList;
@@ -11,13 +11,13 @@ import java.util.List;
 public class MonaLisaNearestNeighborHypothesis implements Hypothesis {
 
     private final List<PointWithColor> points;
-    private final MonaLisa monaLisa;
+    private final JTImage targetImage;
     private Double lossCached;
 
     public MonaLisaNearestNeighborHypothesis(
-            MonaLisa monaLisa,
+            JTImage targetImage,
             List<PointWithColor> points) {
-        this.monaLisa = monaLisa;
+        this.targetImage = targetImage;
         this.points = points;
     }
 
@@ -28,32 +28,32 @@ public class MonaLisaNearestNeighborHypothesis implements Hypothesis {
 
     @Override
     public Hypothesis copy() {
-        return new MonaLisaNearestNeighborHypothesis(monaLisa, new ArrayList<PointWithColor>(points));
+        return new MonaLisaNearestNeighborHypothesis(targetImage, new ArrayList<PointWithColor>(points));
     }
 
     public double innerValueFunction() {
         if (lossCached == null) {
-            calculateInnerLoss();
+            lossCached = calculateInnerLoss();
         }
 
         return lossCached;
     }
 
 
-    private void calculateInnerLoss() {
+    private double calculateInnerLoss() {
         MonaLisaNearestNeighborHypothesisPainter painter = new MonaLisaNearestNeighborHypothesisPainter(this);
 
         double loss = 0;
-        for (int y = 0; y < monaLisa.getHeight(); y += 2) {
-            for (int x = 0; x < monaLisa.getWidth(); x += 2) {
+        for (int y = 0; y < targetImage.getHeight(); y += 2) {
+            for (int x = 0; x < targetImage.getWidth(); x += 2) {
                 loss -= colorDifferenceSquare(
-                        getMonaLisa().getColorAt(x, y),
+                        getTargetImage().getColorAt(x, y),
                         painter.getColorAt(x, y));
 
             }
         }
 
-        lossCached = loss;
+        return loss;
     }
 
     private double colorDifferenceSquare(JTColor color1, JTColor color2) {
@@ -75,7 +75,7 @@ public class MonaLisaNearestNeighborHypothesis implements Hypothesis {
         return valueFunction() > o.valueFunction() ? 1 : -1;
     }
 
-    public MonaLisa getMonaLisa() {
-        return monaLisa;
+    public JTImage getTargetImage() {
+        return targetImage;
     }
 }

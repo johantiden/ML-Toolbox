@@ -6,7 +6,6 @@ import se.jtiden.common.images.CircleWithColor;
 import se.jtiden.common.images.FastJTImage;
 import se.jtiden.common.images.JTColorImpl;
 import se.jtiden.common.images.JTImage;
-import se.jtiden.ml.imagealgorithms.MonaLisa;
 import se.jtiden.ml.imagealgorithms.algorithm.api.Hypothesis;
 import se.jtiden.ml.imagealgorithms.algorithm.api.IterativeAlgorithm;
 import se.jtiden.ml.imagealgorithms.evaluator.Evaluator;
@@ -21,27 +20,31 @@ import java.util.concurrent.ConcurrentSkipListSet;
 public class AdditiveAlgorithm implements IterativeAlgorithm<AdditiveHypothesis, JTImage> {
 
     private static final Random random = new Random();
-    public static final double RADIUS_SHRINK_RATE_PER_MISS = 0.9999;
-    private Hypothesis bestHypothesis;
+    public static final double RADIUS_SHRINK_RATE_PER_MISS = 0.999;
     private final Evaluator<JTImage> evaluator;
     private final int baseAlpha;
-    private double currentMaxRadius;
+    private final int width;
+    private final int height;
     private final double minRadius;
 
+    private double currentMaxRadius;
+    private Hypothesis bestHypothesis;
+
     public AdditiveAlgorithm(
-            MonaLisa monaLisa,
+            JTImage targetImage,
             Evaluator<JTImage> evaluator, int baseAlpha, final int minRadius) {
         this.evaluator = evaluator;
         this.baseAlpha = baseAlpha;
         this.minRadius = minRadius;
-        this.currentMaxRadius = monaLisa.getWidth() / 2;
-        createRandomInitialHypotheses(monaLisa);
+        width = evaluator.getTarget().getWidth();
+        height = evaluator.getTarget().getHeight();
+        this.currentMaxRadius = targetImage.getWidth() / 2;
+        createRandomInitialHypotheses(targetImage);
     }
 
-    private void createRandomInitialHypotheses(MonaLisa monaLisa) {
+    private void createRandomInitialHypotheses(JTImage targetImage) {
         bestHypothesis = new AdditiveHypothesis(
-                monaLisa,
-                new FastJTImage(monaLisa.getWidth(), monaLisa.getHeight()),
+                new FastJTImage(targetImage.getWidth(), targetImage.getHeight()),
                 getEvaluator());
     }
 
@@ -100,10 +103,11 @@ public class AdditiveAlgorithm implements IterativeAlgorithm<AdditiveHypothesis,
     }
 
 
-    private Hypothesis mutateAddPoint(final Hypothesis hypothesis) {
+    private Hypothesis mutateAddPoint(Hypothesis hypothesis) {
         Hypothesis child = hypothesis.copy();
 
-        ((AdditiveHypothesis)child).draw(newRandomCircle(evaluator.getTarget().getWidth(), evaluator.getTarget().getHeight()));
+
+        ((AdditiveHypothesis)child).draw(newRandomCircle(width, height));
 
         return child;
     }
@@ -123,7 +127,7 @@ public class AdditiveAlgorithm implements IterativeAlgorithm<AdditiveHypothesis,
         private final Hypothesis hypothesis;
         private final Collection<Hypothesis> list;
 
-        public MutateAndAddToListOperation(Hypothesis hypothesis, Collection<Hypothesis> list) {
+        MutateAndAddToListOperation(Hypothesis hypothesis, Collection<Hypothesis> list) {
             this.hypothesis = hypothesis;
             this.list = list;
         }

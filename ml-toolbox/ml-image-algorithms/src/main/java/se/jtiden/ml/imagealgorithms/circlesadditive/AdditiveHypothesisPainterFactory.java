@@ -1,20 +1,22 @@
 package se.jtiden.ml.imagealgorithms.circlesadditive;
 
 
+import com.sun.istack.internal.NotNull;
 import se.jtiden.ml.imagealgorithms.painter.AlgorithmStepPainter;
 import se.jtiden.ml.imagealgorithms.painter.HypothesisPainterFactory;
 
 public class AdditiveHypothesisPainterFactory implements HypothesisPainterFactory<AdditiveHypothesis> {
-    private int width;
-    private int height;
+    private static final long serialVersionUID = -6342635069591182972L;
+    private final int width;
+    private final int height;
 
-    public AdditiveHypothesisPainterFactory(final int width, final int height) {
+    public AdditiveHypothesisPainterFactory(int width, int height) {
         this.width = width;
         this.height = height;
     }
 
     @Override
-    public AlgorithmStepPainter create(final AdditiveHypothesis hypothesis) {
+    public AlgorithmStepPainter create(@NotNull AdditiveHypothesis hypothesis) {
         return new AdditiveHypothesisPainter(hypothesis, width, height);
     }
 

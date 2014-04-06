@@ -5,7 +5,6 @@ import se.jtiden.common.images.JTColorImpl;
 import se.jtiden.common.images.JTImage;
 import se.jtiden.common.images.PointWithColor;
 import se.jtiden.common.math.Point;
-import se.jtiden.ml.imagealgorithms.MonaLisa;
 import se.jtiden.ml.imagealgorithms.algorithm.api.IterativeAlgorithm;
 import se.jtiden.ml.imagealgorithms.evaluator.Evaluator;
 
@@ -24,41 +23,41 @@ public class MonaLisaNearestNeighborAlgorithm implements IterativeAlgorithm<Mona
     private Evaluator<JTImage> evaluator;
 
     public MonaLisaNearestNeighborAlgorithm(
-            MonaLisa monaLisa,
+            JTImage targetImage,
             int numPoints,
-            double mutationPointVariance,
+            double mutationPointSpaceVariance,
             double chanceToMutatePoint, int mutationPointColorVariance, Evaluator<JTImage> evaluator) {
         this.mutationPointColorVariance = mutationPointColorVariance;
-        this.mutationPointSpaceVariance = mutationPointVariance;
+        this.mutationPointSpaceVariance = mutationPointSpaceVariance;
         this.chanceToMutatePoint = chanceToMutatePoint;
         this.evaluator = evaluator;
-        createRandomInitialHypotheses(monaLisa, numPoints);
+        createRandomInitialHypotheses(targetImage, numPoints);
     }
 
-    private void createRandomInitialHypotheses(MonaLisa monaLisa, int numPoints) {
-        bestHypothesis = randomHypothesis(monaLisa, numPoints);
+    private void createRandomInitialHypotheses(JTImage targetImage, int numPoints) {
+        bestHypothesis = randomHypothesis(targetImage, numPoints);
     }
 
-    private MonaLisaNearestNeighborHypothesis randomHypothesis(MonaLisa monaLisa, int numPoints) {
+    private MonaLisaNearestNeighborHypothesis randomHypothesis(JTImage targetImage, int numPoints) {
 
 
         PointWithColor middleOfImage = new PointWithColor(
-                monaLisa.getWidth() / 2d,
-                monaLisa.getHeight() / 2d,
+                targetImage.getWidth() / 2d,
+                targetImage.getHeight() / 2d,
                 JTColorImpl.GRAY);
 
         List<PointWithColor> points = new ArrayList<PointWithColor>();
         for (int i = 0; i < numPoints; ++i) {
-            PointWithColor newPoint = randomizePoint(middleOfImage, monaLisa.getHeight(), 8);
-            while (isOutsideOfBounds(newPoint, monaLisa)) {
-                newPoint = randomizePoint(middleOfImage, monaLisa.getHeight(), 8);
+            PointWithColor newPoint = randomizePoint(middleOfImage, targetImage.getHeight(), 8);
+            while (isOutsideOfBounds(newPoint, targetImage.getWidth(), targetImage.getHeight())) {
+                newPoint = randomizePoint(middleOfImage, targetImage.getHeight(), 8);
             }
 
             points.add(newPoint);
         }
 
         MonaLisaNearestNeighborHypothesis hypothesis = new MonaLisaNearestNeighborHypothesis(
-                monaLisa,
+                targetImage,
                 points);
 
         return hypothesis;
@@ -103,7 +102,7 @@ public class MonaLisaNearestNeighborAlgorithm implements IterativeAlgorithm<Mona
         points.add(randomizePoint(pointToMutate, mutationPointSpaceVariance, mutationPointColorVariance));
 
         MonaLisaNearestNeighborHypothesis child = new MonaLisaNearestNeighborHypothesis(
-                hypothesis.getMonaLisa(),
+                hypothesis.getTargetImage(),
                 points);
 
         return child;
@@ -111,13 +110,16 @@ public class MonaLisaNearestNeighborAlgorithm implements IterativeAlgorithm<Mona
 
     private MonaLisaNearestNeighborHypothesis oldSelfBreed(MonaLisaNearestNeighborHypothesis hypothesis) {
         List<PointWithColor> points = new ArrayList<PointWithColor>();
+        int width = hypothesis.getTargetImage().getWidth();
+        int height = hypothesis.getTargetImage().getHeight();
+
         for (PointWithColor p : hypothesis.getPoints()) {
 
             PointWithColor newPoint;
             if (random.nextDouble() > chanceToMutatePoint) {
-
                 newPoint = randomizePoint(p, mutationPointSpaceVariance, mutationPointColorVariance);
-                while (isOutsideOfBounds(newPoint, hypothesis.getMonaLisa())) {
+
+                while (isOutsideOfBounds(newPoint, width, height)) {
                     newPoint = randomizePoint(p, mutationPointSpaceVariance, mutationPointColorVariance);
                 }
             } else {
@@ -128,18 +130,19 @@ public class MonaLisaNearestNeighborAlgorithm implements IterativeAlgorithm<Mona
         }
 
         MonaLisaNearestNeighborHypothesis child = new MonaLisaNearestNeighborHypothesis(
-                hypothesis.getMonaLisa(),
+                hypothesis.getTargetImage(),
                 points);
 
 
         return child;
     }
 
-    private boolean isOutsideOfBounds(Point newPoint, MonaLisa monaLisa) {
+    private boolean isOutsideOfBounds(Point newPoint, int width, int height) {
+
         return newPoint.xInt() < 0 ||
                 newPoint.yInt() < 0 ||
-                newPoint.xInt() >= monaLisa.getWidth() ||
-                newPoint.yInt() >= monaLisa.getHeight();
+                newPoint.xInt() >= width ||
+                newPoint.yInt() >= height;
     }
 
     private PointWithColor randomizePoint(PointWithColor p, double spaceVariance, int colorVariance) {

@@ -5,51 +5,42 @@ import se.jtiden.common.images.awt.ImageConverter;
 import se.jtiden.ml.imagealgorithms.Context;
 import se.jtiden.ml.imagealgorithms.algorithm.api.Hypothesis;
 import se.jtiden.ml.imagealgorithms.algorithm.api.IterativeAlgorithm;
+import se.jtiden.ml.imagealgorithms.painter.AlgorithmStepPainter;
+import se.jtiden.ml.imagealgorithms.painter.HypothesisPainterFactory;
 
 import javax.swing.*;
 import java.awt.*;
 
 
 public class App extends JFrame {
+    private static final long serialVersionUID = -7352504713526579071L;
+
     private final JPanel canvas;
-    private final Context context;
-    public Hypothesis bestHypothesis;
+    private final int imageWidth;
+    private final int imageHeight;
+    private final IterativeAlgorithm algorithm;
+    private final HypothesisPainterFactory hypothesisPainterFactory;
+    private Hypothesis bestHypothesis;
 
     protected App(final Context context) {
 
+        algorithm = context.getAlgorithm();
+        hypothesisPainterFactory = context.getHypothesisPainterFactory();
+        imageWidth = (int) (hypothesisPainterFactory.getWidth() * context.getScale());
+        imageHeight = (int) (hypothesisPainterFactory.getHeight() * context.getScale());
 
-        this.context = context;
 
+        canvas = new PaintPanel();
+        canvas.setSize(imageWidth, imageHeight);
 
-        this.canvas = new JPanel() {
-            @Override
-            public void paint(Graphics g) {
-                Image image = ImageConverter.toAwtImage(context.getHypothesisPainterFactory().create(bestHypothesis).getImage());
-                g.drawImage(image,
-                        0, 0,
-                        (int) (image.getWidth(null) * context.getScale()),
-                        (int) (image.getHeight(null) * context.getScale()),
-                        null);
-            }
-        };
-        this.canvas.setSize(imageWidth(), imageHeight());
+        add(canvas);
+        setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
-        this.add(canvas);
-        this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-
-        this.setSize(imageWidth() + 16, imageHeight() + 38);
+        setSize(imageWidth + 16, imageHeight + 38);
 
         setVisible(true);
         startSimulating();
         startPainting();
-    }
-
-    private int imageHeight() {
-        return (int) (context.getHypothesisPainterFactory().getHeight() * context.getScale());
-    }
-
-    private int imageWidth() {
-        return (int) (context.getHypothesisPainterFactory().getWidth() * context.getScale());
     }
 
 
@@ -73,7 +64,6 @@ public class App extends JFrame {
             while (isVisible()) {
                 try {
                     Thread.sleep(3000);
-                    IterativeAlgorithm algorithm = context.getAlgorithm();
                     Hypothesis currentHypothesis = algorithm.getBestHypothesis();
 
                     if (currentHypothesis != bestHypothesis) {
@@ -93,12 +83,28 @@ public class App extends JFrame {
         public void run() {
             while (isVisible()) {
                 try {
-                    Thread.yield();
-                    IterativeAlgorithm algorithm = context.getAlgorithm();
                     algorithm.iterate();
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
+            }
+        }
+    }
+
+    private class PaintPanel extends JPanel {
+        private static final long serialVersionUID = 383854334199089778L;
+
+        @Override
+        public void paint(Graphics g) {
+            super.paint(g);
+            if (bestHypothesis != null) {
+                AlgorithmStepPainter algorithmStepPainter = hypothesisPainterFactory.create(bestHypothesis);
+                Image image = ImageConverter.toAwtImage(algorithmStepPainter.getImage());
+                g.drawImage(image,
+                        0, 0,
+                        imageWidth,
+                        imageHeight,
+                        null);
             }
         }
     }
