@@ -1,4 +1,4 @@
-package main.java.se.jtiden.sudoku;
+package main.java.se.jtiden.sudoku.struct;
 
 public class Coordinate {
     public final int x;

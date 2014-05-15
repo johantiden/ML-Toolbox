@@ -1,4 +1,4 @@
-package main.java.se.jtiden.sudoku;
+package main.java.se.jtiden.sudoku.struct;
 
 import java.util.*;
 import java.util.function.Consumer;

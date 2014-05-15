@@ -1,8 +1,8 @@
-package main.java.se.jtiden.sudoku;
+package main.java.se.jtiden.sudoku.solver;
 
 import java.util.Collection;
 
-public class MultiSolverImpl implements MultiSolver{
+public class MultiSolverImpl implements MultiSolver {
 
     private final Collection<Solver> solvers;
 

@@ -1,9 +1,11 @@
-package main.java.se.jtiden.sudoku;
+package main.java.se.jtiden.sudoku.domain;
 
-public class SolvedNode extends Node {
+import main.java.se.jtiden.sudoku.struct.Coordinate;
+
+public class HardNode extends Node {
     private final int value;
 
-    public SolvedNode(Coordinate coordinate, int value) {
+    public HardNode(Coordinate coordinate, int value) {
         super(coordinate);
         this.value = value;
     }
@@ -24,12 +26,17 @@ public class SolvedNode extends Node {
     }
 
     @Override
+    public boolean isHard() {
+        return true;
+    }
+
+    @Override
     public int numCandidatesLeft() {
-        return 0;
+        throw new IllegalStateException("You cannot count candidates on predefined nodes.");
     }
 
     @Override
     public void removeCandidate(int value) {
-        throw new IllegalStateException("You cannot remove candidates node that is already solved.");
+        throw new IllegalStateException("You cannot remove candidates from predefined nodes.");
     }
 }

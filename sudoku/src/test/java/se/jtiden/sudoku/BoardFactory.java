@@ -1,7 +1,7 @@
 package test.java.se.jtiden.sudoku;
 
-import main.java.se.jtiden.sudoku.Board;
-import main.java.se.jtiden.sudoku.Coordinate;
+import main.java.se.jtiden.sudoku.domain.Board;
+import main.java.se.jtiden.sudoku.struct.Coordinate;
 
 public class BoardFactory {
     public static Board parse(int order, int[][] array) {

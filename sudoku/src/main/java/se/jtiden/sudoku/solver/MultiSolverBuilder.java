@@ -1,4 +1,6 @@
-package main.java.se.jtiden.sudoku;
+package main.java.se.jtiden.sudoku.solver;
+
+import main.java.se.jtiden.sudoku.domain.Board;
 
 import java.util.ArrayList;
 import java.util.Collection;

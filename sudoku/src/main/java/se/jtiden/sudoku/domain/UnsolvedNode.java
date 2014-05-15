@@ -1,4 +1,6 @@
-package main.java.se.jtiden.sudoku;
+package main.java.se.jtiden.sudoku.domain;
+
+import main.java.se.jtiden.sudoku.struct.Coordinate;
 
 import java.util.*;
 

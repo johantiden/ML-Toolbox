@@ -1,6 +1,9 @@
 package test.java.se.jtiden.sudoku;
 
-import main.java.se.jtiden.sudoku.*;
+import main.java.se.jtiden.sudoku.domain.Board;
+import main.java.se.jtiden.sudoku.solver.MultiSolver;
+import main.java.se.jtiden.sudoku.solver.SudokuSolverFactory;
+import main.java.se.jtiden.sudoku.struct.Coordinate;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
