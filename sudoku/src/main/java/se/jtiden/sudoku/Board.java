@@ -11,7 +11,7 @@ public class Board {
 
     public Board(int order) {
         this.order = order;
-        array2d = new Array2d<Node>(order * order, order * order);
+        array2d = new Array2d<>(order * order, order * order);
 
         initEmptySquares(order);
     }
@@ -50,7 +50,7 @@ public class Board {
 
 
     public Collection<? extends UnsolvedNode> getUnsolvedNodes() {
-        List<UnsolvedNode> unsolvedNodes = new ArrayList<UnsolvedNode>();
+        List<UnsolvedNode> unsolvedNodes = new ArrayList<>();
 
         for (Node node : array2d) {
             if (node instanceof UnsolvedNode) {
@@ -61,7 +61,7 @@ public class Board {
     }
 
     public Iterable<? extends Coordinate> getAllCoordinates() {
-        List<Coordinate> allCoordinates = new ArrayList<Coordinate>();
+        List<Coordinate> allCoordinates = new ArrayList<>();
         for (int y = 1; y <= array2d.getHeight(); ++y) {
             for (int x = 1; x <= array2d.getHeight(); ++x) {
                 allCoordinates.add(new Coordinate(x, y));
@@ -71,7 +71,7 @@ public class Board {
     }
 
     public Iterable<? extends Node> getNeighborsFor(Node node) {
-        List<Node> neighbors = new ArrayList<Node>();
+        List<Node> neighbors = new ArrayList<>();
 
         addRow(node, neighbors);
         addColumn(node, neighbors);
@@ -87,7 +87,7 @@ public class Board {
     }
 
     private Iterable<Coordinate> getBox(Coordinate coordinate) {
-        List<Coordinate> box = new ArrayList<Coordinate>();
+        List<Coordinate> box = new ArrayList<>();
 
         int groupIdX = (coordinate.x - 1) / order;
         int groupIdY = (coordinate.y - 1) / order;

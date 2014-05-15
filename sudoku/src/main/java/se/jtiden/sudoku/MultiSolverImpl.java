@@ -12,11 +12,8 @@ public class MultiSolverImpl implements MultiSolver{
 
     @Override
     public boolean processOne() {
-        boolean success = false;
         for (Solver solver : solvers) {
-            success = solver.trySolve();
-
-            if (success) {
+            if (solver.trySolve()) {
                return true;
             }
         }

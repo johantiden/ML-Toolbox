@@ -4,14 +4,14 @@ import java.util.*;
 import java.util.function.Consumer;
 
 public class Array2d<T> implements Iterable<T> {
-    private int width;
-    private int height;
-    private Map<Coordinate, T> map;
+    private final int width;
+    private final int height;
+    private final Map<Coordinate, T> map;
 
     public Array2d(int width, int height) {
         this.width = width;
         this.height = height;
-        map = new HashMap<Coordinate, T>(width*height);
+        map = new HashMap<>(width*height);
     }
 
     public int getWidth() {
@@ -66,7 +66,7 @@ public class Array2d<T> implements Iterable<T> {
     }
 
     public Iterable<? extends T> getRow(int y) {
-        List<T> row = new ArrayList<T>();
+        List<T> row = new ArrayList<>();
         for (Coordinate key : map.keySet()) {
             if (key.y == y) {
                 row.add(map.get(key));
@@ -76,7 +76,7 @@ public class Array2d<T> implements Iterable<T> {
     }
 
     public Iterable<? extends T> getColumn(int x) {
-        List<T> column = new ArrayList<T>();
+        List<T> column = new ArrayList<>();
         for (Coordinate key : map.keySet()) {
             if (key.x == x) {
                 column.add(map.get(key));

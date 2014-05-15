@@ -1,7 +1,7 @@
 package main.java.se.jtiden.sudoku;
 
 public abstract class Node {
-    private Coordinate coordinate;
+    private final Coordinate coordinate;
 
     public Node(Coordinate coordinate) {
         this.coordinate = coordinate;

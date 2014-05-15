@@ -4,11 +4,11 @@ import java.util.*;
 
 public class UnsolvedNode extends Node {
 
-    private Map<Integer, Boolean> candidates;
+    private final Map<Integer, Boolean> candidates;
 
-    private UnsolvedNode(Coordinate coordinate, int order) {
+    private UnsolvedNode(Coordinate coordinate) {
         super(coordinate);
-        candidates = new HashMap<Integer, Boolean>();
+        candidates = new HashMap<>();
     }
 
     @Override
@@ -40,7 +40,7 @@ public class UnsolvedNode extends Node {
     }
 
     public static UnsolvedNode newFullCandidates(Coordinate coordinate, int order) {
-        UnsolvedNode node = new UnsolvedNode(coordinate, order);
+        UnsolvedNode node = new UnsolvedNode(coordinate);
         for (int i = 1; i <= order*order; ++i) {
             node.candidates.put(i, true);
         }
@@ -48,7 +48,7 @@ public class UnsolvedNode extends Node {
     }
 
     public Collection<Integer> getCandidates() {
-        List<Integer> list = new ArrayList<Integer>();
+        List<Integer> list = new ArrayList<>();
         for (Integer value : candidates.keySet()) {
             if (candidates.get(value)) {
                 list.add(value);

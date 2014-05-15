@@ -6,7 +6,7 @@ import java.util.Collection;
 public class MultiSolverBuilder {
 
     private Board board;
-    private Collection<SolverBuilder> solverBuilders = new ArrayList<SolverBuilder>();
+    private final Collection<SolverBuilder> solverBuilders = new ArrayList<>();
 
     public MultiSolverBuilder withBoard(Board board) {
         this.board = board;
@@ -19,7 +19,7 @@ public class MultiSolverBuilder {
     }
 
     public MultiSolver build() {
-        Collection<Solver> solvers = new ArrayList<Solver>();
+        Collection<Solver> solvers = new ArrayList<>();
 
         for (SolverBuilder solverBuilder : solverBuilders) {
             solverBuilder.setBoard(board);

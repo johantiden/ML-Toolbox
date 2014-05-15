@@ -10,7 +10,7 @@ public class Array2dTest {
 
     @Test
     public void testConstructor() {
-        Array2d<Integer> target = new Array2d<Integer>(3, 4);
+        Array2d<Integer> target = new Array2d<>(3, 4);
 
         assertEquals(3, target.getWidth());
         assertEquals(4, target.getHeight());
@@ -26,7 +26,7 @@ public class Array2dTest {
 
     @Test
     public void testSetGet() {
-        Array2d<Integer> target = new Array2d<Integer>(2, 2);
+        Array2d<Integer> target = new Array2d<>(2, 2);
 
         Coordinate coordinate = new Coordinate(1, 1);
         target.set(coordinate, 1);
