@@ -12,10 +12,10 @@ public class LockedCandidates extends SolverBuilder {
             }
 
             private boolean lockedCandidatesInRows() {
-                return false; // TODO continue
-                //for (int y = 0; y < board.getHeight(); ++y) {
+                /*for (int y = 0; y < board.getOrder() * board.getOrder(); ++y) {
 
-                //}
+                } */
+                return false;
             }
 
             private boolean lockedCandidatesInColumns() {

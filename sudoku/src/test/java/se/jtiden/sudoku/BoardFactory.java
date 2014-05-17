@@ -17,4 +17,24 @@ public class BoardFactory {
 
         return board;
     }
+
+    public static Board parse(int order, String[] array) {
+        Board board = new Board(order);
+
+        for (int y = 1; y <= order*order; ++y) {
+            for (int x = 1; x <= order*order; ++x) {
+                if(array[y-1].charAt(x-1) != 'x') {
+                    char c = array[y-1].charAt(x - 1);
+                    int value = charToInt(c);
+                    board.setHardDigit(new Coordinate(x, y), value);
+                }
+            }
+        }
+
+        return board;
+    }
+
+    public static int charToInt(char c) {
+        return c - 48;
+    }
 }
