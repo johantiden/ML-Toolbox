@@ -198,6 +198,28 @@ public class SudokuTrainingDataManager {
                 {3,4,2,1}
         }));
 
+        trainingData.add(new SudokuTrainingDataStringImpl("", 3, Difficulty.EASY, new String[]{
+                "x7xxxxxx1",
+                "4xx9xx8xx",
+                "x2xxxx95x",
+                "x451x7xx9",
+                "xxx6x9xxx",
+                "9xx3x826x",
+                "x64xxxx2x",
+                "xx8xx3xx4",
+                "7xxxxxx1x",
+        }, new String[]{
+                "579862431",
+                "436915872",
+                "821734956",
+                "645127389",
+                "283659147",
+                "917348265",
+                "364591728",
+                "158273694",
+                "792486513",
+        }));
+
         return trainingData;
     }
 

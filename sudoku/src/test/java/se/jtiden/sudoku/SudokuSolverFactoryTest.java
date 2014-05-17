@@ -89,22 +89,47 @@ public class SudokuSolverFactoryTest {
         new SudokuTrainingDataManager().getAll().forEach(this::solveAndAssert);
     }
 
+    @Test
+    public void testSolve0() { solveAndAssert(new SudokuTrainingDataManager().getAll()
+            .get(0)); }
+    @Test
+    public void testSolve1() { solveAndAssert(new SudokuTrainingDataManager().getAll()
+            .get(1)); }
+    @Test
+    public void testSolve2() { solveAndAssert(new SudokuTrainingDataManager().getAll()
+            .get(2)); }
+    @Test
+    public void testSolve3() { solveAndAssert(new SudokuTrainingDataManager().getAll()
+            .get(3)); }
+    @Test
+    public void testSolve4() { solveAndAssert(new SudokuTrainingDataManager().getAll()
+            .get(4)); }
+    @Test
+    public void testSolve5() { solveAndAssert(new SudokuTrainingDataManager().getAll()
+            .get(5)); }
+    @Test
+    public void testSolve6() { solveAndAssert(new SudokuTrainingDataManager().getAll()
+            .get(6)); }
+    @Test
+    public void testSolve7() { solveAndAssert(new SudokuTrainingDataManager().getAll()
+            .get(7)); }
+    @Test
+    public void testSolve8() { solveAndAssert(new SudokuTrainingDataManager().getAll()
+            .get(8)); }
+    @Test
+    public void testSolve9() { solveAndAssert(new SudokuTrainingDataManager().getAll()
+            .get(9)); }
+    @Test
+    public void testSolve10() { solveAndAssert(new SudokuTrainingDataManager().getAll()
+            .get(10)); }
+
+
 
     private void solveAndAssert(SudokuTrainingData d) {
         solve(d.getBoard());
         d.assertSolved();
     }
 
-
-    private void solve(String[] array) {
-        Board board = BoardFactory.parse(3, array);
-        solve(board);
-    }
-
-    private void solve(int[][] array) {
-        Board board = BoardFactory.parse(3, array);
-        solve(board);
-    }
 
     private void solve(Board board) {
         SudokuSolverFactory sudokuSolverFactory = new SudokuSolverFactory();
