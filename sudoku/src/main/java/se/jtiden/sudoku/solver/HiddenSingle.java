@@ -2,7 +2,7 @@ package main.java.se.jtiden.sudoku.solver;
 
 import main.java.se.jtiden.sudoku.domain.UnsolvedNode;
 
-class SolveNodeIfAloneInGroup extends SolverBuilder {
+class HiddenSingle extends SolverBuilder {
     @Override
     public Solver build() {
         return new Solver() {

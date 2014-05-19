@@ -27,7 +27,7 @@ public class Array2d<T> implements Iterable<T> {
         map.put(coordinate, value);
     }
 
-    private void validate(Coordinate coordinate) {
+    public void validate(Coordinate coordinate) {
         if (coordinate.x <= 0) {
             throw new ArrayIndexOutOfBoundsException("Array coordinates must be positive, x:" + coordinate.x + ".");
         }

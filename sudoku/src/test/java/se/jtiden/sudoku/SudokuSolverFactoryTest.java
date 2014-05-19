@@ -1,6 +1,7 @@
 package test.java.se.jtiden.sudoku;
 
 import main.java.se.jtiden.sudoku.domain.Board;
+import main.java.se.jtiden.sudoku.domain.BoardImpl;
 import main.java.se.jtiden.sudoku.solver.MultiSolver;
 import main.java.se.jtiden.sudoku.solver.SudokuSolverFactory;
 import main.java.se.jtiden.sudoku.struct.Coordinate;
@@ -16,7 +17,7 @@ public class SudokuSolverFactoryTest {
     @Test
     public void testSolveSingleCandidate() {
 
-        Board board = new Board(2);
+        Board board = new BoardImpl(2);
 
         SudokuSolverFactory sudokuSolverFactory = new SudokuSolverFactory();
 
@@ -36,7 +37,7 @@ public class SudokuSolverFactoryTest {
     @Test
     public void testRemoveSingleCandidateInRow() {
 
-        Board board = new Board(2);
+        Board board = new BoardImpl(2);
 
         SudokuSolverFactory sudokuSolverFactory = new SudokuSolverFactory();
 
@@ -122,10 +123,17 @@ public class SudokuSolverFactoryTest {
     @Test
     public void testSolve10() { solveAndAssert(new SudokuTrainingDataManager().getAll()
             .get(10)); }
+    @Test
+    public void testSolve11() { solveAndAssert(new SudokuTrainingDataManager().getAll()
+            .get(11)); }
+    @Test
+    public void testSolve12() { solveAndAssert(new SudokuTrainingDataManager().getAll()
+            .get(12)); }
 
 
 
     private void solveAndAssert(SudokuTrainingData d) {
+        System.out.println("Will solve " + d.getDifficulty().name() + ": " + d.getName());
         solve(d.getBoard());
         d.assertSolved();
     }

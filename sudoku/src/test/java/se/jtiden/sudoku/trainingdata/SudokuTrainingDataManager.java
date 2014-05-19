@@ -171,7 +171,7 @@ public class SudokuTrainingDataManager {
                 null));
 
 
-        trainingData.add(new SudokuTrainingDataIntImpl("", 3, Difficulty.DIFFICULT, new int[][]{
+        trainingData.add(new SudokuTrainingDataIntImpl("Difficult 2", 3, Difficulty.DIFFICULT, new int[][]{
                 {x,x,x,5,x,1,x,2,6},
                 {x,x,x,x,2,x,x,x,x},
                 {x,5,x,8,x,x,7,9,x},
@@ -218,6 +218,40 @@ public class SudokuTrainingDataManager {
                 "364591728",
                 "158273694",
                 "792486513",
+        }));
+
+        trainingData.add(new SudokuTrainingDataStringImpl("Need naked pair and unique rectangle", 3, Difficulty.DIFFICULT, new String[]{
+                "xx9x347xx",
+                "3xxx76x2x",
+                "xxx1xxxx6",
+                "xx76xxxx5",
+                "x8xxxxx1x",
+                "1xxxx59xx",
+                "6xxxx8xxx",
+                "x1x32xxx8",
+                "xx356x1xx",
+        }, null));
+
+        trainingData.add(new SudokuTrainingDataStringImpl("Need naked pair", 3, Difficulty.INTRICATE, new String[]{
+                "76xxx24x9",
+                "2x14x3xxx",
+                "xx4x7xxxx",
+                "xxx3xxxx4",
+                "xx9xxx8xx",
+                "6xxxx8xxx",
+                "xxxx3x7xx",
+                "xxx1x63x2",
+                "1x29xxx85",
+        }, new String[]{
+                "763852419",
+                "281493567",
+                "954671238",
+                "528369174",
+                "319724856",
+                "647518923",
+                "896235741",
+                "475186392",
+                "132847685",
         }));
 
         return trainingData;

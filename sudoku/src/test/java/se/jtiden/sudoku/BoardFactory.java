@@ -1,11 +1,12 @@
 package test.java.se.jtiden.sudoku;
 
 import main.java.se.jtiden.sudoku.domain.Board;
+import main.java.se.jtiden.sudoku.domain.BoardImpl;
 import main.java.se.jtiden.sudoku.struct.Coordinate;
 
 public class BoardFactory {
     public static Board parse(int order, int[][] array) {
-        Board board = new Board(order);
+        Board board = new BoardImpl(order);
 
         for (int y = 1; y <= order*order; ++y) {
             for (int x = 1; x <= order*order; ++x) {
@@ -19,7 +20,7 @@ public class BoardFactory {
     }
 
     public static Board parse(int order, String[] array) {
-        Board board = new Board(order);
+        Board board = new BoardImpl(order);
 
         for (int y = 1; y <= order*order; ++y) {
             for (int x = 1; x <= order*order; ++x) {

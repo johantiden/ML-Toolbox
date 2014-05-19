@@ -1,6 +1,7 @@
 package test.java.se.jtiden.sudoku;
 
 import main.java.se.jtiden.sudoku.domain.Board;
+import main.java.se.jtiden.sudoku.domain.BoardImpl;
 import main.java.se.jtiden.sudoku.struct.Coordinate;
 import org.junit.Test;
 
@@ -13,32 +14,32 @@ public class BoardTest {
 
     @Test
     public void testHard(){
-        board = new Board(1);
+        board = new BoardImpl(1);
         board.setHardDigit(COORDINATE, 3);
         assertEquals(true, board.isHard(COORDINATE));
     }
 
     @Test
     public void testNotHard(){
-        board = new Board(1);
+        board = new BoardImpl(1);
         assertEquals(false, board.isHard(COORDINATE));
     }
 
     @Test
     public void testCandidatesShouldBeFullWhenNotTouched_1() {
-        board = new Board(1);
+        board = new BoardImpl(1);
         assertEquals(1, board.numCandidatesLeft(COORDINATE));
     }
 
     @Test
     public void testCandidatesShouldBeFullWhenNotTouched_2() {
-        board = new Board(2);
+        board = new BoardImpl(2);
         assertEquals(4, board.numCandidatesLeft(COORDINATE));
     }
 
     @Test
     public void testEraseCandidate() {
-        board = new Board(2);
+        board = new BoardImpl(2);
 
         board.removeCandidate(COORDINATE, 1);
 
@@ -48,7 +49,7 @@ public class BoardTest {
 
     @Test
     public void testSolve() {
-        board = new Board(2);
+        board = new BoardImpl(2);
 
         board.solveNode(COORDINATE, 1);
 

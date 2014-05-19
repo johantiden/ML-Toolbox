@@ -1,20 +1,25 @@
 package main.java.se.jtiden.sudoku.solver;
 
 import main.java.se.jtiden.sudoku.domain.Board;
-import main.java.se.jtiden.sudoku.solver.*;
+
+import java.util.stream.IntStream;
 
 public class SudokuSolverFactory {
 
     public MultiSolver newSudokuSolver(Board board) {
         MultiSolverBuilder builder = new MultiSolverBuilder().withBoard(board);
 
-        return builder
+        builder
                 .withSolver(new FailIfNodeHasZeroCandidates())
                 .withSolver(new RemoveCandidatesOfSolvedNeighbors())
-                .withSolver(new SolveNodeIfOnlyOneCandidate())
-                .withSolver(new SolveNodeIfAloneInGroup())
-                .withSolver(new LockedCandidates())
-                .build();
+                .withSolver(new NakedSingle())
+                .withSolver(new HiddenSingle());
+
+        IntStream.range(1, board.getOrder() * board.getOrder() + 1).forEach(i -> {
+            builder.withSolver(new LockedCandidates(i));
+        });
+
+        return builder.build();
     }
 
 

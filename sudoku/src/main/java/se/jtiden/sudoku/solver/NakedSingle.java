@@ -3,7 +3,7 @@ package main.java.se.jtiden.sudoku.solver;
 import main.java.se.jtiden.sudoku.domain.UnsolvedNode;
 import main.java.se.jtiden.sudoku.struct.Coordinate;
 
-class SolveNodeIfOnlyOneCandidate extends SolverBuilder {
+class NakedSingle extends SolverBuilder {
     @Override
     public Solver build() {
         return new Solver() {

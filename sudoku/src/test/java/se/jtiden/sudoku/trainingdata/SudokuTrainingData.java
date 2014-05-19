@@ -8,4 +8,6 @@ public interface SudokuTrainingData {
     void assertSolved();
 
     Difficulty getDifficulty();
+
+    String getName();
 }
