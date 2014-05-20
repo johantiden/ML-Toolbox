@@ -8,10 +8,10 @@ import static org.junit.Assert.assertEquals;
 public class SudokuTrainingDataIntImpl extends SudokuTrainingDataAbs implements SudokuTrainingData {
     private final int[][] solution;
 
-    public SudokuTrainingDataIntImpl(String name, int order, Difficulty difficulty, int[][] board, int[][] solution) {
+    public SudokuTrainingDataIntImpl(String name, Difficulty difficulty, int[][] board, int[][] solution) {
         super(difficulty, name);
         this.solution = solution;
-        super.setBoard(BoardFactory.parse(order, board));
+        super.setBoard(BoardFactory.parse(3, board));
     }
 
     @Override

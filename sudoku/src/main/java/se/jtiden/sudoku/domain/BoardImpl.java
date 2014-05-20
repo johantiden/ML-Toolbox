@@ -68,7 +68,7 @@ public class BoardImpl implements Board {
 
     @Override
     public Iterable<? extends Coordinate> getAllCoordinates() {
-        List<Coordinate> allCoordinates = new ArrayList<>();
+        List<Coordinate> allCoordinates = new ArrayList<>(array2d.getHeight()*array2d.getWidth());
         for (int y = 1; y <= array2d.getHeight(); ++y) {
             for (int x = 1; x <= array2d.getHeight(); ++x) {
                 allCoordinates.add(new Coordinate(x, y));
@@ -79,7 +79,7 @@ public class BoardImpl implements Board {
 
     @Override
     public Iterable<? extends Node> getNeighborsFor(Node node) {
-        List<Node> neighbors = new ArrayList<>();
+        List<Node> neighbors = new ArrayList<>(3 * (order-1));
 
         addRow(node, neighbors);
         addColumn(node, neighbors);
@@ -89,13 +89,13 @@ public class BoardImpl implements Board {
     }
 
     private void addBox(Node node, List<Node> neighbors) {
-        for (Node n : getBoxNodes(node.getCoordinate())) {
-            neighbors.add(n);
+        for (Node boxNode : getBoxNodes(node.getCoordinate())) {
+            neighbors.add(boxNode);
         }
     }
 
     private Iterable<Coordinate> getBox(Coordinate coordinate) {
-        List<Coordinate> box = new ArrayList<>();
+        List<Coordinate> box = new ArrayList<>(order);
 
         int groupIdX = groupId(coordinate.x);
         int groupIdY = groupId(coordinate.y);
@@ -169,7 +169,7 @@ public class BoardImpl implements Board {
 
     @Override
     public Iterable<? extends SudokuNodeSet> getAllRowSubGroups() {
-        List<SudokuNodeSet> allRowSubsets = new ArrayList<>();
+        List<SudokuNodeSet> allRowSubsets = new ArrayList<>(order*order*order);
         for (int y = 1; y <= array2d.getHeight(); ++y) {
             for (int groupId = 0; groupId < order; ++groupId) {
                 SudokuNodeSetImpl subSet = new SudokuNodeSetImpl();

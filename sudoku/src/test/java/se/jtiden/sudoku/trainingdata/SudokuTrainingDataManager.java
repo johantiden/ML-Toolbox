@@ -56,7 +56,7 @@ public class SudokuTrainingDataManager {
 
 
 
-        trainingData.add(new SudokuTrainingDataIntImpl("", 3, Difficulty.EASIEST, new int[][]{
+        trainingData.add(new SudokuTrainingDataIntImpl("", Difficulty.EASIEST, new int[][]{
                 {1,3,7 , x,5,9 , 4,x,2},
                 {8,6,4 , x,3,2 , 9,5,x},
                 {5,9,2 , 8,4,7 , 3,x,6},
@@ -82,7 +82,7 @@ public class SudokuTrainingDataManager {
                 {2,1,3 , 4,6,5 , 7,9,8}
         }));
 
-        trainingData.add(new SudokuTrainingDataIntImpl("", 3, Difficulty.EASY_AS_PIE, new int[][]{
+        trainingData.add(new SudokuTrainingDataIntImpl("", Difficulty.EASY_AS_PIE, new int[][]{
                 {x,2,5 , x,7,6 , 8,1,x},
                 {8,7,3 , x,x,5 , 6,2,9},
                 {6,x,1 , x,x,2 , 5,4,7},
@@ -108,7 +108,7 @@ public class SudokuTrainingDataManager {
                 {5,1,7 , 6,2,8 , 9,3,4},
         }));
 
-        trainingData.add(new SudokuTrainingDataIntImpl("", 3, Difficulty.EASY_AS_PIE, new int[][]{
+        trainingData.add(new SudokuTrainingDataIntImpl("", Difficulty.EASY_AS_PIE, new int[][]{
                 {x,x,3,2,5,9,x,x,4},
                 {x,1,x,6,7,x,x,x,8},
                 {2,7,x,x,1,4,x,3,9},
@@ -123,7 +123,7 @@ public class SudokuTrainingDataManager {
         },
                 null));
 
-        trainingData.add(new SudokuTrainingDataIntImpl("", 3, Difficulty.SIMPLE, new int[][]{
+        trainingData.add(new SudokuTrainingDataIntImpl("", Difficulty.SIMPLE, new int[][]{
                 {x,x,x,x,x,x,1,8,x},
                 {x,x,x,1,x,3,x,4,7},
                 {x,3,9,8,x,x,x,2,5},
@@ -139,7 +139,7 @@ public class SudokuTrainingDataManager {
                 null));
 
 
-        trainingData.add(new SudokuTrainingDataIntImpl("", 3, Difficulty.EASY, new int[][]{
+        trainingData.add(new SudokuTrainingDataIntImpl("", Difficulty.EASY, new int[][]{
                 {3,x,x,x,9,2,6,x,x},
                 {9,x,x,5,x,x,x,x,x},
                 {1,5,x,x,x,x,x,4,x},
@@ -154,7 +154,7 @@ public class SudokuTrainingDataManager {
         },
                 null));
 
-        trainingData.add(new SudokuTrainingDataIntImpl("", 3, Difficulty.MODERATE, new int[][]{
+        trainingData.add(new SudokuTrainingDataIntImpl("", Difficulty.MODERATE, new int[][]{
                 {x,x,x,6,3,2,5,x,7},
                 {x,7,x,x,5,x,x,6,x},
                 {x,x,x,x,1,x,x,9,x},
@@ -170,7 +170,7 @@ public class SudokuTrainingDataManager {
                 null));
 
 
-        trainingData.add(new Ignore(new SudokuTrainingDataIntImpl("Difficult 2", 3, Difficulty.DIFFICULT, new int[][]{
+        trainingData.add(new Ignore(new SudokuTrainingDataIntImpl("Difficult 2", Difficulty.DIFFICULT, new int[][]{
                 {x,x,x,5,x,1,x,2,6},
                 {x,x,x,x,2,x,x,x,x},
                 {x,5,x,8,x,x,7,9,x},
@@ -185,17 +185,18 @@ public class SudokuTrainingDataManager {
         },
                 null)));
 
-        trainingData.add(new SudokuTrainingDataIntImpl("", 2, Difficulty.PROTOTYPES, new int[][]{
-                {1,2,3,4},
-                {4,3,1,2},
-                {2,1,0,3},
-                {3,4,2,1}
-        }, new int[][]{
-                {1,2,3,4},
-                {4,3,1,2},
-                {2,1,4,3},
-                {3,4,2,1}
+        trainingData.add(new SudokuTrainingDataStringImpl("", 2, Difficulty.PROTOTYPES, new String[]{
+                "1234",
+                "4312",
+                "21x3",
+                "3421",
+        }, new String[]{
+                "1234",
+                "4312",
+                "2143",
+                "3421"
         }));
+
 
         trainingData.add(new SudokuTrainingDataStringImpl("", 3, Difficulty.EASY, new String[]{
                 "x7xxxxxx1",

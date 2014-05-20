@@ -8,12 +8,9 @@ public class BoardFactory {
     public static Board parse(int order, int[][] array) {
         Board board = new BoardImpl(order);
 
-        for (int y = 1; y <= order*order; ++y) {
-            for (int x = 1; x <= order*order; ++x) {
-                if(array[y-1][x-1] != 0) {
-                    //noinspection ObjectAllocationInLoop
-                    board.setHardDigit(new Coordinate(x, y), array[y-1][x-1]);
-                }
+        for (Coordinate coordinate : board.getAllCoordinates()) {
+            if(array[coordinate.y-1][coordinate.x-1] != 0) {
+                board.setHardDigit(coordinate, array[coordinate.y-1][coordinate.x-1]);
             }
         }
 
@@ -23,13 +20,11 @@ public class BoardFactory {
     public static Board parse(int order, String[] array) {
         Board board = new BoardImpl(order);
 
-        for (int y = 1; y <= order*order; ++y) {
-            for (int x = 1; x <= order*order; ++x) {
-                if(array[y-1].charAt(x-1) != 'x') {
-                    char c = array[y-1].charAt(x - 1);
-                    int value = charToInt(c);
-                    board.setHardDigit(new Coordinate(x, y), value);
-                }
+        for (Coordinate coordinate : board.getAllCoordinates()) {
+            if(array[coordinate.y-1].charAt(coordinate.x-1) != 'x') {
+                char c = array[coordinate.y-1].charAt(coordinate.x - 1);
+                int value = charToInt(c);
+                board.setHardDigit(coordinate, value);
             }
         }
 

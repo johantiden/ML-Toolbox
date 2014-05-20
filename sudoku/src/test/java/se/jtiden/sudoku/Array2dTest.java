@@ -18,7 +18,7 @@ public class Array2dTest {
 
     @Test
     public void testConstructorZero() {
-        Array2d target = new Array2d(0, 0);
+        Array2d<Integer> target = new Array2d<>(0, 0);
 
         assertEquals(0, target.getWidth());
         assertEquals(0, target.getHeight());

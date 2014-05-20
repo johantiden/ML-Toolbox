@@ -18,8 +18,6 @@ public interface Board {
 
     Collection<? extends UnsolvedNode> getUnsolvedNodes();
 
-    Iterable<? extends Coordinate> getAllCoordinates();
-
     Iterable<? extends Node> getNeighborsFor(Node node);
 
     int countCandidatesInRowFor(Coordinate coordinate, int value);
@@ -33,4 +31,6 @@ public interface Board {
     Iterable<? extends SudokuNodeSet> getAllRowSubGroups();
 
     Iterable<? extends SudokuNodeSet> getAllColumnSubGroups();
+
+    Iterable<? extends Coordinate> getAllCoordinates();
 }
