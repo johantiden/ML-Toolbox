@@ -32,11 +32,6 @@ public class BoardImpl implements Board {
     }
 
     @Override
-    public boolean isHard(Coordinate coordinate) {
-        return array2d.get(coordinate).isHard();
-    }
-
-    @Override
     public int numCandidatesLeft(Coordinate coordinate) {
         return array2d.get(coordinate).numCandidatesLeft();
     }

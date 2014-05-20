@@ -9,10 +9,6 @@ public abstract class Node {
         this.coordinate = coordinate;
     }
 
-    public boolean isHard() {
-        return false;
-    }
-
     public Coordinate getCoordinate() {
         return coordinate;
     }

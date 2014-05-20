@@ -13,19 +13,6 @@ public class BoardTest {
     private Board board;
 
     @Test
-    public void testHard(){
-        board = new BoardImpl(1);
-        board.setHardDigit(COORDINATE, 3);
-        assertEquals(true, board.isHard(COORDINATE));
-    }
-
-    @Test
-    public void testNotHard(){
-        board = new BoardImpl(1);
-        assertEquals(false, board.isHard(COORDINATE));
-    }
-
-    @Test
     public void testCandidatesShouldBeFullWhenNotTouched_1() {
         board = new BoardImpl(1);
         assertEquals(1, board.numCandidatesLeft(COORDINATE));

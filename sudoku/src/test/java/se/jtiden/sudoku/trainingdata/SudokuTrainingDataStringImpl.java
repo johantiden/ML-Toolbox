@@ -16,13 +16,13 @@ public class SudokuTrainingDataStringImpl extends SudokuTrainingDataAbs implemen
 
     @Override
     public void assertSolved() {
-        assertEquals(0, board.getUnsolvedNodes().size());
+        assertEquals(0, getBoard().getUnsolvedNodes().size());
 
-        final int size = board.getOrder() * board.getOrder();
+        final int size = getBoard().getOrder() * getBoard().getOrder();
         for (int y = 1; y <= size; ++y) {
             for (int x = 1; x <= size; ++x) {
                 int expected = BoardFactory.charToInt(solution[y - 1].charAt(x - 1));
-                assertEquals("(" + x + "," + y + ")", expected, board.getValue(new Coordinate(x, y)));
+                assertEquals("(" + x + "," + y + ")", expected, getBoard().getValue(new Coordinate(x, y)));
             }
         }
     }

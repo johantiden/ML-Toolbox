@@ -8,8 +8,6 @@ import java.util.Collection;
 public interface Board {
     void setHardDigit(Coordinate coordinate, int value);
 
-    boolean isHard(Coordinate coordinate);
-
     int numCandidatesLeft(Coordinate coordinate);
 
     void removeCandidate(Coordinate coordinate, int value);

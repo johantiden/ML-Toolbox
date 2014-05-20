@@ -26,11 +26,6 @@ public class HardNode extends Node {
     }
 
     @Override
-    public boolean isHard() {
-        return true;
-    }
-
-    @Override
     public int numCandidatesLeft() {
         throw new IllegalStateException("You cannot count candidates on predefined nodes.");
     }

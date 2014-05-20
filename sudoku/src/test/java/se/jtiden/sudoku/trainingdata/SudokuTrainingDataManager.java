@@ -2,7 +2,6 @@ package test.java.se.jtiden.sudoku.trainingdata;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Stream;
 
 public class SudokuTrainingDataManager {
 
@@ -33,26 +32,26 @@ public class SudokuTrainingDataManager {
                 "896124735",
         }));
 
-        trainingData.add(new SudokuTrainingDataIntImpl("Needs Locked Candidates", 3, Difficulty.INTRICATE, new int[][]{
-                {x,7,x,x,4,8,9,x,x},
-                {x,6,x,3,x,x,x,8,x},
-                {x,x,x,x,x,9,x,x,4},
-                {x,x,x,x,x,1,x,2,x},
-                {7,4,x,x,x,x,x,5,1},
-                {x,3,x,4,x,x,x,x,x},
-                {9,x,x,2,x,x,x,x,x},
-                {x,2,x,x,x,7,x,3,x},
-                {x,x,8,5,6,x,x,7,x},
-        }, new int[][]{
-                {2,7,3,6,4,8,9,1,5},
-                {4,6,9,3,1,5,7,8,2},
-                {1,8,5,7,2,9,3,6,4},
-                {5,9,6,8,7,1,4,2,3},
-                {7,4,2,9,3,6,8,5,1},
-                {8,3,1,4,5,2,6,9,7},
-                {9,5,7,2,8,3,1,4,6},
-                {6,2,4,1,9,7,5,3,8},
-                {3,1,8,5,6,4,2,7,9},
+        trainingData.add(new SudokuTrainingDataStringImpl("Needs Locked Candidates", 3, Difficulty.INTRICATE, new String[]{
+                "x7xx489xx",
+                "x6x3xxx8x",
+                "xxxxx9xx4",
+                "xxxxx1x2x",
+                "74xxxxx51",
+                "x3x4xxxxx",
+                "9xx2xxxxx",
+                "x2xxx7x3x",
+                "xx856xx7x",
+        }, new String[]{
+                "273648915",
+                "469315782",
+                "185729364",
+                "596871423",
+                "742936851",
+                "831452697",
+                "957283146",
+                "624197538",
+                "318564279",
         }));
 
 
@@ -171,7 +170,7 @@ public class SudokuTrainingDataManager {
                 null));
 
 
-        trainingData.add(new SudokuTrainingDataIntImpl("Difficult 2", 3, Difficulty.DIFFICULT, new int[][]{
+        trainingData.add(new Ignore(new SudokuTrainingDataIntImpl("Difficult 2", 3, Difficulty.DIFFICULT, new int[][]{
                 {x,x,x,5,x,1,x,2,6},
                 {x,x,x,x,2,x,x,x,x},
                 {x,5,x,8,x,x,7,9,x},
@@ -184,7 +183,7 @@ public class SudokuTrainingDataManager {
                 {x,x,x,x,7,x,x,x,x},
                 {7,4,x,3,x,8,x,x,x},
         },
-                null));
+                null)));
 
         trainingData.add(new SudokuTrainingDataIntImpl("", 2, Difficulty.PROTOTYPES, new int[][]{
                 {1,2,3,4},
@@ -220,7 +219,7 @@ public class SudokuTrainingDataManager {
                 "792486513",
         }));
 
-        trainingData.add(new SudokuTrainingDataStringImpl("Need naked pair and unique rectangle", 3, Difficulty.DIFFICULT, new String[]{
+        trainingData.add(new Ignore(new SudokuTrainingDataStringImpl("Need naked pair and unique rectangle", 3, Difficulty.DIFFICULT, new String[]{
                 "xx9x347xx",
                 "3xxx76x2x",
                 "xxx1xxxx6",
@@ -230,9 +229,9 @@ public class SudokuTrainingDataManager {
                 "6xxxx8xxx",
                 "x1x32xxx8",
                 "xx356x1xx",
-        }, null));
+        }, null)));
 
-        trainingData.add(new SudokuTrainingDataStringImpl("Need naked pair", 3, Difficulty.INTRICATE, new String[]{
+        trainingData.add(new Ignore(new SudokuTrainingDataStringImpl("Need naked pair", 3, Difficulty.INTRICATE, new String[]{
                 "76xxx24x9",
                 "2x14x3xxx",
                 "xx4x7xxxx",
@@ -252,14 +251,8 @@ public class SudokuTrainingDataManager {
                 "896235741",
                 "475186392",
                 "132847685",
-        }));
+        })));
 
         return trainingData;
     }
-
-    public Stream<SudokuTrainingData> getAllOfDifficulty(Difficulty difficulty) {
-        return getAll().stream().filter(
-                d -> d.getDifficulty() == difficulty);
-    }
-
 }

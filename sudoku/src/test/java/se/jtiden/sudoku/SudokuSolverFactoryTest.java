@@ -133,9 +133,14 @@ public class SudokuSolverFactoryTest {
 
 
     private void solveAndAssert(SudokuTrainingData d) {
-        System.out.println("Will solve " + d.getDifficulty().name() + ": " + d.getName());
-        solve(d.getBoard());
-        d.assertSolved();
+        if (!d.isIgnore()) {
+            System.out.println("Will solve " + d);
+            solve(d.getBoard());
+            d.assertSolved();
+        } else {
+            System.out.println("Ignoring test " + d);
+        }
+
     }
 
 

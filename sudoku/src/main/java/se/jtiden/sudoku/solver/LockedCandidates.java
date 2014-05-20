@@ -14,11 +14,7 @@ public class LockedCandidates extends SolverBuilder {
             @Override
             public boolean trySolve() {
                 boolean success = lockedCandidatesInRows();
-                if (success) {
-                    return true;
-                } else {
-                    return lockedCandidatesInColumns();
-                }
+                return success || lockedCandidatesInColumns();
             }
 
             private boolean lockedCandidatesInRows() {

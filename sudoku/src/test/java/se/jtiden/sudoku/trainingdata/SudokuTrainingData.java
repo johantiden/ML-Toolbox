@@ -10,4 +10,6 @@ public interface SudokuTrainingData {
     Difficulty getDifficulty();
 
     String getName();
+
+    boolean isIgnore();
 }

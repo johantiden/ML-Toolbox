@@ -11,6 +11,7 @@ public class BoardFactory {
         for (int y = 1; y <= order*order; ++y) {
             for (int x = 1; x <= order*order; ++x) {
                 if(array[y-1][x-1] != 0) {
+                    //noinspection ObjectAllocationInLoop
                     board.setHardDigit(new Coordinate(x, y), array[y-1][x-1]);
                 }
             }

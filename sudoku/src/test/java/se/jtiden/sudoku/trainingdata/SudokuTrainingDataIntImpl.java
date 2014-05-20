@@ -6,7 +6,7 @@ import test.java.se.jtiden.sudoku.BoardFactory;
 import static org.junit.Assert.assertEquals;
 
 public class SudokuTrainingDataIntImpl extends SudokuTrainingDataAbs implements SudokuTrainingData {
-    private int[][] solution;
+    private final int[][] solution;
 
     public SudokuTrainingDataIntImpl(String name, int order, Difficulty difficulty, int[][] board, int[][] solution) {
         super(difficulty, name);
@@ -16,7 +16,7 @@ public class SudokuTrainingDataIntImpl extends SudokuTrainingDataAbs implements 
 
     @Override
     public void assertSolved() {
-        assertEquals("Couldn't solve " + getDifficulty().name() + ": " + getName(), 0, board.getUnsolvedNodes().size());
+        assertEquals("Couldn't solve " + getDifficulty().name() + ": " + getName(), 0, getBoard().getUnsolvedNodes().size());
 
         if (solution != null) {
             final int size = getBoard().getOrder() * getBoard().getOrder();
@@ -27,4 +27,7 @@ public class SudokuTrainingDataIntImpl extends SudokuTrainingDataAbs implements 
             }
         }
     }
+
+
+
 }
