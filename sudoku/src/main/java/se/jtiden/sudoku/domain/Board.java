@@ -33,4 +33,8 @@ public interface Board {
     Iterable<? extends SudokuNodeSet> getAllColumnSubGroups();
 
     Iterable<? extends Coordinate> getAllCoordinates();
+
+    Node getNode(Coordinate coordinate);
+
+    int groupId(int coordinate);
 }

@@ -12,7 +12,7 @@ public class Ignore implements SudokuTrainingData {
 
     @Override
     public Board getBoard() {
-        throw new NotImplementedException();
+        return inner.getBoard();
     }
 
     @Override

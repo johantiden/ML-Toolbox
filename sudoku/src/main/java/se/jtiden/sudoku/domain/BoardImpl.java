@@ -78,6 +78,11 @@ public class BoardImpl implements Board {
     }
 
     @Override
+    public Node getNode(Coordinate coordinate) {
+        return array2d.get(coordinate);
+    }
+
+    @Override
     public Iterable<? extends Node> getNeighborsFor(Node node) {
         List<Node> neighbors = new ArrayList<>(3 * (order-1));
 
