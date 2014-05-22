@@ -3,7 +3,6 @@ package se.jtiden.sudoku.trainingdata;
 import se.jtiden.sudoku.struct.Coordinate;
 import se.jtiden.sudoku.BoardFactory;
 
-import static org.junit.Assert.assertEquals;
 
 public class SudokuTrainingDataIntImpl extends SudokuTrainingDataAbs implements SudokuTrainingData {
     private final int[][] solution;
@@ -27,7 +26,4 @@ public class SudokuTrainingDataIntImpl extends SudokuTrainingDataAbs implements 
             }
         }
     }
-
-
-
 }

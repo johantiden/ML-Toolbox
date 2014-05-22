@@ -1,10 +1,10 @@
 package se.jtiden.sudoku.trainingdata;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import se.jtiden.sudoku.struct.CollectionDecorator;
 import se.jtiden.sudoku.struct.CollectionDecoratorImpl;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class SudokuTrainingDataManager {
 

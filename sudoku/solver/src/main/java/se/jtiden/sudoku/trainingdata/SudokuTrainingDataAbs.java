@@ -37,6 +37,17 @@ public abstract class SudokuTrainingDataAbs implements SudokuTrainingData {
         return false;
     }
 
+    protected void assertEquals(String message, int expected, int actual) {
+        if (expected != actual) {
+            throw new AssertionError(message + " Expected " + expected + " but was "+ actual + ".");
+        }
+    }
+    protected void assertEquals(int expected, int actual) {
+        if (expected != actual) {
+            throw new AssertionError("Assertion failed. Expected " + expected + " but was "+ actual + ".");
+        }
+    }
+
     @Override
     public String toString() {
         return difficulty + ": " + name;

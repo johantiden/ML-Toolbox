@@ -1,4 +1,4 @@
-package se.jtiden.sudoku.sudokuswing
+package se.jtiden.sudoku.sudokuswing;
 
 import se.jtiden.sudoku.domain.Board;
 import se.jtiden.sudoku.domain.Node;

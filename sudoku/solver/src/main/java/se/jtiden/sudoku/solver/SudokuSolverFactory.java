@@ -13,7 +13,8 @@ public class SudokuSolverFactory {
                 .withSolver(new FailIfNodeHasZeroCandidates())
                 .withSolver(new RemoveCandidatesOfSolvedNeighbors())
                 .withSolver(new NakedSingle())
-                .withSolver(new HiddenSingle());
+                .withSolver(new HiddenSingle())
+        ;
 
         IntStream.range(1, board.getOrder() * board.getOrder() + 1).forEach(new Consumer<Integer>() {
             @Override
