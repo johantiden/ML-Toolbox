@@ -34,4 +34,10 @@ public class Ignore implements SudokuTrainingData {
     public boolean isIgnore() {
         return true;
     }
+
+    @Override
+    public String toString() {
+        return "Ignore{"+ inner +
+                '}';
+    }
 }

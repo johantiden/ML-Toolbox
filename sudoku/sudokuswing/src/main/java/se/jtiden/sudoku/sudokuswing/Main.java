@@ -4,20 +4,20 @@ import se.jtiden.sudoku.domain.Board;
 import se.jtiden.sudoku.domain.Node;
 import se.jtiden.sudoku.solver.MultiSolver;
 import se.jtiden.sudoku.solver.SudokuSolverFactory;
+import se.jtiden.sudoku.struct.ListDecorator;
+import se.jtiden.sudoku.trainingdata.SudokuTrainingData;
 import se.jtiden.sudoku.trainingdata.SudokuTrainingDataManager;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.image.BufferedImage;
+import java.util.Random;
 
 public class Main extends JFrame {
 
-    public static final int IMAGE_WIDTH = 600;
-    public static final int IMAGE_HEIGHT = 600;
+    public static final int IMAGE_SIZE = 600;
     private final Board board;
     private final MultiSolver solver;
-    private static final int OFFSET = 23;
-    private final JPanel panel;
+    private final JPanel boardPanel;
 
     public static void main(String[] args) {
         Main main = new Main();
@@ -27,19 +27,46 @@ public class Main extends JFrame {
     public Main() {
         setTitle("Sudoku");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        this.board = new SudokuTrainingDataManager().getAll().get(11).getBoard();
+        this.board = getBoard(8);
         this.solver = new SudokuSolverFactory().newSudokuSolver(board);
+        final int margin = 50;
+        Container contentPane = this.getContentPane();
+        setSize(IMAGE_SIZE, IMAGE_SIZE);
+        boardPanel = new SudokuBoardComponent(board);
 
-        setSize(IMAGE_WIDTH, IMAGE_HEIGHT+OFFSET);
-        panel = new CustomComponent();
-        panel.setSize(IMAGE_WIDTH, IMAGE_HEIGHT);
-        add(panel);
-        setMinimumSize(getSize());
+        add(boardPanel);
+
+        SpringLayout springLayout = new SpringLayout();
+        this.setLayout(springLayout);
+
+        springLayout.putConstraint(SpringLayout.WEST, boardPanel, margin, SpringLayout.WEST, contentPane);
+        springLayout.putConstraint(SpringLayout.NORTH, boardPanel, margin, SpringLayout.NORTH, contentPane);
+        springLayout.putConstraint(SpringLayout.SOUTH, boardPanel, -margin, SpringLayout.SOUTH, contentPane);
+        springLayout.putConstraint(SpringLayout.WIDTH, boardPanel, 0, SpringLayout.HEIGHT, boardPanel);
 
         setVisible(true);
 
         startSimulating();
         startPainting();
+    }
+
+    private Board randomBoard() {
+        SudokuTrainingDataManager sudokuTrainingDataManager = new SudokuTrainingDataManager();
+        ListDecorator<SudokuTrainingData> trainingData = sudokuTrainingDataManager.getAll();
+
+        int index = new Random().nextInt(trainingData.size());
+        System.out.println("size:" + trainingData.size());
+        System.out.println("chosen:" + index);
+        SudokuTrainingData sudokuTrainingData = trainingData.get(index);
+
+        System.out.println("Using board " + sudokuTrainingData);
+        return sudokuTrainingData.getBoard();
+    }
+
+    private Board getBoard(int i) {
+        SudokuTrainingDataManager sudokuTrainingDataManager = new SudokuTrainingDataManager();
+        ListDecorator<SudokuTrainingData> trainingData = sudokuTrainingDataManager.getAll();
+        return trainingData.get(i).getBoard();
     }
 
     private void startPainting() {
@@ -68,7 +95,7 @@ public class Main extends JFrame {
             while (isVisible()  && board.getUnsolvedNodes().size() > 0) {
                 try {
                     Thread.sleep(30);
-                    panel.repaint();
+                    boardPanel.repaint();
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
@@ -83,7 +110,7 @@ public class Main extends JFrame {
             boolean failed = false;
             while (isVisible() && board.getUnsolvedNodes().size() > 0 && !failed) {
                 try {
-                    Thread.sleep(50);
+                    Thread.sleep(20);
                 } catch (InterruptedException e) {
                     e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
                 }
@@ -92,30 +119,4 @@ public class Main extends JFrame {
         }
     }
 
-    class CustomComponent extends JPanel {
-
-        private static final long serialVersionUID = 1L;
-
-        @Override
-        public Dimension getMinimumSize() {
-            return new Dimension(IMAGE_WIDTH, IMAGE_HEIGHT);
-        }
-
-        @Override
-        public Dimension getPreferredSize() {
-            return new Dimension(IMAGE_WIDTH+1, IMAGE_HEIGHT+1);
-        }
-
-        @Override
-        public void paint(Graphics g) {
-            int bufferWidth = (int) (IMAGE_WIDTH*2);
-            int bufferHeight = (int) (IMAGE_HEIGHT*2);
-            Image backBuffer = new BufferedImage(bufferWidth, bufferHeight, BufferedImage.TYPE_INT_RGB);
-
-            new SudokuPainter(board, bufferWidth, bufferHeight).paint(backBuffer.getGraphics());
-            ((Graphics2D)g).setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
-
-            g.drawImage(backBuffer, 0, 0, IMAGE_WIDTH, IMAGE_HEIGHT, null);
-        }
-    }
 }

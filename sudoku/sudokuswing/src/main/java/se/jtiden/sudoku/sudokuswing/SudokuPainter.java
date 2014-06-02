@@ -13,7 +13,7 @@ public class SudokuPainter {
     private final int width;
     private final int height;
 
-    public SudokuPainter(Board board, int width, int height) {
+    SudokuPainter(Board board, int width, int height) {
         this.board = board;
         this.width = width;
         this.height = height;
@@ -26,8 +26,8 @@ public class SudokuPainter {
         float adjustmentForBoxMarginXCoefficient = width/500f;
         float adjustmentForBoxMarginYCoefficient = height/500f;
 
-        float nodeWidth = ((float) width) / board.getOrder() / board.getOrder() - adjustmentForBoxMarginXCoefficient;
-        float nodeHeight = ((float) height) / board.getOrder() / board.getOrder() - adjustmentForBoxMarginYCoefficient;
+        float nodeWidth = ((float) width-3) / board.getOrder() / board.getOrder() - adjustmentForBoxMarginXCoefficient;
+        float nodeHeight = ((float) height-3) / board.getOrder() / board.getOrder() - adjustmentForBoxMarginYCoefficient;
 
         for (Coordinate coordinate : board.getAllCoordinates()) {
             Node node = board.getNode(coordinate);

@@ -3,7 +3,10 @@ package se.jtiden.sudoku.struct;
 import java.util.ArrayList;
 import java.util.List;
 
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
+
 public class CollectionDecoratorImpl<T> implements CollectionDecorator<T> {
+
     private final Iterable<T> iterable;
 
     public CollectionDecoratorImpl(final Iterable<T> iterable) {
@@ -63,8 +66,7 @@ public class CollectionDecoratorImpl<T> implements CollectionDecorator<T> {
         return new CollectionDecoratorImpl<>(filtered);
     }
 
-    @Override
-    public T get(final int i) {
-        return iterable.iterator().next();
+    protected Iterable<T> getIterable() {
+        return iterable;
     }
 }

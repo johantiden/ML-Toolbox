@@ -5,5 +5,4 @@ public interface CollectionDecorator<T> {
     <R> R reduce(Collector<T, R> collector);
     boolean anyMatch(Predicate<T> predicate);
     CollectionDecorator<T> filter(Predicate<T> predicate);
-    T get(int i);
 }

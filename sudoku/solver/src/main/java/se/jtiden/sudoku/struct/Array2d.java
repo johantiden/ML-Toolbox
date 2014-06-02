@@ -76,11 +76,6 @@ public class Array2d<T> implements CollectionDecorator<T>, Iterable<T> {
         return new CollectionDecoratorImpl<T>(this).filter(predicate);
     }
 
-    @Override
-    public T get(final int i) {
-        return new CollectionDecoratorImpl<>(this).get(i);
-    }
-
     public Iterable<? extends T> getRow(int y) {
         List<T> row = new ArrayList<T>();
         for (Coordinate key : map.keySet()) {

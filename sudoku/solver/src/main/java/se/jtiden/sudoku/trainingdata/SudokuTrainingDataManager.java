@@ -2,6 +2,8 @@ package se.jtiden.sudoku.trainingdata;
 
 import se.jtiden.sudoku.struct.CollectionDecorator;
 import se.jtiden.sudoku.struct.CollectionDecoratorImpl;
+import se.jtiden.sudoku.struct.ListDecorator;
+import se.jtiden.sudoku.struct.ListDecoratorImpl;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,7 +12,7 @@ public class SudokuTrainingDataManager {
 
     private final static int x = 0;
 
-    public CollectionDecorator<SudokuTrainingData> getAll() {
+    public ListDecorator<SudokuTrainingData> getAll() {
         List<se.jtiden.sudoku.trainingdata.SudokuTrainingData> trainingData = new ArrayList<>();
 
         trainingData.add(new se.jtiden.sudoku.trainingdata.SudokuTrainingDataStringImpl("", 3, se.jtiden.sudoku.trainingdata.Difficulty.MODERATE, new String[]{
@@ -257,6 +259,6 @@ public class SudokuTrainingDataManager {
                 "132847685",
         })));
 
-        return new CollectionDecoratorImpl<>(trainingData);
+        return new ListDecoratorImpl<>(trainingData);
     }
 }
