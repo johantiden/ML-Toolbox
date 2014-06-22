@@ -10,6 +10,8 @@ import se.jtiden.sudoku.trainingdata.SudokuTrainingDataManager;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.Random;
 
 public class Main extends JFrame {
@@ -17,7 +19,9 @@ public class Main extends JFrame {
     public static final int IMAGE_SIZE = 600;
     private final Board board;
     private final MultiSolver solver;
-    private final JPanel boardPanel;
+    private final SudokuBoardComponent boardPanel;
+    private final SudokuBigNumbersComponent bigNumbersPanel;
+    private final ActionListener buttonActionListener;
 
     public static void main(String[] args) {
         Main main = new Main();
@@ -27,14 +31,31 @@ public class Main extends JFrame {
     public Main() {
         setTitle("Sudoku");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        this.board = getBoard(8);
-        this.solver = new SudokuSolverFactory().newSudokuSolver(board);
-        final int margin = 50;
-        Container contentPane = this.getContentPane();
-        setSize(IMAGE_SIZE, IMAGE_SIZE);
-        boardPanel = new SudokuBoardComponent(board);
 
+        // _q1  ´¨Ä
+        // Ä´098765431  §§  1QA> 2 this.board = getBoard(11);
+        this.board = getBoard(9); // small
+        //this.board = getBoard(13); // big
+
+        this.solver = new SudokuSolverFactory().newSudokuSolver(board);
+        final int margin = 10;
+        Container contentPane = this.getContentPane();
+        setSize(IMAGE_SIZE + 200, IMAGE_SIZE);
+
+        boardPanel = new SudokuBoardComponent(board);
         add(boardPanel);
+
+        this.buttonActionListener = new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                int value = Integer.parseInt(e.getActionCommand());
+                boardPanel.setHighlightedNumber(value);
+                boardPanel.repaint();
+            }
+        };
+        bigNumbersPanel = new SudokuBigNumbersComponent(board.getOrder(), this.buttonActionListener);
+        //bigNumbersPanel.setSize(new Dimension(300, 300));
+        add(bigNumbersPanel);
 
         SpringLayout springLayout = new SpringLayout();
         this.setLayout(springLayout);
@@ -44,6 +65,11 @@ public class Main extends JFrame {
         springLayout.putConstraint(SpringLayout.SOUTH, boardPanel, -margin, SpringLayout.SOUTH, contentPane);
         springLayout.putConstraint(SpringLayout.WIDTH, boardPanel, 0, SpringLayout.HEIGHT, boardPanel);
 
+        springLayout.putConstraint(SpringLayout.NORTH, bigNumbersPanel, margin, SpringLayout.NORTH, contentPane);
+        springLayout.putConstraint(SpringLayout.EAST, bigNumbersPanel, -margin, SpringLayout.EAST, contentPane);
+        springLayout.putConstraint(SpringLayout.WEST, bigNumbersPanel, margin, SpringLayout.EAST, boardPanel);
+        springLayout.putConstraint(SpringLayout.HEIGHT, bigNumbersPanel, 0, SpringLayout.WIDTH, bigNumbersPanel);
+
         setVisible(true);
 
         startSimulating();
@@ -51,8 +77,8 @@ public class Main extends JFrame {
     }
 
     private Board randomBoard() {
-        SudokuTrainingDataManager sudokuTrainingDataManager = new SudokuTrainingDataManager();
-        ListDecorator<SudokuTrainingData> trainingData = sudokuTrainingDataManager.getAll();
+        SudokuTrainingDataManager manager = new SudokuTrainingDataManager();
+        ListDecorator<SudokuTrainingData> trainingData = manager.getAll();
 
         int index = new Random().nextInt(trainingData.size());
         System.out.println("size:" + trainingData.size());
@@ -63,9 +89,9 @@ public class Main extends JFrame {
         return sudokuTrainingData.getBoard();
     }
 
-    private Board getBoard(int i) {
-        SudokuTrainingDataManager sudokuTrainingDataManager = new SudokuTrainingDataManager();
-        ListDecorator<SudokuTrainingData> trainingData = sudokuTrainingDataManager.getAll();
+    private static Board getBoard(int i) {
+        SudokuTrainingDataManager manager = new SudokuTrainingDataManager();
+        ListDecorator<SudokuTrainingData> trainingData = manager.getAll();
         return trainingData.get(i).getBoard();
     }
 
@@ -94,8 +120,9 @@ public class Main extends JFrame {
         public void run() {
             while (isVisible()  && board.getUnsolvedNodes().size() > 0) {
                 try {
-                    Thread.sleep(30);
+                    Thread.sleep(1000);
                     boardPanel.repaint();
+                    //bigNumbersPanel.repaint();
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }

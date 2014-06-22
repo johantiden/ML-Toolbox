@@ -1,10 +1,10 @@
 package se.jtiden.sudoku.sudokuswing;
 
+import se.jtiden.sudoku.domain.Board;
+
+import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import javax.swing.*;
-
-import se.jtiden.sudoku.domain.Board;
 
 public class SudokuBoardComponent extends JPanel {
 
@@ -18,7 +18,7 @@ public class SudokuBoardComponent extends JPanel {
 
     @Override
     public void paint(Graphics g) {
-        int bufferSize = mySize()*2;
+        int bufferSize = mySize()*4;
 
         if (bufferSize > 0) {
             Image backBuffer = new BufferedImage(bufferSize, bufferSize, BufferedImage.TYPE_INT_RGB);
@@ -32,5 +32,10 @@ public class SudokuBoardComponent extends JPanel {
 
     private int mySize() {
         return this.getWidth();
+    }
+
+
+    public void setHighlightedNumber(int value) {
+        this.sudokuPainterFactory.setHighlightedCandidates(value);
     }
 }

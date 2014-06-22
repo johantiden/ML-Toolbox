@@ -1,7 +1,5 @@
 package se.jtiden.sudoku.trainingdata;
 
-import se.jtiden.sudoku.struct.CollectionDecorator;
-import se.jtiden.sudoku.struct.CollectionDecoratorImpl;
 import se.jtiden.sudoku.struct.ListDecorator;
 import se.jtiden.sudoku.struct.ListDecoratorImpl;
 
@@ -15,7 +13,7 @@ public class SudokuTrainingDataManager {
     public ListDecorator<SudokuTrainingData> getAll() {
         List<se.jtiden.sudoku.trainingdata.SudokuTrainingData> trainingData = new ArrayList<>();
 
-        trainingData.add(new se.jtiden.sudoku.trainingdata.SudokuTrainingDataStringImpl("", 3, se.jtiden.sudoku.trainingdata.Difficulty.MODERATE, new String[]{
+        trainingData.add(new se.jtiden.sudoku.trainingdata.SudokuTrainingDataStringImpl("", 3, Difficulty.MODERATE, new String[]{
                 "xxxxxxx2x",
                 "x63xxx8xx",
                 "9xxxx6x57",
@@ -37,7 +35,7 @@ public class SudokuTrainingDataManager {
                 "896124735",
         }));
 
-        trainingData.add(new se.jtiden.sudoku.trainingdata.SudokuTrainingDataStringImpl("Needs Locked Candidates", 3, se.jtiden.sudoku.trainingdata.Difficulty.INTRICATE, new String[]{
+        trainingData.add(new se.jtiden.sudoku.trainingdata.SudokuTrainingDataStringImpl("Needs Locked Candidates", 3, Difficulty.INTRICATE, new String[]{
                 "x7xx489xx",
                 "x6x3xxx8x",
                 "xxxxx9xx4",
@@ -61,7 +59,7 @@ public class SudokuTrainingDataManager {
 
 
 
-        trainingData.add(new se.jtiden.sudoku.trainingdata.SudokuTrainingDataIntImpl("", se.jtiden.sudoku.trainingdata.Difficulty.EASIEST, new int[][]{
+        trainingData.add(new se.jtiden.sudoku.trainingdata.SudokuTrainingDataIntImpl("", Difficulty.EASIEST, new int[][]{
                 {1,3,7 , x,5,9 , 4,x,2},
                 {8,6,4 , x,3,2 , 9,5,x},
                 {5,9,2 , 8,4,7 , 3,x,6},
@@ -87,7 +85,7 @@ public class SudokuTrainingDataManager {
                 {2,1,3 , 4,6,5 , 7,9,8}
         }));
 
-        trainingData.add(new se.jtiden.sudoku.trainingdata.SudokuTrainingDataIntImpl("", se.jtiden.sudoku.trainingdata.Difficulty.EASY_AS_PIE, new int[][]{
+        trainingData.add(new se.jtiden.sudoku.trainingdata.SudokuTrainingDataIntImpl("", Difficulty.EASY_AS_PIE, new int[][]{
                 {x,2,5 , x,7,6 , 8,1,x},
                 {8,7,3 , x,x,5 , 6,2,9},
                 {6,x,1 , x,x,2 , 5,4,7},
@@ -113,7 +111,7 @@ public class SudokuTrainingDataManager {
                 {5,1,7 , 6,2,8 , 9,3,4},
         }));
 
-        trainingData.add(new se.jtiden.sudoku.trainingdata.SudokuTrainingDataIntImpl("", se.jtiden.sudoku.trainingdata.Difficulty.EASY_AS_PIE, new int[][]{
+        trainingData.add(new se.jtiden.sudoku.trainingdata.SudokuTrainingDataIntImpl("", Difficulty.EASY_AS_PIE, new int[][]{
                 {x,x,3,2,5,9,x,x,4},
                 {x,1,x,6,7,x,x,x,8},
                 {2,7,x,x,1,4,x,3,9},
@@ -128,7 +126,7 @@ public class SudokuTrainingDataManager {
         },
                 null));
 
-        trainingData.add(new se.jtiden.sudoku.trainingdata.SudokuTrainingDataIntImpl("", se.jtiden.sudoku.trainingdata.Difficulty.SIMPLE, new int[][]{
+        trainingData.add(new se.jtiden.sudoku.trainingdata.SudokuTrainingDataIntImpl("", Difficulty.SIMPLE, new int[][]{
                 {x,x,x,x,x,x,1,8,x},
                 {x,x,x,1,x,3,x,4,7},
                 {x,3,9,8,x,x,x,2,5},
@@ -144,7 +142,7 @@ public class SudokuTrainingDataManager {
                 null));
 
 
-        trainingData.add(new se.jtiden.sudoku.trainingdata.SudokuTrainingDataIntImpl("", se.jtiden.sudoku.trainingdata.Difficulty.EASY, new int[][]{
+        trainingData.add(new se.jtiden.sudoku.trainingdata.SudokuTrainingDataIntImpl("", Difficulty.EASY, new int[][]{
                 {3,x,x,x,9,2,6,x,x},
                 {9,x,x,5,x,x,x,x,x},
                 {1,5,x,x,x,x,x,4,x},
@@ -159,7 +157,7 @@ public class SudokuTrainingDataManager {
         },
                 null));
 
-        trainingData.add(new se.jtiden.sudoku.trainingdata.SudokuTrainingDataIntImpl("", se.jtiden.sudoku.trainingdata.Difficulty.MODERATE, new int[][]{
+        trainingData.add(new se.jtiden.sudoku.trainingdata.SudokuTrainingDataIntImpl("", Difficulty.MODERATE, new int[][]{
                 {x,x,x,6,3,2,5,x,7},
                 {x,7,x,x,5,x,x,6,x},
                 {x,x,x,x,1,x,x,9,x},
@@ -175,7 +173,7 @@ public class SudokuTrainingDataManager {
                 null));
 
 
-        trainingData.add(new Ignore(new se.jtiden.sudoku.trainingdata.SudokuTrainingDataIntImpl("Difficult 2", se.jtiden.sudoku.trainingdata.Difficulty.DIFFICULT, new int[][]{
+        trainingData.add(new Ignore(new se.jtiden.sudoku.trainingdata.SudokuTrainingDataIntImpl("Difficult 2", Difficulty.DIFFICULT, new int[][]{
                 {x,x,x,5,x,1,x,2,6},
                 {x,x,x,x,2,x,x,x,x},
                 {x,5,x,8,x,x,7,9,x},
@@ -190,7 +188,7 @@ public class SudokuTrainingDataManager {
         },
                 null)));
 
-        trainingData.add(new se.jtiden.sudoku.trainingdata.SudokuTrainingDataStringImpl("", 2, se.jtiden.sudoku.trainingdata.Difficulty.PROTOTYPES, new String[]{
+        trainingData.add(new se.jtiden.sudoku.trainingdata.SudokuTrainingDataStringImpl("", 2, Difficulty.PROTOTYPES, new String[]{
                 "1234",
                 "4312",
                 "21x3",
@@ -203,7 +201,7 @@ public class SudokuTrainingDataManager {
         }));
 
 
-        trainingData.add(new se.jtiden.sudoku.trainingdata.SudokuTrainingDataStringImpl("", 3, se.jtiden.sudoku.trainingdata.Difficulty.EASY, new String[]{
+        trainingData.add(new se.jtiden.sudoku.trainingdata.SudokuTrainingDataStringImpl("", 3, Difficulty.EASY, new String[]{
                 "x7xxxxxx1",
                 "4xx9xx8xx",
                 "x2xxxx95x",
@@ -225,7 +223,7 @@ public class SudokuTrainingDataManager {
                 "792486513",
         }));
 
-        trainingData.add(new Ignore(new se.jtiden.sudoku.trainingdata.SudokuTrainingDataStringImpl("Need naked pair and unique rectangle", 3, se.jtiden.sudoku.trainingdata.Difficulty.DIFFICULT, new String[]{
+        trainingData.add(new Ignore(new se.jtiden.sudoku.trainingdata.SudokuTrainingDataStringImpl("Need naked pair and unique rectangle", 3, Difficulty.DIFFICULT, new String[]{
                 "xx9x347xx",
                 "3xxx76x2x",
                 "xxx1xxxx6",
@@ -237,7 +235,7 @@ public class SudokuTrainingDataManager {
                 "xx356x1xx",
         }, null)));
 
-        trainingData.add(new Ignore(new se.jtiden.sudoku.trainingdata.SudokuTrainingDataStringImpl("Need naked pair", 3, se.jtiden.sudoku.trainingdata.Difficulty.INTRICATE, new String[]{
+        trainingData.add(new Ignore(new se.jtiden.sudoku.trainingdata.SudokuTrainingDataStringImpl("Need naked pair", 3, Difficulty.INTRICATE, new String[]{
                 "76xxx24x9",
                 "2x14x3xxx",
                 "xx4x7xxxx",
@@ -258,6 +256,26 @@ public class SudokuTrainingDataManager {
                 "475186392",
                 "132847685",
         })));
+
+        trainingData.add(new Ignore(new SudokuTrainingDataIntImpl("Big one!", Difficulty.DIFFICULT, 4, new int[][]{
+                {x,x,x,5,x,1,x,2,6,x,x,x,x,x,x,x},
+                {x,x,x,x,2,x,x,x,x,x,x,x,x,x,x,x},
+                {x,5,x,8,x,x,7,9,x,x,x,x,x,x,x,x},
+                {x,x,1,x,6,x,x,3,7,x,x,x,x,x,x,x},
+                {x,6,x,x,x,x,x,5,x,x,x,x,x,x,x,x},
+                {2,7,x,x,1,x,6,x,x,x,x,x,x,x,x,x},
+                {x,2,5,x,x,9,x,7,x,x,x,x,x,x,x,x},
+                {x,x,x,x,7,x,x,x,x,x,x,x,x,x,x,x},
+                {7,4,x,3,x,8,x,x,x,x,x,x,x,x,x,x},
+                {x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x},
+                {x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x},
+                {x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x},
+                {x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x},
+                {x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x},
+                {x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x},
+                {x,x,x,x,x,x,x,x,x,x,x,x,x,x,x,x},
+        },
+                null)));
 
         return new ListDecoratorImpl<>(trainingData);
     }

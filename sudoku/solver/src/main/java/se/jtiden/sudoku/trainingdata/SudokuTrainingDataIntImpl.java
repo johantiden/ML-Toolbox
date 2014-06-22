@@ -13,6 +13,12 @@ public class SudokuTrainingDataIntImpl extends SudokuTrainingDataAbs implements 
         super.setBoard(BoardFactory.parse(3, board));
     }
 
+    public SudokuTrainingDataIntImpl(String name, Difficulty difficulty, int order, int[][] board, int[][] solution) {
+        super(difficulty, name);
+        this.solution = solution;
+        super.setBoard(BoardFactory.parse(order, board));
+    }
+
     @Override
     public void assertSolved() {
         assertEquals("Couldn't solve " + getDifficulty().name() + ": " + getName(), 0, getBoard().getUnsolvedNodes().size());

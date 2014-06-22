@@ -1,36 +1,61 @@
 package se.jtiden.sudoku.sudokuswing;
 
-import java.awt.*;
-import java.awt.image.BufferedImage;
 import javax.swing.*;
-
-import se.jtiden.sudoku.domain.Board;
+import java.awt.*;
+import java.awt.event.ActionListener;
 
 public class SudokuBigNumbersComponent extends JPanel {
 
     private static final long serialVersionUID = 1L;
-    private final Board board;
+
+    private final ActionListener externalActionListener;
+    //private final List<MyButton> buttons = new ArrayList<>();
+    //private final ActionListener myActionListener;
 
 
-    public SudokuBigNumbersComponent(final Board board) {
-        this.board = board;
-    }
+    public SudokuBigNumbersComponent(int order, ActionListener actionListener) {
 
-    @Override
-    public void paint(Graphics g) {
-        int bufferSize = mySize()*2;
+        this.externalActionListener = actionListener;
+        /*this.myActionListener = new ActionListener() {
 
-        if (bufferSize > 0) {
-            Image backBuffer = new BufferedImage(bufferSize, bufferSize, BufferedImage.TYPE_INT_RGB);
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                for (MyButton b : buttons) {
+                    b.setActivated(b.getActionCommand().equals(e.getActionCommand()));
+                    b.repaint();
+                }
+            }
+        }; */
 
-            SudokuPainter.createSudokuPainter(board, bufferSize, bufferSize).paint(backBuffer.getGraphics());
-            ((Graphics2D) g).setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
-
-            g.drawImage(backBuffer, 0, 0, mySize(), mySize(), null);
+        GridLayout gridLayout = new GridLayout(0, order);
+        gridLayout.setHgap(0);
+        gridLayout.setVgap(0);
+        for (int i = 1; i <= order * order; ++i) {
+            addButton(i);
         }
+
+        this.setLayout(gridLayout);
     }
 
-    private int mySize() {
-        return this.getWidth();
+    /*@Override
+    public void paint(Graphics g) {
+        //g.setColor(Color.RED);
+        //g.fillRect(0,0, getWidth(), getHeight());
+
+        //super.paint(g);
+    }   */
+
+
+    private void addButton(int value) {
+        Button button = new Button(String.valueOf(value));
+        button.setActionCommand(String.valueOf(value));
+        button.addActionListener(this.externalActionListener);
+        //button.addActionListener(this.myActionListener);
+        add(button);
+
+        //buttons.add(button);
     }
+
+
+
 }

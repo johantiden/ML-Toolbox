@@ -41,7 +41,7 @@ public class SudokuPainter {
 
 
     private void drawNode(Graphics graphics, Node node, float x, float y, float nodeWidth, float nodeHeight) {
-        graphics.setColor(Color.WHITE);
+        graphics.setColor(getNodeBackgroundColor(node));
         float margin = nodeWidth/100f;
         graphics.fillRoundRect(
                 Math.round(x+margin),
@@ -61,9 +61,10 @@ public class SudokuPainter {
             } else {
                 graphics.setColor(Color.BLUE);
             }
-            graphics.setFont(new Font("Arial", 1, 70));
+            final int fontSize = (int) (nodeWidth*9/15f);
+            graphics.setFont(new Font("Arial", 1, fontSize));
             String s = String.valueOf(node.getValue());
-            graphics.drawString(s, (int) (x + nodeWidth / 2 - 17), (int) (y + nodeHeight / 2 + 20));
+            graphics.drawString(s, (int) (x + nodeWidth / 2 - fontSize/4.1f), (int) (y + nodeHeight / 2 + fontSize/3.5f));
         } else {
             if (node instanceof UnsolvedNode) {
                 UnsolvedNode unsolvedNode = (UnsolvedNode) node;
@@ -72,6 +73,10 @@ public class SudokuPainter {
                 }
             }
         }
+    }
+
+    protected Color getNodeBackgroundColor(Node node) {
+        return Color.WHITE;
     }
 
     private void drawCandidate(Graphics graphics, float x, float y, float nodeWidth, float nodeHeight, Integer candidateValue) {
@@ -96,8 +101,8 @@ public class SudokuPainter {
     private float candidateCenterX(float x, float nodeWidth, float biasOut, int candidateValue) {
         switch (candidateValue) {
             case 1:
-            case 3:
             case 4:
+            case 7:
                 return x + nodeWidth / 2 - biasOut*nodeWidth;
             case 2:
             case 5:
