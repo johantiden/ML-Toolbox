@@ -8,7 +8,7 @@ public class FastJTImageGraphics implements JTGraphics {
     }
 
     @Override
-    public void drawCircle(CircleWithColor circle) {
+    public void fillCircle(CircleWithColor circle) {
         int left = Math.max(circle.left(), 0);
         int top = Math.max(circle.top(), 0);
         int right = (int) Math.min(left + circle.getRadius()*2 + 1, fastJTImage.getWidth() - 1);
@@ -23,6 +23,25 @@ public class FastJTImageGraphics implements JTGraphics {
                     //                                                                (y - circle.y) * (y - circle.y)) / circle.radius*200, 0)));
 
                     mixPixel(index, circle.getColor().getR(), circle.getColor().getG(), circle.getColor().getB(), circle.getColor().getA());
+                }
+            }
+        }
+    }
+
+    @Override
+    public void drawCircle(CircleWithColorImpl circle, double penWidth) {
+        int left = (int) Math.max(circle.left() - penWidth, 0);
+        int top = (int) Math.max(circle.top() - penWidth, 0);
+        int right = (int) Math.min(left + circle.getRadius()*2 + 1 + penWidth*2, fastJTImage.getWidth() - 1);
+        int bottom = (int) Math.min(top + circle.getRadius()*2 + 1 + penWidth*2, fastJTImage.getHeight() - 1);
+
+        for (int y = top; y < bottom; ++y) {
+            for (int x = left; x < right; ++x) {
+                final int index = fastJTImage.getIndex(x, y);
+
+                double alphaPercentage = Math.min(1, penWidth - Math.abs(circle.getRadius() - circle.distanceFrom(x, y)));
+                if (alphaPercentage > 0) {
+                    mixPixel(index, circle.getColor().getR(), circle.getColor().getG(), circle.getColor().getB(), (int) Math.round(circle.getColor().getA()*alphaPercentage));
                 }
             }
         }
@@ -49,6 +68,16 @@ public class FastJTImageGraphics implements JTGraphics {
             }
         }
     }
+
+    @Override
+    public void fillAll(JTColor color) {
+        final int arraySize = fastJTImage.getWidth() * fastJTImage.getHeight();
+        for (int i = 0; i < arraySize; ++i) {
+            fastJTImage.setPixel(i, color.getR(), color.getG(), color.getB());
+        }
+    }
+
+
 
     private void mixPixel(int index, int r, int g, int b, int a) {
         if (a == 255) {

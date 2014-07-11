@@ -6,8 +6,6 @@ import se.jtiden.ml.imagealgorithms.Context;
 import se.jtiden.ml.imagealgorithms.ContextFactory;
 import se.jtiden.ml.imagealgorithms.ContextImpl;
 import se.jtiden.ml.imagealgorithms.algorithm.api.Hypothesis;
-import se.jtiden.ml.imagealgorithms.algorithm.api.IterativeAlgorithm;
-import se.jtiden.ml.imagealgorithms.evaluator.Evaluator;
 import se.jtiden.ml.imagealgorithms.painter.AlgorithmStepPainter;
 import se.jtiden.ml.imagealgorithms.painter.HypothesisPainterFactory;
 
@@ -26,40 +24,23 @@ public class OriginalContextFactory implements ContextFactory {
 
     @Override
     public Context getContext() {
-        JTImage targetImage = ImageConverter.loadImage(OriginalContextFactory.IMAGE, SCALE_DOWN_BEFORE);
+        JTImage targetImage = ImageConverter.loadImage(IMAGE, SCALE_DOWN_BEFORE);
 
-        AlgorithmStepPainter painter = new Painter(targetImage);
+        AlgorithmStepPainter painter = new OriginalPainter(targetImage);
         return new ContextImpl(
-                new NoAlgorithm(targetImage),
-                painter
-                ,
+                null,
                 new MyHypothesisPainterFactory(painter, targetImage),
-                SCALE_UP_AFTER
+                SCALE_UP_AFTER,
+                1
         );
     }
 
-    private static class NoHypothesis implements Hypothesis {
-        @Override
-        public double valueFunction() {
-            return 0;
-        }
-
-        @Override
-        public Hypothesis copy() {
-            return this; // :)
-        }
-
-        @Override
-        public int compareTo(Hypothesis o) {
-            return 0;
-        }
-    }
-
     private static class MyHypothesisPainterFactory implements HypothesisPainterFactory {
+        private static final long serialVersionUID = -5835420848057327033L;
         private final AlgorithmStepPainter painter;
         private final JTImage targetImage;
 
-        public MyHypothesisPainterFactory(AlgorithmStepPainter painter, JTImage targetImage) {
+        private MyHypothesisPainterFactory(AlgorithmStepPainter painter, JTImage targetImage) {
             this.painter = painter;
             this.targetImage = targetImage;
         }
@@ -80,56 +61,11 @@ public class OriginalContextFactory implements ContextFactory {
         }
     }
 
-    private static class NoAlgorithm implements IterativeAlgorithm {
+    private static class OriginalPainter implements AlgorithmStepPainter {
+        private static final long serialVersionUID = 7824946110402526373L;
         private final JTImage targetImage;
 
-        public NoAlgorithm(JTImage targetImage) {
-
-            this.targetImage = targetImage;
-        }
-
-        @Override
-        public void iterate() {
-
-        }
-
-        @Override
-        public Hypothesis getBestHypothesis() {
-            return new NoHypothesis();
-        }
-
-        @Override
-        public Evaluator getEvaluator() {
-            return new NoEvaluator();
-        }
-
-        private class NoEvaluator implements Evaluator {
-            @Override
-            public double getScore(Object o) {
-                return 0;
-            }
-
-            @Override
-            public Object getTarget() {
-                return new Object();
-            }
-
-            @Override
-            public int getWidth() {
-                return targetImage.getWidth();
-            }
-
-            @Override
-            public int getHeight() {
-                return targetImage.getHeight();
-            }
-        }
-    }
-
-    private static class Painter implements AlgorithmStepPainter {
-        private final JTImage targetImage;
-
-        public Painter(JTImage targetImage) {
+        private OriginalPainter(JTImage targetImage) {
             this.targetImage = targetImage;
         }
 

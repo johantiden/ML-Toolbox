@@ -3,7 +3,9 @@ package se.jtiden.ml.imagealgorithms.painter;
 
 import se.jtiden.common.images.JTImage;
 
-public interface AlgorithmStepPainter {
+import java.io.Serializable;
+
+public interface AlgorithmStepPainter extends Serializable {
     void paint();
 
     JTImage getImage();

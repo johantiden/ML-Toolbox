@@ -9,4 +9,6 @@ public interface Context {
     HypothesisPainterFactory getHypothesisPainterFactory();
 
     double getScale();
+
+    double getPaintFPS();
 }

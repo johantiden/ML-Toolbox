@@ -1,10 +1,9 @@
 package se.jtiden.common.images;
 
+import java.awt.*;
 import java.util.Random;
 
 public class JTColorImpl implements JTColor {
-    public static final JTColor GRAY = new JTColorImpl(128, 128, 128);
-    public static final JTColor BLACK = new JTColorImpl(0, 0, 0);
 
     public static final int COLOR_MAX_LIMIT = 255;
     public static final int COLOR_MIN_LIMIT = 0;
@@ -23,16 +22,20 @@ public class JTColorImpl implements JTColor {
         this.a = a;
     }
 
-    private static void verify(int r, int g, int b, int a) {
-        verify(a);
-        verify(r);
-        verify(g);
-        verify(b);
+    public JTColorImpl(JTColor baseColor, int a) {
+        this(baseColor.getR(), baseColor.getG(), baseColor.getB(), a);
     }
 
-    private static void verify(int c) {
+    private static void verify(int r, int g, int b, int a) {
+        verify(a, 'a');
+        verify(r, 'r');
+        verify(g, 'g');
+        verify(b, 'b');
+    }
+
+    private static void verify(int c, char channel) {
         if (c < COLOR_MIN_LIMIT || c > COLOR_MAX_LIMIT) {
-            throw new IllegalStateException("Color value out of bounds: " + c);
+            throw new IllegalStateException("Color '"+channel+"' value out of bounds: " + c);
         }
     }
 
@@ -46,6 +49,11 @@ public class JTColorImpl implements JTColor {
                 Math.max(0, Math.min(r + random.nextInt(colorVariance) - colorVariance / 2, a)),
                 Math.max(0, Math.min(g + random.nextInt(colorVariance) - colorVariance / 2, a)),
                 Math.max(0, Math.min(b + random.nextInt(colorVariance) - colorVariance / 2, a)));
+    }
+
+    @Override
+    public Color asAwtColor() {
+        return new Color(r, g, b, a);
     }
 
     @Override

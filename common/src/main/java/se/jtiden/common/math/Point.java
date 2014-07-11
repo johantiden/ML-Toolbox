@@ -7,6 +7,8 @@ public interface Point extends Comparable<Point> {
 
     double distanceSquaredFrom(double x, double y);
 
+    double distanceFrom(double x, double y);
+
     @Override
     int compareTo(Point o);
 
@@ -16,4 +18,5 @@ public interface Point extends Comparable<Point> {
     double getX();
 
     double getY();
+
 }

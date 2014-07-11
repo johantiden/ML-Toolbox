@@ -44,7 +44,7 @@ public class MonaLisaNearestNeighborAlgorithm implements IterativeAlgorithm<Mona
         PointWithColor middleOfImage = new PointWithColor(
                 targetImage.getWidth() / 2d,
                 targetImage.getHeight() / 2d,
-                JTColorImpl.GRAY);
+                JTColor.GRAY);
 
         List<PointWithColor> points = new ArrayList<PointWithColor>();
         for (int i = 0; i < numPoints; ++i) {

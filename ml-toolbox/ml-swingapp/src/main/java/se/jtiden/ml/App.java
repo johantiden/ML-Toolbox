@@ -1,6 +1,7 @@
 package se.jtiden.ml;
 
 
+import com.google.common.util.concurrent.RateLimiter;
 import se.jtiden.common.images.awt.ImageConverter;
 import se.jtiden.ml.imagealgorithms.Context;
 import se.jtiden.ml.imagealgorithms.algorithm.api.Hypothesis;
@@ -21,6 +22,7 @@ public class App extends JFrame {
     private final IterativeAlgorithm algorithm;
     private final HypothesisPainterFactory hypothesisPainterFactory;
     private Hypothesis bestHypothesis;
+    private final double fps;
 
     protected App(final Context context) {
 
@@ -28,7 +30,7 @@ public class App extends JFrame {
         hypothesisPainterFactory = context.getHypothesisPainterFactory();
         imageWidth = (int) (hypothesisPainterFactory.getWidth() * context.getScale());
         imageHeight = (int) (hypothesisPainterFactory.getHeight() * context.getScale());
-
+        fps = context.getPaintFPS();
 
         canvas = new PaintPanel();
         canvas.setSize(imageWidth, imageHeight);
@@ -61,18 +63,28 @@ public class App extends JFrame {
 
         @Override
         public void run() {
+            RateLimiter paintRateLimiter = RateLimiter.create(fps);
+            long startTime = System.currentTimeMillis();
+            int framesDrawn = 0;
             while (isVisible()) {
-                try {
-                    Thread.sleep(3000);
+                paintRateLimiter.acquire();
+                framesDrawn++;
+                long totalTime = System.currentTimeMillis() - startTime;
+                double meanFPS = framesDrawn / (totalTime / 1000d);
+
+                //System.out.println("frames:"+framesDrawn + " time:"+totalTime + " avg fps:" + meanFPS);
+                if (algorithm != null) {
                     Hypothesis currentHypothesis = algorithm.getBestHypothesis();
 
                     if (currentHypothesis != bestHypothesis) {
                         bestHypothesis = currentHypothesis;
                         canvas.repaint();
                     }
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
+                } else {
+                    // There is no algorithm choosing hypotheses, just repaint instead.
+                    canvas.repaint();
                 }
+
             }
         }
     }
@@ -81,11 +93,13 @@ public class App extends JFrame {
 
         @Override
         public void run() {
-            while (isVisible()) {
-                try {
-                    algorithm.iterate();
-                } catch (Exception e) {
-                    e.printStackTrace();
+            if (algorithm != null) {
+                while (isVisible()) {
+                    try {
+                        algorithm.iterate();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                 }
             }
         }
@@ -97,15 +111,15 @@ public class App extends JFrame {
         @Override
         public void paint(Graphics g) {
             super.paint(g);
-            if (bestHypothesis != null) {
-                AlgorithmStepPainter algorithmStepPainter = hypothesisPainterFactory.create(bestHypothesis);
-                Image image = ImageConverter.toAwtImage(algorithmStepPainter.getImage());
-                g.drawImage(image,
-                        0, 0,
-                        imageWidth,
-                        imageHeight,
-                        null);
-            }
+
+            AlgorithmStepPainter algorithmStepPainter = hypothesisPainterFactory.create(bestHypothesis);
+            Image image = ImageConverter.toAwtImage(algorithmStepPainter.getImage());
+            g.drawImage(image,
+                    0, 0,
+                    imageWidth,
+                    imageHeight,
+                    null);
+
         }
     }
 }

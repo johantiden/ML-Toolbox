@@ -56,7 +56,7 @@ public class FastJTImage implements JTImage {
     public JTColor getColorAt(int x, int y) {
         int index = getIndex(x, y);
         if (index >= r.length) {
-            throw new IllegalArgumentException("Index out of bounds! x:" + x + " y:" + y + " size: " + r.length + " index:" + index + ".");
+            throw new IllegalArgumentException("Index out of bounds! x:" + x + " y:" + y + " size: " + r.length + " index:" + index + '.');
         }
         return new JTColorImpl(
                 r[index],

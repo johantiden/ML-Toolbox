@@ -2,14 +2,15 @@ package se.jtiden.ml.imagealgorithms.circles;
 
 import se.jtiden.common.images.JTImage;
 import se.jtiden.common.images.awt.ImageConverter;
+import se.jtiden.ml.imagealgorithms.Context;
+import se.jtiden.ml.imagealgorithms.ContextFactory;
 import se.jtiden.ml.imagealgorithms.ContextImpl;
-import se.jtiden.ml.imagealgorithms.MonaLisaAlgorithmPainter;
 import se.jtiden.ml.imagealgorithms.algorithm.api.IterativeAlgorithm;
 import se.jtiden.ml.imagealgorithms.evaluator.DifferenceSquaredEvaluator;
 import se.jtiden.ml.imagealgorithms.original.OriginalContextFactory;
 import se.jtiden.ml.imagealgorithms.painter.HypothesisPainterFactory;
 
-public class CirclesContextFactory {
+public class CirclesContextFactory implements ContextFactory {
 
     public static final int MUTATION_POINT_VARIANCE = 100;
     public static final int MIN_NUM_POINTS = 1;
@@ -20,9 +21,10 @@ public class CirclesContextFactory {
     public static final int MUTATION_POINT_COLOR_VARIANCE = 200;
     public static final int MUTATION_RADIUS_VARIANCE = 200;
     public static final int FAKE_PIXEL_SIZE = 5;
+    private static final double PAINT_FPS = 1;
 
-
-    public ContextImpl getContext() {
+    @Override
+    public Context getContext() {
         JTImage monaLisa = ImageConverter.loadImage(OriginalContextFactory.IMAGE, FAKE_PIXEL_SIZE);
         DifferenceSquaredEvaluator evaluator = new DifferenceSquaredEvaluator(monaLisa);
         IterativeAlgorithm algorithm = new CirclesAlgorithm(
@@ -42,12 +44,8 @@ public class CirclesContextFactory {
 
         return new ContextImpl(
                 algorithm,
-                new MonaLisaAlgorithmPainter(
-                        algorithm,
-                        hypothesisPainterFactory)
-//                )
-                ,
                 hypothesisPainterFactory,
-                FAKE_PIXEL_SIZE);
+                FAKE_PIXEL_SIZE,
+                PAINT_FPS);
     }
 }

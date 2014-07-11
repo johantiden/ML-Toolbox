@@ -38,6 +38,11 @@ public class PointImpl implements Point {
     }
 
     @Override
+    public double distanceFrom(double x, double y) {
+        return Math.sqrt(distanceSquaredFrom(x, y));
+    }
+
+    @Override
     public int compareTo(Point o) {
         if (this == o) {
             return 0;

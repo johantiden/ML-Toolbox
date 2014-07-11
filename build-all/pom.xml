@@ -16,6 +16,7 @@
         <module>../base</module>
         <module>../ml-toolbox/ml-image-algorithms</module>
         <module>../ml-toolbox/ml-swingapp</module>
+        <module>../ml-toolbox/loading-animations</module>
         <module>../common</module>
     </modules>
 </project>
